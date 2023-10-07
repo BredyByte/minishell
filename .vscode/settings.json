@@ -1,0 +1,13 @@
+{
+	"C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+	"files.associations": {
+		"stdlib.h": "c",
+		"readline.h": "c",
+		"history.h": "c"
+	},
+	"workbench.colorCustomizations": {
+		"[Bearded Theme Arc EolStorm]": {
+			"textSeparator.foreground": "#ffb500"
+		}
+	}
+}

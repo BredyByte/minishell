@@ -2,13 +2,16 @@ NAME = minishell
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+LREADLINE = -lreadline
 REMOVE = rm -rf
 
 OBJ_PATH = obj
 SRC_PATH = src
 INC_PATH = include
+LIBFT_PATH = assets/libft
 
 HEADERS	= -I ./include
+LIBS = $(LIBFT_PATH)/libft.a
 
 SRC = $(wildcard $(SRC_PATH)/*.c)
 OBJ = $(SRC:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
@@ -18,10 +21,10 @@ RESET = \033[0m
 U_LINE = \033[4m
 YELLOW = \033[1;38;5;226m
 
-all: $(NAME)
+all: $(LIBS) $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) $(HEADERS) -o $@
+	@$(CC) $(OBJ) $(LIBS) $(HEADERS) $(LREADLINE) -o $@
 	@echo "\n$(ORANGE)$(U_LINE)⭐️ $(NAME): Compiled ⭐️$(RESET) \n"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
@@ -29,12 +32,17 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 	@echo "$(YELLOW)$(NAME) Compiling:$(RESET) $(notdir $<)"
 
+$(LIBS):
+	@$(MAKE) -C $(LIBFT_PATH)
+
 clean:
 	@$(REMOVE) $(OBJ_PATH)
+	@$(MAKE) -C $(LIBFT_PATH) clean
 
 fclean: clean
 	@$(REMOVE) $(NAME)
+	@$(MAKE) -C $(LIBFT_PATH) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re $(LIBS)
