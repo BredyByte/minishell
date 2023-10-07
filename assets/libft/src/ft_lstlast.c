@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 15:55:39 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:34:42 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/07 17:59:19 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/07 17:59:32 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *key, void *value)
+t_list	*ft_lstlast(t_list *lst)
 {
-	t_list	*new_list;
+	t_list	*temp;
 
-	new_list = malloc(sizeof(t_list));
-	if (!new_list)
-		return (NULL);
-	new_list->key = ft_strdup(key);
-	new_list->value = ft_strdup(value);
-	new_list->next = NULL;
-	return (new_list);
+	if (!lst)
+		return (0);
+	temp = (t_list *)lst;
+	while (temp->next)
+		temp = temp->next;
+	return (temp);
 }

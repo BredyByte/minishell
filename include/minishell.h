@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:15:42 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:11:30 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ typedef struct s_info
 			}
 		}
 	 */
+	// t_ltoken		tokens;
+	// t_lgroup		groups;
 }					t_info;
 
 // buildins
@@ -95,6 +97,11 @@ int	buildin_env(t_list *list, t_info *info);
 int	buildin_exit(t_list *list, t_info *info);
 
 // init
+
 void	init_envp_lst(t_info *info, char **envp);
+
+// ft_readline
+
+char	*ft_readline(void);
 
 #endif

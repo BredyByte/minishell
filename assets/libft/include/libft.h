@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:12:49 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 15:57:14 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/07 17:59:41 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,9 @@ double		ft_atof(char *str);
 int			ft_isspace(int c);
 void		*ft_calloc(size_t count, size_t size);
 t_list		*ft_lstnew(void *key, void *value);
+void		ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_back(t_list **lst, t_list *new);
+t_list		*ft_lstlast(t_list *lst);
+char		*ft_strndup(const char *s, size_t n);
 
 #endif

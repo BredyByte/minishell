@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 15:55:39 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:34:42 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/07 18:05:28 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/07 18:07:53 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-t_list	*ft_lstnew(void *key, void *value)
+char	*ft_readline(void)
 {
-	t_list	*new_list;
+	char	*str;
 
-	new_list = malloc(sizeof(t_list));
-	if (!new_list)
-		return (NULL);
-	new_list->key = ft_strdup(key);
-	new_list->value = ft_strdup(value);
-	new_list->next = NULL;
-	return (new_list);
+	str = readline("minishell-1.0$ ");
+	if (str)
+		add_history(str);
+	return (str);
 }

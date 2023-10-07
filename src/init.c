@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:12:38 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:12:18 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	minishell_lounch(t_info *info)
 
 	while (!info->exit_f)
 	{
-		prompt = readline("minishell-1.0$ ");
+		prompt = ft_readline();
 		if (!ft_strncmp(prompt, "exit", SIZE_MAX))
 			info->exit_f = 1;
 		if (!ft_strncmp(prompt, "env", SIZE_MAX))
@@ -61,7 +61,6 @@ void	minishell_lounch(t_info *info)
 		}
 		chec_unclosed_quotes(info, prompt);
 		printf("%s\n", prompt);
-		add_history(prompt);
 		free(prompt);
 	}
 	clear_history();
@@ -116,6 +115,7 @@ void	data_init(t_info *info)
 int	main(int arv, char **argv)
 {
 	t_info	*info;
+
 	(void)argv;
 	if (arv == 2)
 	{
@@ -125,5 +125,6 @@ int	main(int arv, char **argv)
 	info = malloc(sizeof(t_info));
 	data_init(info);
 	minishell_lounch(info);
+	free(info);
 	return (0);
 }

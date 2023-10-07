@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 15:55:39 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:34:42 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/07 17:33:40 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/07 17:34:46 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *key, void *value)
+char	*ft_strndup(const char *s, size_t n)
 {
-	t_list	*new_list;
+	char	*d;
+	size_t	len;
 
-	new_list = malloc(sizeof(t_list));
-	if (!new_list)
+	len = ft_strlen(s);
+	if (len < n)
+		n = len;
+	d = (char *)malloc(n + 1);
+	if (!d)
 		return (NULL);
-	new_list->key = ft_strdup(key);
-	new_list->value = ft_strdup(value);
-	new_list->next = NULL;
-	return (new_list);
+	ft_memcpy(d, s, n);
+	d[n] = '\0';
+	return (d);
 }

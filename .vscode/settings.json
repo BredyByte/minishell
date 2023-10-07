@@ -3,7 +3,8 @@
 	"files.associations": {
 		"stdlib.h": "c",
 		"readline.h": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"iterator": "c"
 	},
 	"workbench.colorCustomizations": {
 		"[Bearded Theme Arc EolStorm]": {

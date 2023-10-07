@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:17:42 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 17:02:08 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/07 18:00:55 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,19 @@ void	init_envp_lst(t_info *info, char **envp)
 
 	while (*envp)
 	{
-		delimiter = strchr(*envp, '=');
+		delimiter = ft_strchr(*envp, '=');
 		if (!delimiter)
 		{
 			envp++;
 			continue ;
 		}
-		key = strndup(*envp, delimiter - *envp); // Извлекаем ключ
-		value = strdup(delimiter + 1); // Извлекаем значение
-		if (!info->envp_list) // Если это первый элемент списка
-		{
-			info->envp_list = ft_lstnew(key, value);
-			current = info->envp_list;
-		}
+		key = ft_strndup(*envp, delimiter - *envp);
+		value = ft_strdup(delimiter + 1);
+		current = ft_lstnew(key, value);
+		if (!info->envp_list)
+			ft_lstadd_front(&info->envp_list, current);
 		else
-		{
-			current->next = ft_lstnew(key, value);
-			current = current->next;
-		}
-
+			ft_lstadd_back(&info->envp_list, current);
 		free(key);
 		free(value);
 		envp++;
