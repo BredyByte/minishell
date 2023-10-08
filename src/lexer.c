@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 17:51:27 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/08 11:44:36 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/08 18:25:56 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lexer(t_info *info, char *str)
 {
-	t_list	*last;
-
-	last = *lst;
-	if (last == NULL)
-		ft_lstadd_front(lst, new);
-	else
-	{
-		last = ft_lstlast(*lst);
-		last->next = new;
-	}
+	(void) info;
+	(void) str;
+	return ;
 }

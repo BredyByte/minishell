@@ -4,7 +4,8 @@
 		"stdlib.h": "c",
 		"readline.h": "c",
 		"history.h": "c",
-		"iterator": "c"
+		"iterator": "c",
+		"chrono": "c"
 	},
 	"workbench.colorCustomizations": {
 		"[Bearded Theme Arc EolStorm]": {

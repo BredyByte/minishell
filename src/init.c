@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 18:12:18 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/08 18:34:48 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern char	**environ;
 
-void	chec_unclosed_quotes(t_info *info, char *str)
+/* void	chec_unclosed_quotes(t_info *info, char *str)
 {
 	int	i;
 	int	count;
@@ -30,43 +30,37 @@ void	chec_unclosed_quotes(t_info *info, char *str)
 	if (count % 2 == 0)
 		return ;
 	info->exit_f = 1;
-}
+} */
 
-void	minishell_lounch(t_info *info)
+static void	init_envp_lst(t_info *info, char **envp)
 {
-	char	*prompt;
+	t_list	*current;
+	char	*delimiter;
+	char	*key;
+	char	*value;
 
-	while (!info->exit_f)
+	while (*envp)
 	{
-		prompt = ft_readline();
-		if (!ft_strncmp(prompt, "exit", SIZE_MAX))
-			info->exit_f = 1;
-		if (!ft_strncmp(prompt, "env", SIZE_MAX))
+		delimiter = ft_strchr(*envp, '=');
+		if (!delimiter)
 		{
-			int i = 0;
-			while (info->envp[i])
-			{
-				printf ("%s\n", info->envp[i]);
-				i++;
-			}
+			envp++;
+			continue ;
 		}
-		if (!ft_strncmp(prompt, "env_list", SIZE_MAX))
-		{
-			t_list *ptr = info->envp_list;
-			while (ptr != NULL)
-			{
-				printf ("key: %s , value: %s\n", ptr->key, ptr->value);
-				ptr = ptr->next;
-			}
-		}
-		chec_unclosed_quotes(info, prompt);
-		printf("%s\n", prompt);
-		free(prompt);
+		key = ft_strndup(*envp, delimiter - *envp);
+		value = ft_strdup(delimiter + 1);
+		current = ft_lstnew(key, value);
+		if (!info->envp_list)
+			ft_lstadd_front(&info->envp_list, current);
+		else
+			ft_lstadd_back(&info->envp_list, current);
+		free(key);
+		free(value);
+		envp++;
 	}
-	clear_history();
 }
 
-void	init_envp(t_info *info)
+static void	init_envp(t_info *info)
 {
 	int count = 0;
 	char **ptr = environ;
@@ -89,7 +83,7 @@ void	init_envp(t_info *info)
 	}
 }
 
-void	data_init(t_info *info)
+static void	data_init(t_info *info)
 {
 	info->builtins[0] = &buildin_echo;
 	info->builtins[1] = &buildin_cd;
@@ -107,6 +101,7 @@ void	data_init(t_info *info)
 	info->reserved_words[6] = ft_strdup("exit");
 	init_envp(info);
 	init_envp_lst(info, info->envp);
+	info->tokens = NULL;
 	info->envp_f = 0;
 	info->exit_f = 0;
 	info->status = 0;

@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/07 18:11:30 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/08 18:25:48 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "../assets/libft/include/libft.h"
+# include "tokens.h"
 
 typedef struct s_info t_info;
 typedef int			(*t_builtin_ptr)(t_list *, t_info *);
@@ -83,8 +84,11 @@ typedef struct s_info
 			}
 		}
 	 */
-	// t_ltoken		tokens;
+	t_list			*tokens;
+	// лексер разбивает все на токены, и кладет их в лист, тього получается односвязанный лист с key = TOKEN_MACROS, value = token_value;
 	// t_lgroup		groups;
+	// в случае cat >file | cat <file && pwd: t_lgroup: t_list *tokens, &&, t_list * tokens
+	// лист для логическиих групп, тоесть группы команд разделенные логическими операторами && || ;
 }					t_info;
 
 // buildins
@@ -96,12 +100,17 @@ int	buildin_unset(t_list *list, t_info *info);
 int	buildin_env(t_list *list, t_info *info);
 int	buildin_exit(t_list *list, t_info *info);
 
-// init
+// minishell_lounch
 
-void	init_envp_lst(t_info *info, char **envp);
+void	minishell_lounch(t_info *info);
 
 // ft_readline
 
 char	*ft_readline(void);
+
+
+// lexer
+
+void	ft_lexer(t_info *info, char *str);
 
 #endif
