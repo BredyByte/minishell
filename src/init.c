@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/08 18:34:48 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:25:22 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ static void	init_envp_lst(t_info *info, char **envp)
 		key = ft_strndup(*envp, delimiter - *envp);
 		value = ft_strdup(delimiter + 1);
 		current = ft_lstnew(key, value);
-		if (!info->envp_list)
-			ft_lstadd_front(&info->envp_list, current);
+		if (!info->envp_lst)
+			ft_lstadd_front(&info->envp_lst, current);
 		else
-			ft_lstadd_back(&info->envp_list, current);
+			ft_lstadd_back(&info->envp_lst, current);
 		free(key);
 		free(value);
 		envp++;
@@ -101,7 +101,7 @@ static void	data_init(t_info *info)
 	info->reserved_words[6] = ft_strdup("exit");
 	init_envp(info);
 	init_envp_lst(info, info->envp);
-	info->tokens = NULL;
+	info->token_lst = NULL;
 	info->envp_f = 0;
 	info->exit_f = 0;
 	info->status = 0;

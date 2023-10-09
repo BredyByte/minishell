@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/08 18:25:48 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 11:48:48 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_info
 	t_builtin_ptr	builtins[7];
 	char			*reserved_words[7];
 	char			**envp;
-	t_list			*envp_list;
+	t_list			*envp_lst;
 	/*
 		Односвязанный лист со всеми переменными окружения key = value.
 		Eсли небыло произведено никаких опираций над листом то пересобирать envp не нужно,
@@ -54,8 +54,8 @@ typedef struct s_info
 		waitpid(pid, &status, 0);
 		WIFSIGNALED(status) - макросс проверки (true / false) завершился ли процесс сигналом как например сигнал SIGSEGV;
 		WTERMSIG(status) - позволяет узнать сигнал который завершил процесс;
-		WEXITSTATUS(status) - макрос возвращает код завершения процесса;
 		WIFEXITED(status) -	возвращает истинное значение, это означает, что дочерний процесс завершился нормально (вызвал  exit()) - можно вызвать WEXITSTATUS чтобы получить код выхода;
+		WEXITSTATUS(status) - макрос возвращает код завершения процесса;
 	*/
 	/*
 		int status;
@@ -84,7 +84,7 @@ typedef struct s_info
 			}
 		}
 	 */
-	t_list			*tokens;
+	t_list			*token_lst;
 	// лексер разбивает все на токены, и кладет их в лист, тього получается односвязанный лист с key = TOKEN_MACROS, value = token_value;
 	// t_lgroup		groups;
 	// в случае cat >file | cat <file && pwd: t_lgroup: t_list *tokens, &&, t_list * tokens
@@ -107,7 +107,6 @@ void	minishell_lounch(t_info *info);
 // ft_readline
 
 char	*ft_readline(void);
-
 
 // lexer
 

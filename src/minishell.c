@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/08 16:21:43 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:25:11 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	minishell_lounch(t_info *info)
 			info->exit_f = 1;
 			continue ;
 		}
+		ft_lexer(info, prompt);
 		if (!ft_strncmp(prompt, "exit", SIZE_MAX))
 			info->exit_f = 1;
 		if (!ft_strncmp(prompt, "env", SIZE_MAX))
@@ -38,14 +39,20 @@ void	minishell_lounch(t_info *info)
 		}
 		if (!ft_strncmp(prompt, "env_list", SIZE_MAX))
 		{
-			t_list *ptr = info->envp_list;
+			t_list *ptr = info->envp_lst;
 			while (ptr != NULL)
 			{
 				printf ("key: %s , value: %s\n", ptr->key, ptr->value);
 				ptr = ptr->next;
 			}
 		}
-		printf("%s\n", prompt);
+		t_list *ptr = info->token_lst;
+		while (ptr != NULL)
+		{
+			printf ("token: %i , value: %s\n", *((int *)ptr->key), ptr->value);
+			ptr = ptr->next;
+		}
+	/* 	printf("%s\n", prompt); */
 		free(prompt);
 	}
 	clear_history();
