@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 17:51:21 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:58:21 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,47 @@ static void	handle_words(t_info *info, char **str)
 	}
 }
 
+static void	handle_logical(t_info *info, char **str)
+{
+	if (**str == '&' && *(*str + 1) == '&')
+	{
+		fill_in_lex(info, IF_AND, "&&");
+		(*str)++;
+	}
+	else if (**str == '|' && *(*str + 1) == '|')
+	{
+		fill_in_lex(info, IF_OR, "||");
+		(*str)++;
+	}
+	else if (**str == '(')
+		fill_in_lex(info, PARN_L, "(");
+	else if (**str == ')')
+		fill_in_lex(info, PARN_R, ")");
+	else if (**str == '|')
+		fill_in_lex(info, TOKEN_PIPE, "|");
+}
+
 void	ft_lexer(t_info *info, char *str)
 {
 	while (*str)
 	{
-		if (ft_isspace(*str))
+		if (!ft_is_special_char(*str))
+			handle_words(info, &str);
+		else if (ft_isspace(*str))
 		{
 			fill_in_lex(info, TOKEN_SEP, "s");
 			while (ft_isspace(*str))
 				str++;
 			continue ;
 		}
-		else if (!ft_is_special_char(*str))
-			handle_words(info, &str);
 		else if (*str == '\'')
 			fill_in_lex(info, TOKEN_FIELD, "\'");
 		else if (*str == '"')
 			fill_in_lex(info, TOKEN_EXP_FIELD, "\"");
 		else if (*str == '>' || *str == '<')
 			handle_redirections(info, &str);
-		else if (*str == '|')
-			fill_in_lex(info, TOKEN_PIPE, "|");
+		else if (*str == '&' || *str == '|' || *str == '(' || *str == ')')
+			handle_logical(info, &str);
 		str++;
 	}
 }
