@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 13:00:28 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:51:21 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,65 @@ static void	fill_in_lex(t_info *info, int token, char *content)
 	free(value);
 }
 
+static void	handle_redirections(t_info *info, char **str)
+{
+	if (**str == '>')
+	{
+		if (ft_strncmp(*str, ">>", 2) == 0)
+		{
+			fill_in_lex(info, TOKEN_REDIR_APPEND, ">>");
+			(*str)++;
+		}
+		else
+			fill_in_lex(info, TOKEN_REDIR_OUT, ">");
+	}
+	else if (**str == '<')
+	{
+		if (ft_strncmp(*str, "<<", 2) == 0)
+		{
+			fill_in_lex(info, TOKEN_REDIR_INSOURCE, "<<");
+			(*str)++;
+		}
+		else
+			fill_in_lex(info, TOKEN_REDIR_IN, "<");
+	}
+}
+
+static void	handle_words(t_info *info, char **str)
+{
+	char	*start;
+
+	if (!ft_is_special_char(**str))
+	{
+		start = *str;
+		while (*(*str + 1) && !ft_is_special_char(*(*str + 1))
+			&& !ft_isspace(*(*str + 1)))
+			(*str)++;
+		fill_in_lex(info, TOKEN_WORD, ft_strndup(start, *str + 1 - start));
+	}
+}
+
 void	ft_lexer(t_info *info, char *str)
 {
-	(void) info;
-	(void) str;
 	while (*str)
 	{
-		printf("Eres gay\n");
 		if (ft_isspace(*str))
 		{
-			fill_in_lex(info, TOKEN_SEP, " ");
-			str++;
+			fill_in_lex(info, TOKEN_SEP, "s");
 			while (ft_isspace(*str))
 				str++;
+			continue ;
 		}
-		if (*str == '"')
-			fill_in_lex(info, TOKEN_EXP_FIELD, "\"");
-		if (*str == '\'')
+		else if (!ft_is_special_char(*str))
+			handle_words(info, &str);
+		else if (*str == '\'')
 			fill_in_lex(info, TOKEN_FIELD, "\'");
-
+		else if (*str == '"')
+			fill_in_lex(info, TOKEN_EXP_FIELD, "\"");
+		else if (*str == '>' || *str == '<')
+			handle_redirections(info, &str);
+		else if (*str == '|')
+			fill_in_lex(info, TOKEN_PIPE, "|");
 		str++;
 	}
-	return ;
 }
