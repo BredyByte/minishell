@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 12:27:11 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:44:01 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_lexer(t_info *info, char *str)
 			fill_in_lex(info, TOKEN_EXP_FIELD, "\"");
 		if (*str == '\'')
 			fill_in_lex(info, TOKEN_FIELD, "\'");
+
 		str++;
 	}
 	return ;
