@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 12:44:01 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:00:28 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_lexer(t_info *info, char *str)
 	(void) str;
 	while (*str)
 	{
+		printf("Eres gay\n");
 		if (ft_isspace(*str))
 		{
 			fill_in_lex(info, TOKEN_SEP, " ");
