@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:29:13 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 18:58:21 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/10 10:23:06 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	ft_lexer(t_info *info, char *str)
 {
 	while (*str)
 	{
-		if (!ft_is_special_char(*str))
+		if (!ft_is_special_char(*str) || (*str == '&' && *(str + 1) != '&'))
 			handle_words(info, &str);
 		else if (ft_isspace(*str))
 		{

@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:40:23 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 18:14:14 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/10 08:59:51 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,5 @@
 # define IF_OR 11 // ||
 # define PARN_L 12 // (
 # define PARN_R 13 // )
-
-
 
 #endif
