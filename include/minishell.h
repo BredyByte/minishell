@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 14:51:28 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:24:26 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,16 @@ char	*ft_readline(void);
 
 // lexer
 
-void	ft_lexer(t_info *info, char *str);
+void	lexer(t_info *info, char *str);
+void	ft_tokenizer(t_info *info, char *str);
 
 // casting
 
 int		get_int_key(t_list *node);
 char	*get_str_key(t_list *node);
+
+// sintax_error_check
+
+int	sintax_error_check(t_info *info);
+
 #endif

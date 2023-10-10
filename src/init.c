@@ -6,31 +6,11 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 11:25:22 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:49:04 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern char	**environ;
-
-/* void	chec_unclosed_quotes(t_info *info, char *str)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == '"')
-			count++;
-		i++;
-	}
-	if (count % 2 == 0)
-		return ;
-	info->exit_f = 1;
-} */
 
 static void	init_envp_lst(t_info *info, char **envp)
 {
@@ -60,7 +40,7 @@ static void	init_envp_lst(t_info *info, char **envp)
 	}
 }
 
-static void	init_envp(t_info *info)
+static void	init_envp(t_info *info, char **environ)
 {
 	int count = 0;
 	char **ptr = environ;
@@ -83,7 +63,7 @@ static void	init_envp(t_info *info)
 	}
 }
 
-static void	data_init(t_info *info)
+static void	data_init(t_info *info, char **envp)
 {
 	info->builtins[0] = &buildin_echo;
 	info->builtins[1] = &buildin_cd;
@@ -99,7 +79,7 @@ static void	data_init(t_info *info)
 	info->reserved_words[4] = ft_strdup("unset");
 	info->reserved_words[5] = ft_strdup("env");
 	info->reserved_words[6] = ft_strdup("exit");
-	init_envp(info);
+	init_envp(info, envp);
 	init_envp_lst(info, info->envp);
 	info->token_lst = NULL;
 	info->envp_f = 0;
@@ -107,7 +87,7 @@ static void	data_init(t_info *info)
 	info->status = 0;
 }
 
-int	main(int arv, char **argv)
+int	main(int arv, char **argv, char **envp)
 {
 	t_info	*info;
 
@@ -118,7 +98,7 @@ int	main(int arv, char **argv)
 		return (1);
 	}
 	info = malloc(sizeof(t_info));
-	data_init(info);
+	data_init(info, envp);
 	minishell_lounch(info);
 	free(info);
 	return (0);

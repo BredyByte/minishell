@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/09 14:59:39 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:24:54 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	minishell_lounch(t_info *info)
 			info->exit_f = 1;
 			continue ;
 		}
-		ft_lexer(info, prompt);
+		lexer(info, prompt);
 		if (!ft_strncmp(prompt, "exit", SIZE_MAX))
 			info->exit_f = 1;
 		if (!ft_strncmp(prompt, "env", SIZE_MAX))
@@ -52,7 +52,9 @@ void	minishell_lounch(t_info *info)
 			printf ("token: %d , value: %s\n", get_int_key(ptr), ptr->value);
 			ptr = ptr->next;
 		}
-	/* 	printf("%s\n", prompt); */
+		printf("resp: %d\n", sintax_error_check(info));
+		info->token_lst = NULL;
+		/* printf("%s\n", prompt); */
 		free(prompt);
 	}
 	clear_history();
