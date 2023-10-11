@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 16:24:26 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:10:32 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,34 +33,29 @@ typedef struct s_info
 	char			**envp;
 	t_list			*envp_lst;
 	/*
-		Односвязанный лист со всеми переменными окружения key = value.
-		Eсли небыло произведено никаких опираций над листом то пересобирать envp не нужно,
-		и так мы экономим ресурмы, как только добавляем новую перемнную,
-		или изменяем стару, то меняем envp_f == 1 и envp пересобирается.
+		A node list with all the environment variables in key:value format.
+		If no operations were performed on the list, there's no need to rebuild envp,
+		thus conserving resources. As soon as a new variable is added,
+		or an old one is modified, we set envp_f to 1 and envp is rebuilt.
 	 */
 	int				envp_f;
-	/*
-		Флаг, в зависимости от которого мы будем пересобирать массив envp или нет
-		execve имеет параметр переменной окруждения,
-		и мы туда ее будем отправлять,
-		если флаг envp_f == 1 то нужно пересобрать envp в противном случае отправляем указатель на массив
-	*/
+	// A flag, based on which we will rebuild the envp array.
 	char			exit_f;
-	// Флаг для выхода из программы;
+	// A flag for exiting the program.
 	int				status;
 	/*
-		для $?. Так как все команды будут исполняться в подпроцессах за иссключением билтинов.
-		Сигналы этих команд обрабатываться будут иным способом, будем смотреть статус выхода процесса
+		"For $?. Since all commands will be executed in subprocesses except for built-ins.
+		Signals of these commands will be processed in a different way; we will look at the process exit status using
 		waitpid(pid, &status, 0);
-		WIFSIGNALED(status) - макросс проверки (true / false) завершился ли процесс сигналом как например сигнал SIGSEGV;
-		WTERMSIG(status) - позволяет узнать сигнал который завершил процесс;
-		WIFEXITED(status) -	возвращает истинное значение, это означает, что дочерний процесс завершился нормально (вызвал  exit()) - можно вызвать WEXITSTATUS чтобы получить код выхода;
-		WEXITSTATUS(status) - макрос возвращает код завершения процесса;
+		WIFSIGNALED(status) - a macro check (true / false) if the process was terminated by a signal, such as SIGSEGV signal;
+		WTERMSIG(status) - allows you to find out the signal that terminated the process;
+		WIFEXITED(status) - a macro check (true / false) if the child process terminated normally (called exit()) - you can call WEXITSTATUS to get the exit code;
+		WEXITSTATUS(status) - the macro returns the process termination code."
 	*/
 	/*
 		int status;
 		waitpid(pid, &status, 0);
-		&status - статус выхода из дочернего процесса который мы ожидаем
+		&status - Exit status of the child process we are waiting for
 		if (WIFEXITED(status)) {
 			int exit_status = WEXITSTATUS(status);
 			printf("Child exited with status %d\n", exit_status);
@@ -74,7 +69,7 @@ typedef struct s_info
 		pid_t child_pid = fork();
 
 		if (child_pid == 0) {
-			execve(команда и аргументы);
+			execve(args...);
 			exit(127);
 		}
 		} else {
@@ -85,10 +80,15 @@ typedef struct s_info
 		}
 	 */
 	t_list			*token_lst;
-	// лексер разбивает все на токены, и кладет их в лист, тього получается односвязанный лист с key = TOKEN_MACROS, value = token_value;
+	/*
+		A list of tokens.
+		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
+	 */
 	// t_lgroup		groups;
-	// в случае cat >file | cat <file && pwd: t_lgroup: t_list *tokens, &&, t_list * tokens
-	// лист для логическиих групп, тоесть группы команд разделенные логическими операторами && || ;
+	/*
+		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
+		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
+	 */
 }					t_info;
 
 // buildins

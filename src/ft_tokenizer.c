@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:49:17 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 13:49:19 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:58:06 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ static void	handle_words(t_info *info, char **str)
 {
 	char	*start;
 
-	if (!ft_is_special_char(**str))
+	if (!ft_is_special_char(**str) || (**str == '&' && *(*str + 1) != '&'))
 	{
 		start = *str;
-		while (*(*str + 1) && !ft_is_special_char(*(*str + 1))
-			&& !ft_isspace(*(*str + 1)))
+		while (*(*str + 1) && (!ft_is_special_char(*(*str + 1)) || (**str == '&'
+					&& *(*str + 1) != '&')) && !ft_isspace(*(*str + 1)))
 			(*str)++;
 		fill_in_lex(info, TOKEN_WORD, ft_strndup(start, *str + 1 - start));
 	}
@@ -68,18 +68,18 @@ static void	handle_logical(t_info *info, char **str)
 {
 	if (**str == '&' && *(*str + 1) == '&')
 	{
-		fill_in_lex(info, IF_AND, "&&");
+		fill_in_lex(info, TOKEN_IF_AND, "&&");
 		(*str)++;
 	}
 	else if (**str == '|' && *(*str + 1) == '|')
 	{
-		fill_in_lex(info, IF_OR, "||");
+		fill_in_lex(info, TOKEN_IF_OR, "||");
 		(*str)++;
 	}
 	else if (**str == '(')
-		fill_in_lex(info, PARN_L, "(");
+		fill_in_lex(info, TOKEN_PARN_L, "(");
 	else if (**str == ')')
-		fill_in_lex(info, PARN_R, ")");
+		fill_in_lex(info, TOKEN_PARN_R, ")");
 	else if (**str == '|')
 		fill_in_lex(info, TOKEN_PIPE, "|");
 }
@@ -91,12 +91,7 @@ void	ft_tokenizer(t_info *info, char *str)
 		if (!ft_is_special_char(*str) || (*str == '&' && *(str + 1) != '&'))
 			handle_words(info, &str);
 		else if (ft_isspace(*str))
-		{
 			fill_in_lex(info, TOKEN_SEP, "s");
-			while (ft_isspace(*str))
-				str++;
-			continue ;
-		}
 		else if (*str == '\'')
 			fill_in_lex(info, TOKEN_FIELD, "\'");
 		else if (*str == '"')

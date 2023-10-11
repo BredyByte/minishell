@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:40:23 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 08:59:51 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/11 13:17:42 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 
 // bonus part
 
-# define IF_AND 10 // &&
-# define IF_OR 11 // ||
-# define PARN_L 12 // (
-# define PARN_R 13 // )
+# define TOKEN_IF_AND 10 // &&
+# define TOKEN_IF_OR 11 // ||
+# define TOKEN_PARN_L 12 // (
+# define TOKEN_PARN_R 13 // )
 
 #endif
