@@ -6,42 +6,13 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 15:33:32 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/11 16:43:03 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:20:39 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* static int	ft_redir_check(t_list *token_lst)
-{
-	t_list	*tmp;
-
-	(void) token_lst;
-	return (1);
-} */
-
-/* static int	ft_redir_check(t_list *token_lst)
-{
-	t_list	*tmp;
-
-	tmp = token_lst;
-	while (tmp != NULL)
-	{
-		if (get_int_key(tmp) == TOKEN_REDIR_OUT)
-		{
-			tmp = tmp->next;
-			while (tmp && get_int_key(tmp) == TOKEN_SEP)
-				tmp = tmp->next;
-			if (get_int_key(tmp) != TOKEN_WORD)
-				return (0);
-		}
-		else
-			tmp = tmp->next;
-	}
-	return (1);
-} */
-
-static int	ft_pipe_end_check(t_list *token_lst)
+/* static int	ft_pipe_end_check(t_list *token_lst)
 {
 	t_list	*tmp;
 
@@ -133,3 +104,4 @@ int	sintax_error_check(t_info *info)
 	return ((ft_qot_paren_check(info->token_lst)
 			&& ft_pipe_check(info->token_lst)));
 }
+ */

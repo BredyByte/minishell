@@ -6,12 +6,11 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 16:24:54 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:19:23 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	minishell_lounch(t_info *info)
 {
@@ -21,10 +20,7 @@ void	minishell_lounch(t_info *info)
 	{
 		prompt = ft_readline();
 		if (!prompt)
-		{
-			info->exit_f = 1;
-			continue ;
-		}
+			break ;
 		lexer(info, prompt);
 		if (!ft_strncmp(prompt, "exit", SIZE_MAX))
 			info->exit_f = 1;
@@ -46,15 +42,13 @@ void	minishell_lounch(t_info *info)
 				ptr = ptr->next;
 			}
 		}
-		t_list *ptr = info->token_lst;
+		t_token *ptr = info->token_lst;
 		while (ptr != NULL)
 		{
-			printf ("token: %d , value: %s\n", get_int_key(ptr), ptr->value);
+			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
-		printf("resp: %d\n", sintax_error_check(info));
 		info->token_lst = NULL;
-		/* printf("%s\n", prompt); */
 		free(prompt);
 	}
 	clear_history();

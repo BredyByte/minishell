@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/11 19:10:32 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:34:36 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_info
 			}
 		}
 	 */
-	t_list			*token_lst;
+	t_token		*token_lst;
 	/*
 		A list of tokens.
 		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
@@ -120,6 +120,6 @@ char	*get_str_key(t_list *node);
 
 // sintax_error_check
 
-int	sintax_error_check(t_info *info);
+/* int	sintax_error_check(t_info *info); */
 
 #endif

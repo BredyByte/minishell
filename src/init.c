@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 15:49:04 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:15:50 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,24 @@ static void	init_envp_lst(t_info *info, char **envp)
 
 static void	init_envp(t_info *info, char **environ)
 {
-	int count = 0;
-	char **ptr = environ;
-	int i = 0;
-	while (*ptr)
-	{
+	int		count;
+	char	**ptr;
+	int		i;
+
+	i = 0;
+	ptr = environ;
+	count = 0;
+	while (*ptr++)
 		count++;
-		ptr++;
-	}
 	info->envp = malloc((count + 1) * sizeof(char *));
 	while (i < count)
 	{
 		info->envp[i] = strdup(environ[i]);
-        if (!info->envp[i])
-        {
-            perror("Failed to copy environment variable");
-            exit(1);
-        }
+		if (!info->envp[i])
+		{
+			perror("Failed to copy environment variable");
+			exit(1);
+		}
 		i++;
 	}
 }

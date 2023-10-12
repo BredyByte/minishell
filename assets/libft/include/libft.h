@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:12:49 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 16:05:20 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:48:10 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ typedef struct s_list
 	void			*value;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_token
+{
+	int				key;
+	char			*value;
+	int				len;
+	struct s_token	*next;
+}					t_token;
 
 void		ft_bzero(void *s, size_t n);
 int			ft_isalnum(int c);
@@ -76,5 +84,12 @@ void		ft_lstadd_back(t_list **lst, t_list *new);
 t_list		*ft_lstlast(t_list *lst);
 char		*ft_strndup(const char *s, size_t n);
 int			ft_is_special_char(char c);
+
+
+// Token func
+
+t_token		*ft_tokennew(int key, char *value);
+void		ft_tokadd_front(t_token **lst, t_token *new);
+void		ft_tokadd_back(t_token **lst, t_token *new);
 
 #endif
