@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/12 12:34:36 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:51:29 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@
 
 typedef struct s_info t_info;
 typedef int			(*t_builtin_ptr)(t_list *, t_info *);
+
+typedef struct s_group
+{
+	t_token				*token;
+	struct s_group		*next;
+}				t_group;
 
 typedef struct s_info
 {
@@ -84,7 +90,7 @@ typedef struct s_info
 		A list of tokens.
 		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
 	 */
-	// t_lgroup		groups;
+	t_group		*group_lst;
 	/*
 		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
 		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
@@ -118,8 +124,10 @@ void	ft_tokenizer(t_info *info, char *str);
 int		get_int_key(t_list *node);
 char	*get_str_key(t_list *node);
 
-// sintax_error_check
+// exapansion
 
-/* int	sintax_error_check(t_info *info); */
+void	expansion(t_info *info);
+
+
 
 #endif

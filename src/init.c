@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/12 15:15:50 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:34:54 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static void	data_init(t_info *info, char **envp)
 	init_envp(info, envp);
 	init_envp_lst(info, info->envp);
 	info->token_lst = NULL;
+	info->group_lst = NULL;
 	info->envp_f = 0;
 	info->exit_f = 0;
 	info->status = 0;

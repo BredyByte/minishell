@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 13:49:17 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/12 15:14:51 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:26:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ static void	handle_quotes(t_info *info, char **str)
 	{
 		if (quote_char == '"')
 			fill_in_lex(info, TOKEN_EXP_FIELD, ft_strndup(start, *str - start));
-		else
+		else if (quote_char == '\'')
 			fill_in_lex(info, TOKEN_FIELD, ft_strndup(start, *str - start));
-		(*str)++;
 	}
 	else
 	{
