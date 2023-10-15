@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/15 12:59:12 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/15 22:30:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,17 @@ void	minishell_lounch(t_info *info)
 				ptr = ptr->next;
 			}
 		} */
-		expansion(info);
 		t_token *ptr = info->token_lst;
 		while (ptr != NULL)
 		{
-			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
+			printf ("BEFORE: stoken: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
+			ptr = ptr->next;
+		}
+		expansion(info);
+		ptr = info->token_lst;
+		while (ptr != NULL)
+		{
+			printf ("AFTER: token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
 		

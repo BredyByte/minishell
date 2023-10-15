@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:45:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/15 15:18:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/15 23:04:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,51 +36,53 @@ static char *get_envp_value(t_info *info, char *str)
 	return (ft_strndup(ptr->value, ft_strlen(ptr->value)));
 }
 
-static char *get_dollar_value(char *str, t_info *info)
+static char *handle_dollar_expansion(char **ptmp, t_info *info)
 {
-	char *tmp = str;
-	while (*(++tmp))
-	{
-		if (*tmp == '?')
-			return (ft_itoa(info->status));
-		if (ft_isalpha(*tmp) || *tmp == '_')
-			return (get_envp_value(info, tmp));
-	}
-	return (NULL);
+    char *res = NULL;
+    char *key = NULL;
+    char *tmp = *ptmp;
+
+    tmp++;
+    if (*tmp == '?') 
+    {
+        res = ft_itoa(info->status);
+        tmp++;
+    }
+    else if (ft_isalpha(*tmp) || *tmp == '_') 
+    {
+        key = get_envp_key(info, tmp);
+        res = get_envp_value(info, key);
+        tmp += ft_strlen(key);
+        free(key);
+    }
+
+    *ptmp = tmp;
+    return (res);
 }
+
 
 static int pre_opening_get_new_len(char *str, t_info *info)
 {
-	char *tmp = str;
-	char *res = NULL;
-	int len = 0;
-	while (*tmp)
-	{
-		if (*tmp == '$' && *(tmp + 1) != ' ' &&  *(tmp + 1) != '$' && *(tmp + 1) != '\0')
-		{
-			res = get_dollar_value(tmp, info);
-			printf ("*res: %s\n", res);
-			len += ft_strlen(res);
-			free(res);
-			printf ("*tmp before: %c\n", *tmp);
-			while (*tmp && (ft_isalpha(*tmp) || *tmp == '_' || ft_isdigit(*tmp)))
-    			tmp++;
-			printf ("*tmp after: %c\n", *tmp);
-		}
-		else
-		{
-			len++;
-			printf ("*tmp: %c\n", *tmp);
-			tmp++;
-		}
-	}
-	return (len);
+    char *tmp = str;
+    int len = 0;
+
+    while (*tmp)
+    {
+        if (*tmp == '$' && *(tmp + 1) != ' ' &&  *(tmp + 1) != '$' && *(tmp + 1) != '\0')
+            len += ft_strlen(handle_dollar_expansion(&tmp, info));
+        else
+        {
+            len++;
+            tmp++;
+        }
+    }
+    return len;
 }
 
-/* static char *append_to_buffer(char *buf, const char *append, int *current_len)
+static char *append_to_buffer(char *buf, const char *append, int *current_len)
 {
     int len = ft_strlen(append);
-    memcpy(buf + (*current_len), append, len);
+    ft_memcpy(buf + (*current_len), append, len);
     (*current_len) += len;
     return buf;
 }
@@ -89,26 +91,23 @@ static char *change_dollar_value(t_token *token, t_info *info)
 {
     char *new_str = (char *)malloc(token->len + 1);
     char *tmp = token->value;
-    char *res;
+    char *res = NULL;
     int current_len = 0;
 
     if (!new_str)
         return NULL;
-
-    new_str[token->len] = '\0'; // Предварительно устанавливаем последний символ в '\0'
-
+    new_str[token->len] = '\0';
     while (*tmp)
     {
         if (*tmp == '$' && *(tmp + 1) != ' ' &&  *(tmp + 1) != '$' && *(tmp + 1) != '\0')
         {
-            res = get_dollar_value(tmp, info);
+			res = handle_dollar_expansion(&tmp, info);
+			printf ("res: %s\n", res);
             if (res)
             {
                 append_to_buffer(new_str, res, &current_len);
                 free(res);
             }
-            while (*tmp && *tmp != ' ')
-                tmp++;
         }
         else
         {
@@ -117,14 +116,14 @@ static char *change_dollar_value(t_token *token, t_info *info)
             tmp++;
         }
     }
-    free(token->value); // Освобождаем память старого значения
-    return (new_str); // Обновляем указатель на новое значение
-} */
+    free(token->value);
+	return (new_str);
+}
 
 void opening_dollar(t_token *token, t_info *info)
 {
 	token->len = pre_opening_get_new_len(token->value, info);
-/* 	token->value = change_dollar_value(token, info); */
+	token->value = change_dollar_value(token, info);
 }
 
 void	expansion(t_info *info)
