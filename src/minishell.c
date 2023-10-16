@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/15 22:30:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/16 10:13:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,22 @@ void	minishell_lounch(t_info *info)
 				ptr = ptr->next;
 			}
 		} */
+		printf ("----------------------------------------------BEFORE------------------------------------------\n");
 		t_token *ptr = info->token_lst;
 		while (ptr != NULL)
 		{
-			printf ("BEFORE: stoken: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
+			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
 		expansion(info);
+		printf ("----------------------------------------------AFTER-------------------------------------------\n");
 		ptr = info->token_lst;
 		while (ptr != NULL)
 		{
-			printf ("AFTER: token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
+			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
-		
+
 		info->token_lst = NULL;
 		free(prompt);
 	}
