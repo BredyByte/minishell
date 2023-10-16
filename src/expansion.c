@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 16:45:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/16 11:12:20 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:21:11 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static char	*get_envp_key(char *str)
 
 	i = 0;
 	ptr = str;
+	if (ft_isdigit(*ptr))
+		return (ft_strndup(ptr, 1));
 	while (ptr[i] != ' ' && ptr[i] && ptr[i] != '$')
 			i++;
 	return (ft_strndup(ptr, i));
@@ -37,6 +39,8 @@ static char	*get_envp_value(t_info *info, char *str)
 			break ;
 		ptr = ptr->next;
 	}
+	if (!ptr)
+		return (NULL);
 	free(key);
 	return (ft_strndup(ptr->value, ft_strlen(ptr->value)));
 }
@@ -56,15 +60,22 @@ static char	*handle_dollar_expansion(char **ptmp, t_info *info)
 		res = ft_itoa(info->status);
 		tmp++;
 	}
-	else if (ft_isalpha(*tmp) || *tmp == '_')
+	else if (ft_isalpha(*tmp) || *tmp == '_' || ft_isdigit(*tmp))
 	{
 		key = get_envp_key(tmp);
 		res = get_envp_value(info, key);
+		if (!res)
+			res = ft_strdup("");
 		tmp += ft_strlen(key);
 		free(key);
 	}
 	*ptmp = tmp;
 	return (res);
+}
+
+static int	ft_ishandledchar(char c)
+{
+	return (ft_isalpha(c) || c == '?' || ft_isdigit(c) || c == '_');
 }
 
 static int	pre_opening_get_new_len(char *str, t_info *info)
@@ -79,7 +90,8 @@ static int	pre_opening_get_new_len(char *str, t_info *info)
 	while (*tmp)
 	{
 		if (*tmp == '$' && *(tmp + 1) != ' '
-			&& *(tmp + 1) != '$' && *(tmp + 1) != '\0')
+			&& *(tmp + 1) != '$' && *(tmp + 1) != '\0'
+			&& ft_ishandledchar(*(tmp + 1)))
 		{
 			res = handle_dollar_expansion(&tmp, info);
 			len += ft_strlen(res);
@@ -117,7 +129,8 @@ static char	*process_string_value(t_token *token,
 	while (*tmp)
 	{
 		if (*tmp == '$' && *(tmp + 1) != ' '
-			&& *(tmp + 1) != '$' && *(tmp + 1) != '\0')
+			&& *(tmp + 1) != '$' && *(tmp + 1) != '\0'
+			&& ft_ishandledchar(*(tmp + 1)))
 		{
 			res = handle_dollar_expansion(&tmp, info);
 			if (res)
