@@ -13,8 +13,8 @@ LIBFT_PATH = assets/libft
 HEADERS	= -I ./include
 LIBS = $(LIBFT_PATH)/libft.a
 
-SRC = $(wildcard $(SRC_PATH)/*.c)
-OBJ = $(SRC:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
+SRC = $(wildcard $(SRC_PATH)/*.c) $(wildcard $(SRC_PATH)/parser/*.c)
+OBJ = $(patsubst $(SRC_PATH)/%.c,$(OBJ_PATH)/%.o,$(SRC))
 
 ORANGE = \033[1;38;5;208m
 RESET = \033[0m
@@ -28,7 +28,7 @@ $(NAME): $(OBJ)
 	@echo "\n$(ORANGE)$(U_LINE)⭐️ $(NAME): Compiled ⭐️$(RESET) \n"
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 	@echo "$(YELLOW)$(NAME) Compiling:$(RESET) $(notdir $<)"
 

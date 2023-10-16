@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/14 23:10:21 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/16 18:23:30 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ typedef struct s_info
 }					t_info;
 
 // buildins
-int	buildin_echo(t_list *list, t_info *info);
-int	buildin_cd(t_list *list, t_info *info);
-int	buildin_pwd(t_list *list, t_info *info);
-int	buildin_export(t_list *list, t_info *info);
-int	buildin_unset(t_list *list, t_info *info);
-int	buildin_env(t_list *list, t_info *info);
-int	buildin_exit(t_list *list, t_info *info);
+int		buildin_echo(t_list *list, t_info *info);
+int		buildin_cd(t_list *list, t_info *info);
+int		buildin_pwd(t_list *list, t_info *info);
+int		buildin_export(t_list *list, t_info *info);
+int		buildin_unset(t_list *list, t_info *info);
+int		buildin_env(t_list *list, t_info *info);
+int		buildin_exit(t_list *list, t_info *info);
 
 // minishell_lounch
 
@@ -128,6 +128,13 @@ char	*get_str_key(t_list *node);
 // exapansion
 
 void	expansion(t_info *info);
+
+// expantion_utils
+
+int		is_valid_dollar_followup(char c);
+void	append_to_buffer(char *buf, const char *append, int *current_len);
+char	*get_envp_value(t_list *list, char *str);
+char	*get_envp_key(char *str);
 
 
 
