@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 12:37:05 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:29:46 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	minishell_lounch(t_info *info)
 		prompt = ft_readline();
 		if (!prompt)
 			break ;
-		lexer(info, prompt);
+		tokenizer(info, prompt);
 		if (!ft_strncmp(prompt, "wq", SIZE_MAX))
 			info->exit_f = 1;
 /* 		if (!ft_strncmp(prompt, "env", SIZE_MAX))
@@ -49,6 +49,7 @@ void	minishell_lounch(t_info *info)
 			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
+		grouping(info);
 		info->token_lst = NULL;
 		free(prompt);
 	}

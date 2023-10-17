@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/16 18:23:30 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:29:50 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,27 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "../assets/libft/include/libft.h"
-# include "tokens.h"
+# include "defines.h"
 
-typedef struct s_info t_info;
-typedef int			(*t_builtin_ptr)(t_list *, t_info *);
+typedef struct s_info	t_info;
+typedef int				(*t_builtin_ptr)(t_list *, t_info *);
+
+typedef struct s_cmd
+{
+	char			**command;
+	int				fd_in;
+	int				fd_out;
+	char			*name_in;
+	char			*name_out;
+	int				*fd_here_doc;
+	int				append_f;
+	struct s_cmd	*next;
+}				t_cmd;
 
 typedef struct s_group
 {
-	t_token				*token;
+	t_cmd				*cmd_lst;
+	int					grout_type;
 	struct s_group		*next;
 }				t_group;
 
@@ -45,8 +58,6 @@ typedef struct s_info
 		thus conserving resources. As soon as a new variable is added,
 		or an old one is modified, we set envp_f to 1 and envp is rebuilt.
 	 */
-	int				envp_f;
-	// A flag, based on which we will rebuild the envp array.
 	char			exit_f;
 	// A flag for exiting the program.
 	int				status;
@@ -86,12 +97,12 @@ typedef struct s_info
 			}
 		}
 	 */
-	t_token		*token_lst;
+	t_token			*token_lst;
 	/*
 		A list of tokens.
 		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
 	 */
-	t_group		*group_lst;
+	t_group			*group_lst;
 	/*
 		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
 		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
@@ -115,10 +126,21 @@ void	minishell_lounch(t_info *info);
 
 char	*ft_readline(void);
 
-// lexer
+// tokenizer_core
 
-void	lexer(t_info *info, char *str);
-void	ft_tokenizer(t_info *info, char *str);
+void	fill_in_lex(t_info *info, int token, char *content);
+void	tokenizer(t_info *info, char *str);
+
+// tenizer_handlers
+
+void	handle_redirections(t_info *info, char **str);
+void	handle_words(t_info *info, char **str);
+void	handle_space(t_info *info, char **str);
+void	handle_logical(t_info *info, char **str);
+void	handle_quotes(t_info *info, char **str);
+
+
+void	tokenizer(t_info *info, char *str);
 
 // casting
 
@@ -136,6 +158,8 @@ void	append_to_buffer(char *buf, const char *append, int *current_len);
 char	*get_envp_value(t_list *list, char *str);
 char	*get_envp_key(char *str);
 
+// grouping
 
+void	grouping(t_info *info);
 
 #endif

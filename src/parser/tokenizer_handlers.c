@@ -1,29 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tokenizer.c                                     :+:      :+:    :+:   */
+/*   tokenizer_handlers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 13:49:17 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/13 17:26:58 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/17 14:24:51 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/17 14:35:51 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	fill_in_lex(t_info *info, int token, char *content)
+void	handle_quotes(t_info *info, char **str)
 {
-	t_token	*current;
+	char	quote_char;
+	char	*start;
 
-	current = ft_tokennew(token, content);
-	if (!info->token_lst)
-		ft_tokadd_front(&info->token_lst, current);
+	quote_char = **str;
+	start = ++(*str);
+	while (**str && **str != quote_char)
+		(*str)++;
+	if (**str == quote_char)
+	{
+		if (quote_char == '"')
+			fill_in_lex(info, TOKEN_EXP_FIELD, ft_strndup(start, *str - start));
+		else if (quote_char == '\'')
+			fill_in_lex(info, TOKEN_FIELD, ft_strndup(start, *str - start));
+	}
 	else
-		ft_tokadd_back(&info->token_lst, current);
+	{
+		printf("Davyd: Error Quotes.\n");
+		exit(1);
+	}
 }
 
-static void	handle_redirections(t_info *info, char **str)
+void	handle_redirections(t_info *info, char **str)
 {
 	if (**str == '>')
 	{
@@ -47,7 +59,7 @@ static void	handle_redirections(t_info *info, char **str)
 	}
 }
 
-static void	handle_words(t_info *info, char **str)
+void	handle_words(t_info *info, char **str)
 {
 	char	*start;
 
@@ -61,7 +73,7 @@ static void	handle_words(t_info *info, char **str)
 	}
 }
 
-static void	handle_space(t_info *info, char **str)
+void	handle_space(t_info *info, char **str)
 {
 	char	*start;
 
@@ -71,7 +83,7 @@ static void	handle_space(t_info *info, char **str)
 	fill_in_lex(info, TOKEN_SEP, ft_strndup(start, *str + 1 - start));
 }
 
-static void	handle_logical(t_info *info, char **str)
+void	handle_logical(t_info *info, char **str)
 {
 	if (**str == '&' && *(*str + 1) == '&')
 	{
@@ -89,45 +101,4 @@ static void	handle_logical(t_info *info, char **str)
 		fill_in_lex(info, TOKEN_PARN_R, ")");
 	else if (**str == '|')
 		fill_in_lex(info, TOKEN_PIPE, "|");
-}
-
-static void	handle_quotes(t_info *info, char **str)
-{
-	char	quote_char;
-	char	*start;
-
-	quote_char = **str;
-	start = ++(*str);
-	while (**str && **str != quote_char)
-		(*str)++;
-	if (**str == quote_char)
-	{
-		if (quote_char == '"')
-			fill_in_lex(info, TOKEN_EXP_FIELD, ft_strndup(start, *str - start));
-		else if (quote_char == '\'')
-			fill_in_lex(info, TOKEN_FIELD, ft_strndup(start, *str - start));
-	}
-	else
-	{
-		printf("Davyd: Error Quotes.\n");
-		exit(1);
-	}
-}
-
-void	ft_tokenizer(t_info *info, char *str)
-{
-	while (*str)
-	{
-		if (!ft_is_special_char(*str) || (*str == '&' && *(str + 1) != '&'))
-			handle_words(info, &str);
-		else if (ft_isspace(*str))
-			handle_space(info, &str);
-		else if (*str == '\'' || *str == '"')
-			handle_quotes(info, &str);
-		else if (*str == '>' || *str == '<')
-			handle_redirections(info, &str);
-		else if (*str == '&' || *str == '|' || *str == '(' || *str == ')')
-			handle_logical(info, &str);
-		str++;
-	}
 }
