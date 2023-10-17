@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/16 10:13:58 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:37:05 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,13 @@ void	minishell_lounch(t_info *info)
 				ptr = ptr->next;
 			}
 		} */
-		printf ("----------------------------------------------BEFORE------------------------------------------\n");
+		expansion(info);
 		t_token *ptr = info->token_lst;
 		while (ptr != NULL)
 		{
 			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
 			ptr = ptr->next;
 		}
-		expansion(info);
-		printf ("----------------------------------------------AFTER-------------------------------------------\n");
-		ptr = info->token_lst;
-		while (ptr != NULL)
-		{
-			printf ("token: %d , value: %s , len: %d\n", ptr->key, ptr->value, ptr->len);
-			ptr = ptr->next;
-		}
-
 		info->token_lst = NULL;
 		free(prompt);
 	}

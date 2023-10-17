@@ -13,7 +13,7 @@ LIBFT_PATH = assets/libft
 HEADERS	= -I ./include
 LIBS = $(LIBFT_PATH)/libft.a
 
-SRC = $(wildcard $(SRC_PATH)/*.c) $(wildcard $(SRC_PATH)/parser/*.c)
+SRC = $(shell find $(SRC_PATH) -name '*.c')
 OBJ = $(patsubst $(SRC_PATH)/%.c,$(OBJ_PATH)/%.o,$(SRC))
 
 ORANGE = \033[1;38;5;208m
