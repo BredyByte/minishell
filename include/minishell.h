@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 15:29:50 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:16:39 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,11 @@ typedef struct s_cmd
 	char			**command;
 	int				fd_in;
 	int				fd_out;
-	char			*name_in;
-	char			*name_out;
-	int				*fd_here_doc;
+	char			*here_doc;
+	int				fd_here_doc;
 	int				append_f;
 	struct s_cmd	*next;
 }				t_cmd;
-
-typedef struct s_group
-{
-	t_cmd				*cmd_lst;
-	int					grout_type;
-	struct s_group		*next;
-}				t_group;
 
 typedef struct s_info
 {
@@ -102,7 +94,7 @@ typedef struct s_info
 		A list of tokens.
 		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
 	 */
-	t_group			*group_lst;
+	t_cmd			*cmd_ptr;
 	/*
 		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
 		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
@@ -136,16 +128,11 @@ void	tokenizer(t_info *info, char *str);
 void	handle_redirections(t_info *info, char **str);
 void	handle_words(t_info *info, char **str);
 void	handle_space(t_info *info, char **str);
-void	handle_logical(t_info *info, char **str);
 void	handle_quotes(t_info *info, char **str);
 
+// tokenizer_core
 
 void	tokenizer(t_info *info, char *str);
-
-// casting
-
-int		get_int_key(t_list *node);
-char	*get_str_key(t_list *node);
 
 // exapansion
 

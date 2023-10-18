@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:24:51 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 14:35:51 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/18 10:54:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,24 +81,4 @@ void	handle_space(t_info *info, char **str)
 	while (ft_isspace(*(*str + 1)))
 		(*str)++;
 	fill_in_lex(info, TOKEN_SEP, ft_strndup(start, *str + 1 - start));
-}
-
-void	handle_logical(t_info *info, char **str)
-{
-	if (**str == '&' && *(*str + 1) == '&')
-	{
-		fill_in_lex(info, TOKEN_IF_AND, "&&");
-		(*str)++;
-	}
-	else if (**str == '|' && *(*str + 1) == '|')
-	{
-		fill_in_lex(info, TOKEN_IF_OR, "||");
-		(*str)++;
-	}
-	else if (**str == '(')
-		fill_in_lex(info, TOKEN_PARN_L, "(");
-	else if (**str == ')')
-		fill_in_lex(info, TOKEN_PARN_R, ")");
-	else if (**str == '|')
-		fill_in_lex(info, TOKEN_PIPE, "|");
 }

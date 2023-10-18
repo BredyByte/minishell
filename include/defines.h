@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:40:23 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 13:09:02 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:27:08 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,5 @@
 # define TOKEN_REDIR_APPEND 7 // >>
 # define TOKEN_REDIR_INSOURCE 8 // heredoc <<
 # define TOKEN_PIPE 9 // |
-
-// bonus part
-
-# define TOKEN_IF_AND 10 // &&
-# define TOKEN_IF_OR 11 // ||
-# define TOKEN_PARN_L 12 // (
-# define TOKEN_PARN_R 13 // )
-
-// group types
-
-# define NULL_GROUP 1 //
-# define OR_GROUP 2 // ||
-# define AND_GROUP 3 // &&
 
 #endif
