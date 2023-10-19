@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/18 19:16:39 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:40:19 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_cmd
 	int				fd_in;
 	int				fd_out;
 	char			*here_doc;
-	int				fd_here_doc;
 	int				append_f;
 	struct s_cmd	*next;
 }				t_cmd;
@@ -144,6 +143,10 @@ int		is_valid_dollar_followup(char c);
 void	append_to_buffer(char *buf, const char *append, int *current_len);
 char	*get_envp_value(t_list *list, char *str);
 char	*get_envp_key(char *str);
+
+// delete_sep_token
+
+void	delete_token_sep(t_info *info);
 
 // grouping
 
