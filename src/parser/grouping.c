@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grouping.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/19 15:12:12 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/19 23:26:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,9 +196,9 @@ static int	handle_redir_errors(int err_num, t_token *token, int *r_index)
 	char	*str;
 
 	if (token->next && token->next->value)
-		str = strndup(token->next->value, SIZE_MAX);
+		str = strndup(token->next->value, token->next->len);
 	else
-		str = strndup("newline", SIZE_MAX);
+		str = strndup("newline", 7);
 	if (err_num == 1)
 	{
 		printf ("syntax error near unexpected token `%s'\n", str);
@@ -215,6 +215,42 @@ static int	handle_redir_errors(int err_num, t_token *token, int *r_index)
 	return (*r_index);
 }
 
+static void cmd_free(t_cmd **cmd)
+{
+	t_cmd *ptr;
+	t_cmd *tmp;
+	int i;
+
+	ptr = *cmd;
+	i = 0;
+	tmp = NULL;
+	while (ptr)
+	{
+		tmp = ptr->next;
+		while (ptr->command[i])
+			free(ptr->command[i++]);
+		if (ptr->fd_in != 0 && ptr->fd_in != 1)
+			close(ptr->fd_in);
+		if (ptr->fd_out != 0 && ptr->fd_out != 1)
+			close(ptr->fd_out);
+		free(ptr->command);
+		free(ptr->here_doc);
+		free(ptr);
+		ptr = tmp;
+	}
+	*cmd = NULL;
+}
+
+static int check_first_pipe(t_token **fist)
+{
+	t_token *ptr;
+
+	ptr = *fist;
+	if (ptr->key == TOKEN_PIPE)
+		return (1);
+	return (0);
+}
+
 void	grouping(t_info *info)
 {
 	t_cmd	*new;
@@ -225,6 +261,7 @@ void	grouping(t_info *info)
 	fd_in = 0;
 	token = info->token_lst;
 	r_index = 1;
+	check_first_pipe(&token);
 	while (token)
 	{
 		if (!r_index)
@@ -253,6 +290,10 @@ void	grouping(t_info *info)
 		Errors:
 		1 - <hello cat - does`t save cat
 		2 - close fd in case of >a>b>c
+		Done:
+		- pipe first token case;
+		- check if token->next and is word;
+		- free cmd;
 	 */
 	t_cmd *ptr = info->cmd_ptr;
 	while (ptr)
@@ -274,4 +315,5 @@ void	grouping(t_info *info)
 		printf ("fd_out: %d\n", ptr->fd_out);
 		ptr = ptr->next;
 	}
+	cmd_free(&info->cmd_ptr);
 }
