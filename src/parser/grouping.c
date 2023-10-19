@@ -141,8 +141,13 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	if (token->key == TOKEN_PIPE)
 	{
-		new_node->fd_out = fd[1];
-		*fd_in = fd[0];
+		if (token->next && token->next->key == TOKEN_WORD)
+		{
+		    new_node->fd_out = fd[1];
+		    *fd_in = fd[0];
+		}
+		else
+			return (1);
 	}
 	else if (token->key == TOKEN_REDIR_IN)
 	{
@@ -248,7 +253,6 @@ void	grouping(t_info *info)
 		Errors:
 		1 - <hello cat - does`t save cat
 		2 - close fd in case of >a>b>c
-		3 - pipe habdling errors;
 	 */
 	t_cmd *ptr = info->cmd_ptr;
 	while (ptr)
