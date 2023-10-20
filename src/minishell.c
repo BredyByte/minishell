@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/19 22:44:19 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/20 15:25:54 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	minishell_lounch(t_info *info)
 	{
 		prompt = ft_readline();
 		if (!prompt)
-			break ;
+			continue ;
 		tokenizer(info, prompt);
 		if (!ft_strncmp(prompt, "wq", SIZE_MAX))
 			info->exit_f = 1;

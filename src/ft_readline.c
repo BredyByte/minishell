@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 18:05:28 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/10 11:27:21 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:25:12 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_readline(void)
 	char	*str;
 
 	str = readline("minishell-1.0$ ");
-	if (str != NULL)
+	if (str)
 		add_history(str);
 	return (str);
 }

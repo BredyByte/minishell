@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grouping.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/19 23:26:02 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/20 15:26:21 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,78 +141,34 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	if (token->key == TOKEN_PIPE)
 	{
-		if (token->next && token->next->key == TOKEN_WORD)
-		{
-		    new_node->fd_out = fd[1];
-		    *fd_in = fd[0];
-		}
-		else
-			return (1);
+		new_node->fd_out = fd[1];
+		*fd_in = fd[0];
 	}
 	else if (token->key == TOKEN_REDIR_IN)
 	{
-		if (token->next && token->next->key == TOKEN_WORD)
-		{
-			new_node->fd_in = open(token->next->value, O_RDONLY);
-			if (new_node->fd_in == -1)
-				return (2);
-			*token_ptr = token->next;
-		}
-		else
+		new_node->fd_in = open(token->next->value, O_RDONLY);
+		if (new_node->fd_in == -1)
 			return (1);
+		*token_ptr = token->next;
 	}
 	else if (token->key == TOKEN_REDIR_OUT || token->key == TOKEN_REDIR_APPEND)
 	{
-		if (token->next && token->next->key == TOKEN_WORD)
-		{
-			new_node->fd_out = open(token->next->value, O_WRONLY
-					| O_CREAT | O_TRUNC, 0644);
-			if (token->key == TOKEN_REDIR_APPEND)
-				new_node->append_f = 1;
-			else
-				new_node->append_f = 0;
-			if (new_node->fd_out == -1)
-				return (2);
-			*token_ptr = token->next;
-		}
+		new_node->fd_out = open(token->next->value, O_WRONLY
+				| O_CREAT | O_TRUNC, 0644);
+		if (token->key == TOKEN_REDIR_APPEND)
+			new_node->append_f = 1;
 		else
+			new_node->append_f = 0;
+		if (new_node->fd_out == -1)
 			return (1);
+		*token_ptr = token->next;
 	}
 	else if (token->key == TOKEN_REDIR_INSOURCE)
 	{
-		if (token->next->key == TOKEN_WORD)
-		{
-			new_node->here_doc = ft_strdup(token->next->value);
-			new_node->fd_in = 0;
-		}
-		else
-			return (1);
+		new_node->here_doc = ft_strdup(token->next->value);
+		new_node->fd_in = 0;
 	}
 	return (0);
-}
-
-static int	handle_redir_errors(int err_num, t_token *token, int *r_index)
-{
-	char	*str;
-
-	if (token->next && token->next->value)
-		str = strndup(token->next->value, token->next->len);
-	else
-		str = strndup("newline", 7);
-	if (err_num == 1)
-	{
-		printf ("syntax error near unexpected token `%s'\n", str);
-		*r_index = 0;
-	}
-	else if (err_num == 2)
-	{
-		printf ("%s: No such file or directory\n", str);
-		*r_index = 0;
-	}
-	else
-		*r_index = 1;
-	free (str);
-	return (*r_index);
 }
 
 static void cmd_free(t_cmd **cmd)
@@ -241,13 +197,39 @@ static void cmd_free(t_cmd **cmd)
 	*cmd = NULL;
 }
 
-static int check_first_pipe(t_token **fist)
+static	int	check_sintax_unexpected_token(t_token *token)
 {
-	t_token *ptr;
+	t_token	*ptr;
 
-	ptr = *fist;
+	ptr = token;
 	if (ptr->key == TOKEN_PIPE)
-		return (1);
+		return (258);
+	while (ptr)
+	{
+		if ((ptr->key == TOKEN_PIPE
+				|| ptr->key == TOKEN_REDIR_IN
+				|| ptr->key == TOKEN_REDIR_OUT
+				|| ptr->key == TOKEN_REDIR_APPEND
+				|| ptr->key == TOKEN_REDIR_INSOURCE)
+			&& (!ptr->next || (ptr->next && ptr->next->key != TOKEN_WORD)))
+			return (258);
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
+static int	e_index_check(int index)
+{
+	if (index == 258)
+	{
+		printf("minishell: syntax error near unexpected token\n");
+		return (index);
+	}
+	else if (index == 1)
+	{
+		printf("minishell: syntax error no such file or directory\n");
+		return (index);
+	}
 	return (0);
 }
 
@@ -256,46 +238,54 @@ void	grouping(t_info *info)
 	t_cmd	*new;
 	t_token	*token;
 	int		fd_in;
-	int		r_index;
+	int		e_index;
 
 	fd_in = 0;
 	token = info->token_lst;
-	r_index = 1;
-	check_first_pipe(&token);
+	e_index = check_sintax_unexpected_token(token);
+	new = NULL;
 	while (token)
 	{
-		if (!r_index)
+		if (e_index)
 			break ;
-		new = new_cmd();
-		add_back_cmd(&info->cmd_ptr, new);
+		if (!new || (new && new->command[0]))
+		{
+			new = new_cmd();
+			add_back_cmd(&info->cmd_lst, new);
+		}
 		while (token && token->key == TOKEN_WORD)
 		{
-			if (token->key == TOKEN_WORD)
-				new->command = add_to_array(new->command, token->value);
+			new->command = add_to_array(new->command, token->value);
 			if (!token->next
-				&& handle_redir_errors(redir(new, &fd_in, &token), token, &r_index))
+				&& redir(new, &fd_in, &token))
+			{
+				e_index = 1;
 				break ;
+			}
 			token = token->next;
 		}
-		if (token && !handle_redir_errors(redir(new, &fd_in, &token), token, &r_index))
+		if (token && redir(new, &fd_in, &token))
+		{
+			e_index = 1;
 			break ;
-		token = token->next;
+		}
+		else if (token)
+			token = token->next;
 	}
-	/* if (!r_index)
-	{
-		free_cmd(info);
-		return ;
-	} */
+	info->status = e_index_check(e_index);
 	/*
-		Errors:
-		1 - <hello cat - does`t save cat
-		2 - close fd in case of >a>b>c
-		Done:
-		- pipe first token case;
-		- check if token->next and is word;
-		- free cmd;
+		ToDo:
+		1 - Error handling:
+			* - syntax error near unexpected token `some token' - code  258; e_index = 258; - ✅
+			* - unexistfile: No such file or directory - 1 e_index = 1; - ✅
+			* - first pipe error check - 258; e_index = 258; - ✅
+		2 - <hello cat - does`t save cat
+		3 - close fd in case of >a>b>c
+		4 - change status in case of error
+		5 - minishell lounch error !prompt - sigment error
+		6 - free cmd; ✅
 	 */
-	t_cmd *ptr = info->cmd_ptr;
+	t_cmd *ptr = info->cmd_lst;
 	while (ptr)
 	{
 		char **line = ptr->command;
@@ -315,5 +305,5 @@ void	grouping(t_info *info)
 		printf ("fd_out: %d\n", ptr->fd_out);
 		ptr = ptr->next;
 	}
-	cmd_free(&info->cmd_ptr);
+	cmd_free(&info->cmd_lst);
 }
