@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grouping.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:26:21 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:47:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,6 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	t_token	*token;
 
 	token = *token_ptr;
-	if (pipe(fd) == -1)
-		perror("Error: pipe failure");
 	if (*fd_in)
 	{
 		new_node->fd_in = *fd_in;
@@ -141,6 +139,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	if (token->key == TOKEN_PIPE)
 	{
+		if (pipe(fd) == -1)
+			perror("Error: pipe failure");
 		new_node->fd_out = fd[1];
 		*fd_in = fd[0];
 	}
@@ -279,11 +279,12 @@ void	grouping(t_info *info)
 			* - syntax error near unexpected token `some token' - code  258; e_index = 258; - ✅
 			* - unexistfile: No such file or directory - 1 e_index = 1; - ✅
 			* - first pipe error check - 258; e_index = 258; - ✅
-		2 - <hello cat - does`t save cat
-		3 - close fd in case of >a>b>c
-		4 - change status in case of error
-		5 - minishell lounch error !prompt - sigment error
+		2 - <hello cat - does`t save cat in command; - ✅
+		3 - close fd in case of >a>b>c - 
+		4 - change status in case of error - ✅
+		5 - minishell lounch error !prompt - sigment error - ✅
 		6 - free cmd; ✅
+		7 - <hello cat - after free cmd_lst && closing fds, gives a hello fd(past) + 4... - ✅ 
 	 */
 	t_cmd *ptr = info->cmd_lst;
 	while (ptr)

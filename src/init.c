@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:08:40 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:01:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(int arv, char **argv, char **envp)
 	(void)argv;
 	if (arv == 2)
 	{
-		printf("Execute without any arguments, please!!!");
+		printf("Execute without any arguments, please!!!\n");
 		return (1);
 	}
 	info = malloc(sizeof(t_info));
