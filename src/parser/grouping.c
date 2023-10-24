@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/24 10:32:18 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/24 13:07:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ static int	e_index_check(int index)
 	return (0);
 }
 
-void	grouping(t_info *info)
+void	grouping(void)
 {
 	t_cmd	*new;
 	t_token	*token;

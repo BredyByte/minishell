@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_core.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:34:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/18 10:55:02 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:01:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fill_in_lex(t_info *info, int token, char *content)
+void	fill_in_lex(int token, char *content)
 {
 	t_token	*current;
 
@@ -23,20 +23,20 @@ void	fill_in_lex(t_info *info, int token, char *content)
 		ft_tokadd_back(&info->token_lst, current);
 }
 
-void	tokenizer(t_info *info, char *str)
+void	tokenizer(char *str)
 {
 	while (*str)
 	{
 		if (!ft_is_special_char(*str))
-			handle_words(info, &str);
+			handle_words(&str);
 		else if (ft_isspace(*str))
-			handle_space(info, &str);
+			handle_space(&str);
 		else if (*str == '\'' || *str == '"')
-			handle_quotes(info, &str);
+			handle_quotes(&str);
 		else if (*str == '>' || *str == '<')
-			handle_redirections(info, &str);
+			handle_redirections(&str);
 		else if (*str == '|')
-			fill_in_lex(info, TOKEN_PIPE, "|");
+			fill_in_lex(TOKEN_PIPE, "|");
 		str++;
 	}
 }

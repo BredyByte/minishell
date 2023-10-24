@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:03:45 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:08:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ typedef struct s_info
 	 */
 }					t_info;
 
+extern t_info *info;
+
 // buildins
 int		buildin_echo(t_list *list, t_info *info);
 int		buildin_cd(t_list *list, t_info *info);
@@ -111,7 +113,7 @@ int		buildin_exit(t_list *list, t_info *info);
 
 // minishell_lounch
 
-void	minishell_lounch(t_info *info);
+void	minishell_lounch(void);
 
 // ft_readline
 
@@ -119,23 +121,23 @@ char	*ft_readline(void);
 
 // tokenizer_core
 
-void	fill_in_lex(t_info *info, int token, char *content);
-void	tokenizer(t_info *info, char *str);
+void	fill_in_lex(int token, char *content);
+void	tokenizer(char *str);
 
 // tenizer_handlers
 
-void	handle_redirections(t_info *info, char **str);
-void	handle_words(t_info *info, char **str);
-void	handle_space(t_info *info, char **str);
-void	handle_quotes(t_info *info, char **str);
+void	handle_redirections(char **str);
+void	handle_words(char **str);
+void	handle_space(char **str);
+void	handle_quotes(char **str);
 
 // tokenizer_core
 
-void	tokenizer(t_info *info, char *str);
+void	tokenizer(char *str);
 
 // exapansion
 
-void	expansion(t_info *info);
+void	expansion(void);
 
 // expantion_utils
 
@@ -146,10 +148,10 @@ char	*get_envp_key(char *str);
 
 // delete_sep_token
 
-void	delete_token_sep(t_info *info);
+void	delete_token_sep(void);
 
 // grouping
 
-void	grouping(t_info *info);
+void	grouping(void);
 
 #endif

@@ -6,11 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/23 16:01:58 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/24 12:58:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_info *info;
 
 static void	init_envp_lst(t_info *info, char **envp)
 {
@@ -64,7 +66,7 @@ static void	init_envp(t_info *info, char **environ)
 	}
 }
 
-static void	data_init(t_info *info, char **envp)
+static void	data_init(char **envp)
 {
 	info->builtins[0] = &buildin_echo;
 	info->builtins[1] = &buildin_cd;
@@ -90,8 +92,6 @@ static void	data_init(t_info *info, char **envp)
 
 int	main(int arv, char **argv, char **envp)
 {
-	t_info	*info;
-
 	(void)argv;
 	if (arv == 2)
 	{
@@ -99,8 +99,8 @@ int	main(int arv, char **argv, char **envp)
 		return (1);
 	}
 	info = malloc(sizeof(t_info));
-	data_init(info, envp);
-	minishell_lounch(info);
+	data_init(envp);
+	minishell_lounch();
 	free(info);
 	return (0);
 }
