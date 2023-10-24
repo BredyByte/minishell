@@ -6,12 +6,17 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/16 11:59:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:44:01 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief This function tells us if an line from env is empty, so its not printed 
+ * @param string - line to be tested 
+ * @return int - TRUE if empty, FALSE if not 
+ */
 int ft_empty_line(char *string)
 {
     int idx;
@@ -26,30 +31,42 @@ int ft_empty_line(char *string)
     else 
         return (FALSE);
 }
-//It prints empty lines;
-//We have to print IN ORDER
+
+/**
+ * @brief Prints env vars in "declare -x:" format if no params are passed 
+ * 
+ */
+//**************We have to print IN ORDER***************
 void    ft_print_export()
 {
     int idx;
 
     idx = 0;
-    if (my_struct.envp == NULL)
+    if (info->envp == NULL)
     {
-        ft_putendl_fd("Error: Env variable list is empty", 2);
+        ft_putendl_fd("Ruben from print_export: Error: Env variable list is empty", 2);
         return ;
     }
-    while (my_struct.envp[idx])
+    while (info->envp[idx] != NULL)
     {
-        if (ft_empty_line(my_struct.envp[idx]) == TRUE)
+        if (ft_empty_line(info->envp[idx]) == TRUE)
             idx++;
         else
         {
-            ft_printf("declare -x %s\n", my_struct.envp[idx]);
+            printf("declare -x %s\n", info->envp[idx]);
             idx++;
         }
+
     }
 }
 
+/**
+ * @brief It tells us if a variable as been double assigned (VAR=SMTH=SMTH)
+ * so we dont save it
+ * 
+ * @param str 
+ * @return int 
+ */
 int     ft_double_assign(char *str)
 {
     int idx;
@@ -69,72 +86,76 @@ int     ft_double_assign(char *str)
 }
 
 //Mbe change it so it just modifies global env
-char    **ft_modify_variable(char *tuple, char **envp)
+void    ft_modify_variable(char *tuple)
 {
     int idx;
 
     idx = 0;
-    while (envp[idx])
+    while (info->envp[idx])
     {
-        if (ft_contains(tuple, envp[idx]) == TRUE)
+        if (ft_contains(tuple, info->envp[idx]) == TRUE)
         {
-            free(envp[idx]);
-            envp[idx] = ft_substr(tuple, 0, ft_strlen(tuple));
-            return (envp);
+            free(info->envp[idx]);
+            info->envp[idx] = ft_substr(tuple, 0, ft_strlen(tuple));
+            return ;
         }
         idx++;
     }
-    return (envp);    
+    return ;    
 }
 
+/**
+ * @brief 
+ * 
+ * @param tuple 
+ */
 void    ft_add_to_matrix(char *tuple)
 {   
     char    **new_envp;
     int     idx;
 
-    new_envp = malloc((ft_matrix_size(my_struct.envp) + 1) * sizeof(char *));
+    new_envp = malloc((ft_matrix_size(info->envp) + 1) * sizeof(char *));
     idx = 0;
-    while (my_struct.envp[idx])
+    while (info->envp[idx])
     {
-        new_envp[idx] = ft_substr(my_struct.envp[idx], 0, ft_strlen(my_struct.envp[idx]));
+        new_envp[idx] = ft_substr(info->envp[idx], 0, ft_strlen(info->envp[idx]));
         idx++;
     }
     new_envp[idx] = ft_substr(tuple, 0, ft_strlen(tuple));
     new_envp[++idx] = NULL;
-    //ft_free_matrix(my_struct.envp);
-    my_struct.envp = ft_copy_matrix(new_envp); // Somehow I cannot free new_envp, it gives "pointer freed was not allocated error"
+    info->envp = ft_copy_matrix(new_envp);
 }
 
-void    ft_export(char *tuple)
+int ft_export(char *tuple)
 {
     if (!tuple)
     {
         ft_print_export();
-        return ;
+        return (EXIT_SUCCESS);
     }
     if (ft_double_assign(tuple) == TRUE)
-        return ;
-    if (ft_env_exists(tuple, my_struct.envp) == TRUE)
-        my_struct.envp = ft_copy_matrix(ft_modify_variable(tuple, my_struct.envp));
+        return (EXIT_SUCCESS);
+    if (ft_env_exists(tuple, info->envp) == TRUE)
+    {
+        ft_modify_variable(tuple);
+        info->envp = ft_copy_matrix(info->envp);
+    }
     else
+    {
+        //ft_free_matrix(info->envp);
         ft_add_to_matrix(tuple);
-    return ;
+    }
+    
+    return (EXIT_SUCCESS);
 }
 
-int    export(t_list *node)
+int    export(char **cmd)
 {
-    int ret_val;
-
-    ret_val = 0;
-    if (ft_strncmp(node->key, "export", 6) == 0)
-    {
-        ft_export(node->value);
-        return (ret_val);
-    }
+    if (ft_strncmp(cmd[0], "export", 6) == 0)
+        if (!cmd[1])
+            return (ft_export(NULL));
+        else
+            return (ft_export(cmd[1]));
     else
-    {
-        ft_putendl_fd("Ruben: from ft_export: this is not an export!", 2);
-        ret_val = 1;
-        return (ret_val);
-    }
+        return (ft_print_error("Ruben: from ft_export: this is not an export!"));
 }

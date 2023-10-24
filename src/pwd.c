@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:21:49 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/14 20:48:25 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:52:23 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ int ft_pwd(void)
     }
 }
 
-int    pwd(t_list *node)
+int    pwd(char **cmd)
 {
-    if (ft_strncmp(node->key, "pwd", 3) == 0)
-    {
+    if (ft_strncmp(cmd[0], "pwd", 3) == 0)
         return (ft_pwd());
-    }
     else
     {
         ft_putendl_fd("Ruben: from ft_pwd: this is not a pwd!", 2);

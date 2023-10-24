@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/16 12:09:42 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:43:47 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,31 @@
 //Either we convert the string or we operate with the int
 //If no int with exit call, just put a 0
 
-void    ft_exit(int option)
+int ft_exit(int option)
 {
     //See with Davyd who controls the errors here
     //Theoretically, we have to update a variable of the global struct like
     //We use the modulo 256 because bash does it like that
-        // minishell->ret = option % 256;
+    // minishell->ret = option % 256;
     int value;
 
     value = option % 256;
-    ft_printf("Original value: %i\n", option);
-    ft_printf("Yes, its a %i\n", value);
+    info->status = value;
+    //info->exit_f = 1;     <----- Set it when we want to exit for real
+    printf("Original value: %i\n", option);
+    printf("Value %i saved in status\n", value);
+    return (EXIT_SUCCESS);
 }
 
-int    exit1(t_list *node)
+int    exit1(char **cmd)
 {
-    if (ft_strncmp(node->key, "exit", 4) == 0)
+    if (ft_strncmp(cmd[0], "exit", 4) == 0)
     {
-        ft_exit(ft_atoi(node->value));
-        return (EXIT_SUCCESS);
+        if (!cmd[1])
+            return (ft_exit(0));
+        else 
+            return (ft_exit(ft_atoi(cmd[1])));
     }
     else
-    {
-        ft_putendl_fd("Ruben: from ft_exit: this is not a exit!", 2);
-        return (EXIT_ERROR);
-    }
+        return (ft_print_error("Ruben: from ft_exit: this is not a exit!"));
 }

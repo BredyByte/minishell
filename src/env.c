@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:01:24 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/14 20:44:58 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:42:56 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,36 @@
 //It is just a printf of a char * matrix 
 //Should we leave error check with that message?
 //Should we just print global var? It seems so
-void    ft_env()
+int ft_env()
 {
-    int idx;
+    char    *value;
+    int     idx;
 
+    value = NULL;
     idx = 0;
-    if (my_struct.envp == NULL)
+    if (info->envp == NULL)
     {
         ft_putendl_fd("Ruben: Env variable list is empty", 2);
-        return ;
+        return (EXIT_ERROR);
     }
-    while (my_struct.envp[idx])
+    while (info->envp[idx])
     {
-        if (ft_store_value(my_struct.envp[idx]) != NULL)
-            ft_printf("%s\n", my_struct.envp[idx]);
+        value = ft_store_value(info->envp[idx]);
+        if (value != NULL)
+            printf("%s\n", info->envp[idx]);
         idx++;
+        free(value);
+        value = NULL;
     }
+    if (value)
+        free(value);
+    return (EXIT_SUCCESS);
 }
 
-int    env(t_list *node)
+int    env(char **cmd)
 {
-    if (ft_strncmp(node->key, "env", 3) == 0)
-    {
-        ft_env();
-        return (EXIT_SUCCESS);
-    }
+    if (ft_strncmp(cmd[0], "env", 3) == 0)
+        return (ft_env());
     else
     {
         ft_putendl_fd("Ruben: from env: this is not a env!", 2);

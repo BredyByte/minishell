@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:32:59 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/12 15:15:50 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/24 12:58:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_info *info;
 
 static void	init_envp_lst(t_info *info, char **envp)
 {
@@ -64,7 +66,7 @@ static void	init_envp(t_info *info, char **environ)
 	}
 }
 
-static void	data_init(t_info *info, char **envp)
+static void	data_init(char **envp)
 {
 	info->builtins[0] = &buildin_echo;
 	info->builtins[1] = &buildin_cd;
@@ -83,24 +85,22 @@ static void	data_init(t_info *info, char **envp)
 	init_envp(info, envp);
 	init_envp_lst(info, info->envp);
 	info->token_lst = NULL;
-	info->envp_f = 0;
+	info->cmd_lst = NULL;
 	info->exit_f = 0;
 	info->status = 0;
 }
 
 int	main(int arv, char **argv, char **envp)
 {
-	t_info	*info;
-
 	(void)argv;
 	if (arv == 2)
 	{
-		printf("Execute without any arguments, please!!!");
+		printf("Execute without any arguments, please!!!\n");
 		return (1);
 	}
 	info = malloc(sizeof(t_info));
-	data_init(info, envp);
-	minishell_lounch(info);
+	data_init(envp);
+	minishell_lounch();
 	free(info);
 	return (0);
 }

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/12 12:34:36 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:57:28 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <dirent.h>
+# include <stdint.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -21,10 +22,22 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "../assets/libft/include/libft.h"
-# include "tokens.h"
+# include "defines.h"
+# include <fcntl.h>
+# include <errno.h>
 
-typedef struct s_info t_info;
-typedef int			(*t_builtin_ptr)(t_list *, t_info *);
+typedef struct s_info	t_info;
+typedef int				(*t_builtin_ptr)(t_list *, t_info *);
+
+typedef struct s_cmd
+{
+	char			**command;
+	int				fd_in;
+	int				fd_out;
+	char			*here_doc;
+	int				append_f;
+	struct s_cmd	*next;
+}				t_cmd;
 
 typedef struct s_info
 {
@@ -38,8 +51,6 @@ typedef struct s_info
 		thus conserving resources. As soon as a new variable is added,
 		or an old one is modified, we set envp_f to 1 and envp is rebuilt.
 	 */
-	int				envp_f;
-	// A flag, based on which we will rebuild the envp array.
 	char			exit_f;
 	// A flag for exiting the program.
 	int				status;
@@ -79,47 +90,176 @@ typedef struct s_info
 			}
 		}
 	 */
-	t_token		*token_lst;
+	t_token			*token_lst;
 	/*
 		A list of tokens.
 		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
 	 */
-	// t_lgroup		groups;
+	t_cmd			*cmd_lst;
 	/*
 		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
 		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
 	 */
 }					t_info;
 
+extern t_info *info;
+
 // buildins
-int	buildin_echo(t_list *list, t_info *info);
-int	buildin_cd(t_list *list, t_info *info);
-int	buildin_pwd(t_list *list, t_info *info);
-int	buildin_export(t_list *list, t_info *info);
-int	buildin_unset(t_list *list, t_info *info);
-int	buildin_env(t_list *list, t_info *info);
-int	buildin_exit(t_list *list, t_info *info);
+int		buildin_echo(t_list *list, t_info *info);
+int		buildin_cd(t_list *list, t_info *info);
+int		buildin_pwd(t_list *list, t_info *info);
+int		buildin_export(t_list *list, t_info *info);
+int		buildin_unset(t_list *list, t_info *info);
+int		buildin_env(t_list *list, t_info *info);
+int		buildin_exit(t_list *list, t_info *info);
 
 // minishell_lounch
 
-void	minishell_lounch(t_info *info);
+void	minishell_lounch(void);
 
 // ft_readline
 
 char	*ft_readline(void);
 
-// lexer
+// tokenizer_core
 
-void	lexer(t_info *info, char *str);
-void	ft_tokenizer(t_info *info, char *str);
+void	fill_in_lex(int token, char *content);
+void	tokenizer(char *str);
 
-// casting
+// tenizer_handlers
 
-int		get_int_key(t_list *node);
-char	*get_str_key(t_list *node);
+void	handle_redirections(char **str);
+void	handle_words(char **str);
+void	handle_space(char **str);
+void	handle_quotes(char **str);
 
-// sintax_error_check
+// tokenizer_core
 
-/* int	sintax_error_check(t_info *info); */
+void	tokenizer(char *str);
+
+// exapansion
+
+void	expansion(void);
+
+// expantion_utils
+
+int		is_valid_dollar_followup(char c);
+void	append_to_buffer(char *buf, const char *append, int *current_len);
+char	*get_envp_value(t_list *list, char *str);
+char	*get_envp_key(char *str);
+
+// delete_sep_token
+
+void	delete_token_sep(void);
+
+// grouping
+
+void	grouping(void);
+
+
+
+# define TRUE 1
+# define FALSE 0
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+# define EXIT_SUCCESS 0
+# define EXIT_ERROR -1
+
+# define NO_FD -2
+
+#define PATH_SIZE 4097
+
+# define FORK_ERROR "Unable to fork" 
+# define REDIR_ERROR "Unable to redirect" 
+# define EXEC_ERROR "Unable to execute"
+
+/*Colors*/
+# define RESET "\033[0;m"
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define BLUE "\033[0;34m"
+
+
+
+/****Envp utils*******/
+//For envp manipulation
+void	ft_init_envp(char **envp);
+void    ft_free_matrix(char **str);
+char    **ft_copy_matrix(char **envp);
+int     ft_matrix_size(char **envp);
+char	**ft_malloc_matrix(char **envp);
+//For export
+void	ft_modify_variable(char *tuple);
+void	ft_add_to_matrix(char *tuple);
+//For unset
+void    ft_delete_variable(char *tuple);
+
+/****Tuple utils*******/
+int     ft_var_size(char *tuple);
+int     ft_contains(char *tuple, char *envp_tuple);
+int     ft_env_exists(char *tuple, char **envp);
+char    *ft_get_env_value(char *tuple);
+char    *ft_store_value(char *tuple);
+int     ft_contains(char *tuple, char *envp_tuple);
+
+/*******BUILTIN FUNCTIONS***********/
+
+//Functions for testing
+void 	ft_test_cd();
+void	ft_test_env();
+void 	ft_test_exit();
+void 	ft_test_export();
+void 	ft_test_pwd();
+void 	ft_test_unset();
+void 	ft_test_echo();
+
+
+//Functions 
+int		echo();
+int		ft_echo(char **str);
+
+int    	pwd(char **cmd);
+int     ft_pwd(void);
+
+int		export(char **cmd);
+int		ft_export(char *tuple);
+
+int		unset(char **cmd);
+int		ft_unset(char *tuple);
+
+int		env(char **cmd);
+int	    ft_env(void);
+
+int    	cd(char **cmd);
+int     ft_cd(char **cmd);
+
+// error: conflicting types for 'exit' ---> we will call it "exit1"
+int		exit1(char **cmd);
+int		ft_exit(int option);
+
+int		echo(char **cmd);
+int		ft_echo(char **cmd);
+
+void 	test_builtins();
+
+/****PIPEX*******/
+//Aux functions
+int		ft_print_error(char *error);
+char	*abs_bin_path(char *cmd, char **envp);
+char	**get_paths(char *envp[]);
+t_cmd   *init_cmd_node(int fd_in1, int fd_out1, char **argv);
+t_cmd   *create_list(char *str, int fdin, int fdout);
+int		ft_is_builtin(char *str);
+
+//Atomic functions
+
+int		ft_exec_cmd(t_cmd *node);
+void	ft_pipex(t_cmd *list);
+
+
 
 #endif
