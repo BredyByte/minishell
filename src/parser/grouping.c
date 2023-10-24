@@ -6,67 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/23 16:47:52 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/24 10:32:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* static t_group	*ft_newgroup(t_cmd *cmd, int group_type)
-{
-	t_group	*new_group;
-
-	new_group = malloc(sizeof(t_group));
-	if (!new_group)
-		return (NULL);
-	new_group->cmd = cmd;
-	new_group->grout_type = group_type;
-	new_group->next = NULL;
-	return (new_group);
-}
-
-static void	add_to_end(t_info *info, t_group *new_group)
-{
-	t_group	*last_group;
-
-	last_group = info->group_lst;
-	while (last_group->next)
-		last_group = last_group->next;
-	last_group->next = new_group;
-	new_group->next = NULL;
-}
-
-void	group_init(t_info *info, t_token *token)
-{
-	t_token	*ptr;
-	t_token	*tmp;
-	t_group	*group;
-
-	ptr = token;
-	tmp = info->token_lst;
-	group = ft_newgroup(cmd_lst, group_type);
-	if (!info->envp_lst)
-		group->next = info->group_lst;
-		info->group_lst = group;
-	else
-		add_to_end(info, group);
-} */
-
-/* int	sintaxis_error_handler(t_info *info)
-{
-	t_token	*ptr;
-
-	ptr = info->token_lst;
-	while (ptr)
-	{
-		if (ptr->key == TOKEN_PIPE && ptr->next->key != TOKEN_WORD)
-		{
-			ft_printf("minishell: syntax error near unexpected token `|'\n");
-			return (1);
-		}
-		ptr = ptr->next;
-	}
-} */
 
 static t_cmd	*new_cmd(void)
 {
