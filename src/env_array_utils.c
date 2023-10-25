@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:39:08 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/24 14:43:33 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:22:09 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char    **ft_copy_matrix(char **envp)
  * 
  * @param envp Env matrix from main 
  */
-void	ft_init_envp(char **envp)
+void	ft_init_envp(t_info *info, char **envp)
 {
     int     idx;
 

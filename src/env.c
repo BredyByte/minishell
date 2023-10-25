@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:01:24 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/24 14:42:56 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:53:55 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //It is just a printf of a char * matrix 
 //Should we leave error check with that message?
 //Should we just print global var? It seems so
-int ft_env()
+int ft_env(t_info *info)
 {
     char    *value;
     int     idx;
@@ -41,10 +41,10 @@ int ft_env()
     return (EXIT_SUCCESS);
 }
 
-int    env(char **cmd)
+int    env(t_info *info, char **cmd)
 {
     if (ft_strncmp(cmd[0], "env", 3) == 0)
-        return (ft_env());
+        return (ft_env(info));
     else
     {
         ft_putendl_fd("Ruben: from env: this is not a env!", 2);

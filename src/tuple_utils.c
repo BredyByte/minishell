@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:54:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/24 14:44:38 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:22:42 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int     ft_var_exists(char *variable, char *envp_tuple)
     
 }
 
-char    *ft_get_env_value(char *tuple)
+char    *ft_get_env_value(t_info *info, char *tuple)
 {
     char    *env;
     int     idx;

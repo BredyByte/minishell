@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/24 14:17:06 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:17:23 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ static int	e_index_check(int index)
 	return (0);
 }
 
-void	grouping(void)
+void	grouping(t_info *info)
 {
 	t_cmd	*new;
 	t_token	*token;
@@ -231,8 +231,10 @@ void	grouping(void)
 		7 - <hello cat - after free cmd_lst && closing fds, gives a hello fd(past) + 4... - ✅ 
 	 */
 	t_cmd *ptr = info->cmd_lst;
-	/*while (ptr)
+	t_cmd *list = ptr;
+	while (ptr)
 	{
+		printf("\nDavid:\n");
 		char **line = ptr->command;
 		printf("command: ");
 		while (*line)
@@ -249,7 +251,7 @@ void	grouping(void)
 		printf ("fd_in: %d\n", ptr->fd_in);
 		printf ("fd_out: %d\n", ptr->fd_out);
 		ptr = ptr->next;
-	}*/
-	ft_pipex(ptr);
+	}
+	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);
 }

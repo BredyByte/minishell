@@ -6,13 +6,13 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:23:14 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/24 14:35:31 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:59:15 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    ft_delete_variable(char *tuple)
+void    ft_delete_variable(t_info *info, char *tuple)
 {
     char    **new_envp;
     int     idx;
@@ -36,12 +36,12 @@ void    ft_delete_variable(char *tuple)
     return ;
 }
 
-int ft_unset(char *tuple)
+int ft_unset(t_info *info, char *tuple)
 {
     if (ft_env_exists(tuple, info->envp) == TRUE)
     {
         printf("Ruben: From unset: Ah yes it is there\n");
-        ft_delete_variable(tuple);
+        ft_delete_variable(info, tuple);
         return (EXIT_SUCCESS);
     }
     else
@@ -52,12 +52,12 @@ int ft_unset(char *tuple)
     return (EXIT_SUCCESS);
 }
 
-int    unset(char **cmd)
+int    unset(t_info *info, char **cmd)
 {
     if (ft_strncmp(cmd[0], "unset", 5) == 0)
     {
         if (cmd[1])
-            return(ft_unset(cmd[1]));
+            return(ft_unset(info, cmd[1]));
         else 
             return (ft_print_error("No args here"));
     }

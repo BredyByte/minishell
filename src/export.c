@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/24 14:44:01 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:58:17 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int ft_empty_line(char *string)
  * 
  */
 //**************We have to print IN ORDER***************
-void    ft_print_export()
+void    ft_print_export(t_info *info)
 {
     int idx;
 
@@ -86,7 +86,7 @@ int     ft_double_assign(char *str)
 }
 
 //Mbe change it so it just modifies global env
-void    ft_modify_variable(char *tuple)
+void    ft_modify_variable(t_info *info, char *tuple)
 {
     int idx;
 
@@ -109,7 +109,7 @@ void    ft_modify_variable(char *tuple)
  * 
  * @param tuple 
  */
-void    ft_add_to_matrix(char *tuple)
+void    ft_add_to_matrix(t_info *info, char *tuple)
 {   
     char    **new_envp;
     int     idx;
@@ -126,36 +126,36 @@ void    ft_add_to_matrix(char *tuple)
     info->envp = ft_copy_matrix(new_envp);
 }
 
-int ft_export(char *tuple)
+int ft_export(t_info *info, char *tuple)
 {
     if (!tuple)
     {
-        ft_print_export();
+        ft_print_export(info);
         return (EXIT_SUCCESS);
     }
     if (ft_double_assign(tuple) == TRUE)
         return (EXIT_SUCCESS);
     if (ft_env_exists(tuple, info->envp) == TRUE)
     {
-        ft_modify_variable(tuple);
+        ft_modify_variable(info, tuple);
         info->envp = ft_copy_matrix(info->envp);
     }
     else
     {
         //ft_free_matrix(info->envp);
-        ft_add_to_matrix(tuple);
+        ft_add_to_matrix(info, tuple);
     }
     
     return (EXIT_SUCCESS);
 }
 
-int    export(char **cmd)
+int    export(t_info *info, char **cmd)
 {
     if (ft_strncmp(cmd[0], "export", 6) == 0)
         if (!cmd[1])
-            return (ft_export(NULL));
+            return (ft_export(info, NULL));
         else
-            return (ft_export(cmd[1]));
+            return (ft_export(info, cmd[1]));
     else
         return (ft_print_error("Ruben: from ft_export: this is not an export!"));
 }

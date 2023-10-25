@@ -1,4 +1,0 @@
-echo
-Hola
-Ejecucion nº: 0
-[?2004hminishell-1.0$ ^C[?2004l

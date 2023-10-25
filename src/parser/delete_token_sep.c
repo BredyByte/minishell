@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_token_sep.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:35:54 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/24 13:06:30 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/25 12:14:33 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	del_isspace(t_token **token, t_token *prev, t_token **token_lst)
 		*token_lst = next_token;
 }
 
-void	delete_token_sep(void)
+void	delete_token_sep(t_info *info)
 {
 	t_token	*token;
 	t_token	*prev;

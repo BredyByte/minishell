@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/24 13:57:28 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/25 12:20:26 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ typedef struct s_info
 	 */
 }					t_info;
 
-extern t_info *info;
-
 // buildins
 int		buildin_echo(t_list *list, t_info *info);
 int		buildin_cd(t_list *list, t_info *info);
@@ -115,7 +113,7 @@ int		buildin_exit(t_list *list, t_info *info);
 
 // minishell_lounch
 
-void	minishell_lounch(void);
+void	minishell_lounch(t_info *info);
 
 // ft_readline
 
@@ -123,23 +121,22 @@ char	*ft_readline(void);
 
 // tokenizer_core
 
-void	fill_in_lex(int token, char *content);
-void	tokenizer(char *str);
+void	fill_in_lex(t_info *info, int token, char *content);
 
 // tenizer_handlers
 
-void	handle_redirections(char **str);
-void	handle_words(char **str);
-void	handle_space(char **str);
-void	handle_quotes(char **str);
+void	handle_redirections(t_info *info, char **str);
+void	handle_words(t_info *info, char **str);
+void	handle_space(t_info *info, char **str);
+void	handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
 
-void	tokenizer(char *str);
+void	tokenizer(t_info *info, char *str);
 
 // exapansion
 
-void	expansion(void);
+void	expansion(t_info *info);
 
 // expantion_utils
 
@@ -150,11 +147,11 @@ char	*get_envp_key(char *str);
 
 // delete_sep_token
 
-void	delete_token_sep(void);
+void	delete_token_sep(t_info *info);
 
 // grouping
 
-void	grouping(void);
+void	grouping(t_info *info);
 
 
 
@@ -187,22 +184,22 @@ void	grouping(void);
 
 /****Envp utils*******/
 //For envp manipulation
-void	ft_init_envp(char **envp);
+void	ft_init_envp(t_info *info, char **envp);
 void    ft_free_matrix(char **str);
 char    **ft_copy_matrix(char **envp);
 int     ft_matrix_size(char **envp);
 char	**ft_malloc_matrix(char **envp);
 //For export
-void	ft_modify_variable(char *tuple);
-void	ft_add_to_matrix(char *tuple);
+void	ft_modify_variable(t_info *info, char *tuple);
+void	ft_add_to_matrix(t_info *info, char *tuple);
 //For unset
-void    ft_delete_variable(char *tuple);
+void    ft_delete_variable(t_info *info, char *tuple);
 
 /****Tuple utils*******/
 int     ft_var_size(char *tuple);
 int     ft_contains(char *tuple, char *envp_tuple);
 int     ft_env_exists(char *tuple, char **envp);
-char    *ft_get_env_value(char *tuple);
+char    *ft_get_env_value(t_info *info, char *tuple);
 char    *ft_store_value(char *tuple);
 int     ft_contains(char *tuple, char *envp_tuple);
 
@@ -225,21 +222,22 @@ int		ft_echo(char **str);
 int    	pwd(char **cmd);
 int     ft_pwd(void);
 
-int		export(char **cmd);
-int		ft_export(char *tuple);
+int		export(t_info *info, char **cmd);
+int		ft_export(t_info *info, char *tuple);
+void    ft_print_export(t_info *info);
 
-int		unset(char **cmd);
-int		ft_unset(char *tuple);
+int		unset(t_info *info, char **cmd);
+int		ft_unset(t_info *info, char *tuple);
 
-int		env(char **cmd);
-int	    ft_env(void);
+int		env(t_info *info, char **cmd);
+int	    ft_env(t_info *info);
 
-int    	cd(char **cmd);
-int     ft_cd(char **cmd);
+int    	cd(t_info *info, char **cmd);
+int     ft_cd(t_info *info, char **cmd);
 
 // error: conflicting types for 'exit' ---> we will call it "exit1"
-int		exit1(char **cmd);
-int		ft_exit(int option);
+int		exit1(t_info *info, char **cmd);
+int		ft_exit(t_info *info, int option);
 
 int		echo(char **cmd);
 int		ft_echo(char **cmd);
@@ -257,8 +255,8 @@ int		ft_is_builtin(char *str);
 
 //Atomic functions
 
-int		ft_exec_cmd(t_cmd *node);
-void	ft_pipex(t_cmd *list);
+int		ft_exec_cmd(t_info *info, t_cmd *node);
+void	ft_pipex(t_info *info, t_cmd *list);
 
 
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_core.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/24 13:05:11 by marvin           ###   ########.fr       */
+/*   Updated: 2023/10/25 12:17:04 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*handle_dollar_expansion(char **ptmp)
+static char	*handle_dollar_expansion(t_info *info, char **ptmp)
 {
 	char	*res;
 	char	*key;
@@ -40,7 +40,7 @@ static char	*handle_dollar_expansion(char **ptmp)
 	return (res);
 }
 
-static int	get_new_len(char *str)
+static int	get_new_len(t_info *info, char *str)
 {
 	char	*tmp;
 	int		len;
@@ -53,7 +53,7 @@ static int	get_new_len(char *str)
 	{
 		if (*tmp == '$' && is_valid_dollar_followup(*(tmp + 1)))
 		{
-			res = handle_dollar_expansion(&tmp);
+			res = handle_dollar_expansion(info, &tmp);
 			len += ft_strlen(res);
 			free(res);
 		}
@@ -66,7 +66,7 @@ static int	get_new_len(char *str)
 	return (len);
 }
 
-static char	*process_string_value(t_token *token, char *tmp, int *current_len)
+static char	*process_string_value(t_info *info, t_token *token, char *tmp, int *current_len)
 {
 	char	*new_str;
 	char	*res;
@@ -79,7 +79,7 @@ static char	*process_string_value(t_token *token, char *tmp, int *current_len)
 	{
 		if (*tmp == '$' && is_valid_dollar_followup(*(tmp + 1)))
 		{
-			res = handle_dollar_expansion(&tmp);
+			res = handle_dollar_expansion(info, &tmp);
 			if (res)
 				append_to_buffer(new_str, res, current_len);
 		}
@@ -93,7 +93,7 @@ static char	*process_string_value(t_token *token, char *tmp, int *current_len)
 	return (new_str);
 }
 
-static char	*get_new_value(t_token *token)
+static char	*get_new_value(t_info *info, t_token *token)
 {
 	char	*new_str;
 	char	*tmp;
@@ -101,12 +101,12 @@ static char	*get_new_value(t_token *token)
 
 	current_len = 0;
 	tmp = token->value;
-	new_str = process_string_value(token, tmp, &current_len);
+	new_str = process_string_value(info, token, tmp, &current_len);
 	free(token->value);
 	return (new_str);
 }
 
-void	expansion(void)
+void	expansion(t_info *info)
 {
 	t_token	*tmp;
 
@@ -115,12 +115,12 @@ void	expansion(void)
 	{
 		if (tmp->key == TOKEN_WORD || tmp->key == TOKEN_EXP_FIELD)
 		{
-			tmp->len = get_new_len(tmp->value);
-			tmp->value = get_new_value(tmp);
+			tmp->len = get_new_len(info, tmp->value);
+			tmp->value = get_new_value(info, tmp);
 		}
 		if (tmp->key == TOKEN_EXP_FIELD || tmp->key == TOKEN_FIELD)
 				tmp->key = TOKEN_WORD;
 		tmp = tmp->next;
 	}
-	delete_token_sep();
+	delete_token_sep(info);
 }
