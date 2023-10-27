@@ -3,7 +3,7 @@
 
 
 - Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!?
-
+- Davyd: When we try to append to a file, it replaces everything, it just doesnt append. 
 
 
 
