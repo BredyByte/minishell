@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/25 12:20:26 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:23:38 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ int		ft_is_builtin(char *str);
 //Atomic functions
 
 int		ft_exec_cmd(t_info *info, t_cmd *node);
-void	ft_pipex(t_info *info, t_cmd *list);
+int		ft_pipex(t_info *info, t_cmd *list);
 
 
 

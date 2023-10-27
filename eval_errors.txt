@@ -1,0 +1,18 @@
+- TODO: 
+	* Implement SIGNALS
+
+
+- Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!?
+
+
+
+
+- Ruben: I have to return status code from the execution of commands properly...I have to check it
+- Ruben: There are some commands that trigger double free in my pipex..I have to redefine it so I can 
+	free it properly
+
+
+
+
+- Both: Apparently we need to store the return status from execution in a variable that represents '$?'
+	Check that

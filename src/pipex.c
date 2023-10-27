@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 14:20:08 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:38:42 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	ft_exec_builtin(t_info *info, char **cmd)
 {
-	printf("%s\n", cmd[0]);
+	//printf("%s\n", cmd[0]);
 	if (ft_strncmp("cd", cmd[0], 2) == 0)
 		return (cd(info, cmd));
 	else if (ft_strncmp("echo", cmd[0], 4) == 0)
@@ -38,16 +38,35 @@ static int	ft_exec_builtin(t_info *info, char **cmd)
 int	ft_exec_cmd(t_info *info, t_cmd *node)
 {
 	pid_t	id;
+	int		og_stdout;
+	//int		og_stdin;
+
 	//Remove this 
 	printf("                    cmd     fd_in   fd_out\n");
     printf("Value of the node:  %s      %i      %i     \n", node->command[0], node->fd_in, node->fd_out);
 	
 	if (ft_is_builtin(node->command[0]) == TRUE)
 	{
-		if (node->fd_out != NO_FD)
-			dup2(node->fd_out, STDOUT);
+		og_stdout = dup(STDOUT);
+		if (node->fd_in != NO_FD && node->fd_in != STDIN)
+		{
+			if (dup2(node->fd_in, STDIN) < 0)
+				return (ft_print_error("Ruben: "REDIR_ERROR));
+			close(node->fd_in);
+		}
+		if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+		{
+			if (dup2(node->fd_out, STDOUT) < 0)
+				return (ft_print_error("Ruben: "REDIR_ERROR));
+			close(node->fd_out);
+		}
 		if (ft_exec_builtin(info, node->command) == EXIT_ERROR)
+		{
+			dup2(STDOUT, og_stdout);
 			return (ft_print_error("Ruben: "EXEC_ERROR));
+		}
+		dup2(og_stdout, STDOUT);
+		close(og_stdout);
 		return (EXIT_SUCCESS);
 	}	
 	else
@@ -57,42 +76,46 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 			return (ft_print_error("Ruben: "FORK_ERROR));
 		if (id == 0)
 		{
-			if (node->fd_in != NO_FD)
+			if (node->fd_in != NO_FD && node->fd_in != STDIN)
 			{
 				if (dup2(node->fd_in, STDIN) < 0)
-					return (ft_print_error("Ruben: "REDIR_ERROR));	
-				
+					return (ft_print_error("Ruben: "REDIR_ERROR));
+				close(node->fd_in);
 			}
-			if (node->fd_out != NO_FD)
+			if (node->fd_out != NO_FD && node->fd_out != STDOUT)
 			{
 				if (dup2(node->fd_out, STDOUT) < 0)
 					return (ft_print_error("Ruben: "REDIR_ERROR));
-				
+				close(node->fd_out);
 			}
 			if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),node->command, info->envp) < 0)
 				return (ft_print_error("Ruben: "EXEC_ERROR));
 		}
 		else
 		{
-			waitpid(id, NULL, WNOHANG);
-			close(node->fd_in);
-			close(node->fd_out);
+			waitpid(id, NULL, 0);
+			if (node->fd_in != NO_FD && node->fd_in != STDIN)
+				close(node->fd_in);
+			if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+				close(node->fd_out);
 		}
 		return (EXIT_SUCCESS);
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	ft_pipex(t_info *info, t_cmd *list)
+int	ft_pipex(t_info *info, t_cmd *list)
 {
 	int i = 0;
 	while (list)
 	{
-		printf("\nRuben:\n");
-		ft_exec_cmd(info, list);
-		printf("Ejecucion nº: %i\n", i);
+		printf("\nNode from Ruben:\n");
+		if (ft_exec_cmd(info, list) == EXIT_ERROR)
+			return (EXIT_ERROR);				//Maybe I have to free everything here
 		list = list->next;
 		i++;
 		printf("\n");
 	}
 	printf("\n");
+	return (EXIT_SUCCESS);
 }

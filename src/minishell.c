@@ -6,11 +6,12 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/25 12:26:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:20:38 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void	minishell_lounch(t_info *info)
 {
