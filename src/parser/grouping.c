@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/25 14:17:23 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:41:36 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,22 +234,21 @@ void	grouping(t_info *info)
 	t_cmd *list = ptr;
 	while (ptr)
 	{
-		printf("\nDavid:\n");
+		printf(BLUE"\nDavid:\n\n"RESET);
 		char **line = ptr->command;
-		printf("command: ");
+		printf(BLUE"commands: "RESET);
 		while (*line)
 		{
 			int i = 0;
 			char *str = *line;
 			while (str[i])
 				i++;
-			printf ("%s : ", *line);
-			printf ("len: %d: ", i);
+			printf (BLUE"   %s"RESET, *line);
+			//printf (BLUE"len: %d: "RESET, i);
 			line++;
 		}
 		printf ("\n");
-		printf ("fd_in: %d\n", ptr->fd_in);
-		printf ("fd_out: %d\n", ptr->fd_out);
+		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
 		ptr = ptr->next;
 	}
 	ft_pipex(info, list);

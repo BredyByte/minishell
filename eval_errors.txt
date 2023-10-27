@@ -4,6 +4,11 @@
 
 - Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!?
 - Davyd: When we try to append to a file, it replaces everything, it just doesnt append. 
+- Davyd: echo Hola | cat -e is ok, but
+	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together
+- Davyd: same happens with cat infile | more 
+	depending on the command, sometimes it crashes
+- Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply
 
 
 

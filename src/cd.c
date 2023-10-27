@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:08:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 12:14:07 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:33:11 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int     ft_cd_noarg(t_info *info)
     
     new_dir = ft_get_env_value(info, "HOME");
     if (!new_dir)
-        return (ft_print_error("Ruben from cd_noarg:"));
+        return (ft_print_error("Ruben from cd_noarg: variable HOME doesnt exist"));
     current_dir = ft_get_env_value(info, "PWD");
     status = chdir(new_dir);
     if (status == -1)

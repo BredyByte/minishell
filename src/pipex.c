@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/26 18:38:42 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/27 13:42:18 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	//int		og_stdin;
 
 	//Remove this 
-	printf("                    cmd     fd_in   fd_out\n");
-    printf("Value of the node:  %s      %i      %i     \n", node->command[0], node->fd_in, node->fd_out);
+	printf(GREEN"cmd     fd_in   fd_out\n"RESET);
+    printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
 	
 	if (ft_is_builtin(node->command[0]) == TRUE)
 	{
@@ -109,7 +109,7 @@ int	ft_pipex(t_info *info, t_cmd *list)
 	int i = 0;
 	while (list)
 	{
-		printf("\nNode from Ruben:\n");
+		printf(GREEN"\nNode from Ruben:\n\n"RESET);
 		if (ft_exec_cmd(info, list) == EXIT_ERROR)
 			return (EXIT_ERROR);				//Maybe I have to free everything here
 		list = list->next;
