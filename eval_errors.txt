@@ -1,6 +1,6 @@
 - TODO: 
 	* Implement SIGNALS
-
+	* Implement HERE_DOC
 
 - Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!?
 - Davyd: When we try to append to a file, it replaces everything, it just doesnt append. 
@@ -9,15 +9,13 @@
 - Davyd: same happens with cat infile | more 
 	depending on the command, sometimes it crashes
 - Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply
+- Davyd: when I change directories I update env vars, but then I call them with "echo" and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env.  
 
 
 
 - Ruben: I have to return status code from the execution of commands properly...I have to check it
-- Ruben: There are some commands that trigger double free in my pipex..I have to redefine it so I can 
-	free it properly
+- Ruben: I have to check chained commands when the first one yields error, and see what and when I return it	
+- Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct
 
-
-
-
-- Both: Apparently we need to store the return status from execution in a variable that represents '$?'
-	Check that
+- Both: I need to review with you about info->status. I am not sure if it is to store exit value from subprocesses or exit value from minishell itself. 
+	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt.  
