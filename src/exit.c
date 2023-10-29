@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:03:24 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:11:08 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,18 @@ int ft_exit(t_info *info, int option)
 int    exit1(t_info *info, char **cmd)
 {
     ft_putendl_fd("exit", STDOUT);
-    if (cmd[2])
+    if (cmd[2] != NULL)
         return (ft_print_error("Ruben: from exit: too many arguments\n"));
-    if (ft_isnum(cmd[1]) == FALSE)
-    {
-        ft_exit(info, 255);
-        return (ft_print_error("Ruben: from exit: Not a number "));
-    }
-    if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][5] == '\0')
+
+    if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
     {
         if (!cmd[1])
             return (ft_exit(info, 0));
+        else if (ft_isnum(cmd[1]) == FALSE)
+        {
+            ft_exit(info, 255);
+            return (ft_print_error("Ruben: from exit: Not a number "));
+        }
         else 
             return (ft_exit(info, ft_atoi(cmd[1])));
     }

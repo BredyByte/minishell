@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:54:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:01:14 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:07:00 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ int     ft_contains(char *envp_tuple, char *tuple)
     
     size = ft_var_size(tuple);
     if (ft_strncmp(envp_tuple, tuple, size) == 0 && (envp_tuple[size] == '='))
-    {
-        printf("Yep i found it\n");
         return (TRUE);
-    }
     else
         return (FALSE);
     
