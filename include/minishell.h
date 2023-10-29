@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/26 18:23:38 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:05:55 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,18 +180,16 @@ void	grouping(t_info *info);
 # define YELLOW "\033[0;33m"
 # define BLUE "\033[0;34m"
 
-
-
 /****Envp utils*******/
 //For envp manipulation
-void	ft_init_envp(t_info *info, char **envp);
+int		ft_init_envp(t_info *info, char **envp);
 void    ft_free_matrix(char **str);
 char    **ft_copy_matrix(char **envp);
 int     ft_matrix_size(char **envp);
 char	**ft_malloc_matrix(char **envp);
 //For export
-void	ft_modify_variable(t_info *info, char *tuple);
-void	ft_add_to_matrix(t_info *info, char *tuple);
+void	ft_modify_variable(char **envp, char *tuple);
+char	**ft_add_to_matrix(char **envp, char *tuple);
 //For unset
 void    ft_delete_variable(t_info *info, char *tuple);
 
@@ -199,19 +197,20 @@ void    ft_delete_variable(t_info *info, char *tuple);
 int     ft_var_size(char *tuple);
 int     ft_contains(char *tuple, char *envp_tuple);
 int     ft_env_exists(char *tuple, char **envp);
+int     ft_var_exists(char *variable, char *envp_tuple);
 char    *ft_get_env_value(t_info *info, char *tuple);
 char    *ft_store_value(char *tuple);
-int     ft_contains(char *tuple, char *envp_tuple);
+int     ft_contains(char *envp_tuple, char *tuple);
 
 /*******BUILTIN FUNCTIONS***********/
 
 //Functions for testing
-void 	ft_test_cd();
-void	ft_test_env();
-void 	ft_test_exit();
-void 	ft_test_export();
-void 	ft_test_pwd();
-void 	ft_test_unset();
+void 	ft_test_cd(t_info *info);
+void	ft_test_env(t_info *info);
+void 	ft_test_exit(t_info *info);
+void 	ft_test_export(t_info *info);
+void 	ft_test_pwd(t_info *info);
+void 	ft_test_unset(t_info *info);
 void 	ft_test_echo();
 
 
