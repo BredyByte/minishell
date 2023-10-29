@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 11:58:17 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:02:06 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,17 @@ int     ft_double_assign(char *str)
 }
 
 //Mbe change it so it just modifies global env
-void    ft_modify_variable(t_info *info, char *tuple)
+void    ft_modify_variable(char **envp, char *tuple)
 {
     int idx;
 
     idx = 0;
-    while (info->envp[idx])
+    while (envp[idx])
     {
-        if (ft_contains(tuple, info->envp[idx]) == TRUE)
+        if (ft_contains(tuple, envp[idx]) == TRUE)
         {
-            free(info->envp[idx]);
-            info->envp[idx] = ft_substr(tuple, 0, ft_strlen(tuple));
+            free(envp[idx]);
+            envp[idx] = ft_strdup(tuple);
             return ;
         }
         idx++;
@@ -109,21 +109,22 @@ void    ft_modify_variable(t_info *info, char *tuple)
  * 
  * @param tuple 
  */
-void    ft_add_to_matrix(t_info *info, char *tuple)
+char    **ft_add_to_matrix(char **envp, char *tuple)
 {   
     char    **new_envp;
     int     idx;
 
-    new_envp = malloc((ft_matrix_size(info->envp) + 1) * sizeof(char *));
+    new_envp = malloc((ft_matrix_size(envp) + 2) * sizeof(char *));
     idx = 0;
-    while (info->envp[idx])
+    while (envp[idx])
     {
-        new_envp[idx] = ft_substr(info->envp[idx], 0, ft_strlen(info->envp[idx]));
+        new_envp[idx] = ft_strdup(envp[idx]);
         idx++;
     }
-    new_envp[idx] = ft_substr(tuple, 0, ft_strlen(tuple));
+    new_envp[idx] = ft_strdup(tuple);
     new_envp[++idx] = NULL;
-    info->envp = ft_copy_matrix(new_envp);
+    ft_free_matrix(envp);
+    return (new_envp);
 }
 
 int ft_export(t_info *info, char *tuple)
@@ -136,22 +137,16 @@ int ft_export(t_info *info, char *tuple)
     if (ft_double_assign(tuple) == TRUE)
         return (EXIT_SUCCESS);
     if (ft_env_exists(tuple, info->envp) == TRUE)
-    {
-        ft_modify_variable(info, tuple);
-        info->envp = ft_copy_matrix(info->envp);
-    }
+        ft_modify_variable(info->envp, tuple);
     else
-    {
-        //ft_free_matrix(info->envp);
-        ft_add_to_matrix(info, tuple);
-    }
+        info->envp = ft_add_to_matrix(info->envp, tuple);
     
     return (EXIT_SUCCESS);
 }
 
 int    export(t_info *info, char **cmd)
 {
-    if (ft_strncmp(cmd[0], "export", 6) == 0)
+    if (ft_strncmp(cmd[0], "export", 6) == 0 && cmd[0][6] == '\0')
         if (!cmd[1])
             return (ft_export(info, NULL));
         else

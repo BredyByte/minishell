@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 11:54:18 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:03:24 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 //We shall see if we receive a string or a num;
 //Either we convert the string or we operate with the int
 //If no int with exit call, just put a 0
+
+static int  ft_isnum(char *str)
+{
+    size_t  size;
+
+    size = 0;
+    if (!str)
+        return (FALSE);
+    while (str[size] != '\0')
+    {
+        if (ft_isdigit(str[size]) == FALSE)
+            return (FALSE);
+        size++;
+    } 
+    return (TRUE);
+}
 
 int ft_exit(t_info *info, int option)
 {
@@ -29,13 +45,20 @@ int ft_exit(t_info *info, int option)
     info->exit_f = 1;
     printf("Original value: %i\n", option);
     printf("Value %i saved in status\n", value);
-    printf("exit\n");
     return (EXIT_SUCCESS);
 }
 
 int    exit1(t_info *info, char **cmd)
 {
-    if (ft_strncmp(cmd[0], "exit", 4) == 0)
+    ft_putendl_fd("exit", STDOUT);
+    if (cmd[2])
+        return (ft_print_error("Ruben: from exit: too many arguments\n"));
+    if (ft_isnum(cmd[1]) == FALSE)
+    {
+        ft_exit(info, 255);
+        return (ft_print_error("Ruben: from exit: Not a number "));
+    }
+    if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][5] == '\0')
     {
         if (!cmd[1])
             return (ft_exit(info, 0));

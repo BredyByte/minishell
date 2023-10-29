@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/27 13:42:18 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:13:18 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	ft_pipex(t_info *info, t_cmd *list)
 	{
 		printf(GREEN"\nNode from Ruben:\n\n"RESET);
 		if (ft_exec_cmd(info, list) == EXIT_ERROR)
-			return (EXIT_ERROR);				//Maybe I have to free everything here
+			return (EXIT_ERROR);
 		list = list->next;
 		i++;
 		printf("\n");

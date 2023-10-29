@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:08:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/27 13:33:11 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:02:57 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ int     ft_cd_noarg(t_info *info)
     
     new_dir = ft_get_env_value(info, "HOME");
     if (!new_dir)
-        return (ft_print_error("Ruben from cd_noarg: variable HOME doesnt exist"));
+        return (ft_print_error("Ruben from cd_noarg:"));
     current_dir = ft_get_env_value(info, "PWD");
     status = chdir(new_dir);
     if (status == -1)
     {
         perror("Ruben: Can't change to home dir\n");
+        free(current_dir);
+        free(new_dir);
         return (EXIT_ERROR);
     }
     old_dir = ft_strdup(current_dir);
@@ -75,6 +77,8 @@ int ft_cd_lastdir(t_info *info)
     status = chdir(old_dir);
     if (status == -1)
     {
+        free(current_dir);
+        free(old_dir);
         perror("Ruben: Can't change to last dir\n");
         return (EXIT_ERROR);
     }
@@ -109,6 +113,8 @@ int ft_cd_home(t_info *info)
     status = chdir(new_dir);
     if (status == -1)
     {
+        free(current_dir);
+        free(new_dir);
         perror("Ruben: Can't change to home dir\n");
         return (EXIT_ERROR);
     }
@@ -143,6 +149,8 @@ int ft_cd_home_relat(t_info *info, char *string)
     status = chdir(new_dir);
     if (status == -1)
     {
+        ft_free_dirs(current_dir, home_dir, new_dir);
+        free(tmp);
         perror("Ruben: Can't change to ~/(path)\n");
         return (EXIT_ERROR);
     }
@@ -178,6 +186,7 @@ int ft_cd_parent_dir(t_info *info, char *string)
     status = chdir(string);
     if (status == -1)
     {
+        ft_free_dirs(current_dir, old_dir, NULL);
         perror("Ruben: Can't change to ../(path)\n");
         return (EXIT_ERROR);
     }
@@ -207,6 +216,7 @@ int ft_cd_current_dir(t_info *info, char *string)
     status = chdir(string);
     if (status == -1)
     {
+        ft_free_dirs(current_dir, old_dir, NULL);
         perror("Ruben: Can't change to ./(path)\n");
         return (EXIT_ERROR);
     }
@@ -235,6 +245,7 @@ int ft_cd_abs_path(t_info *info, char *string)
     status = chdir(string);
     if (status == -1)
     {
+        free(current_dir);
         perror("Ruben: Can't change to /(path)\n");
         return (EXIT_ERROR);
     }
@@ -264,6 +275,7 @@ int ft_cd_from_current(t_info *info, char *string)
     status = chdir(string);
     if (status == -1)
     {
+        free(current_dir);
         perror("Ruben: Can't change to (path)\n");
         return (EXIT_ERROR);
     }
@@ -311,7 +323,7 @@ int    ft_cd(t_info *info, char **cmd)
 //It is gonna return int value, 1 bad 0 good
 int    cd(t_info *info, char **cmd)
 {
-    if (ft_strncmp(cmd[0], "cd", 2) == 0)
+    if (ft_strncmp(cmd[0], "cd", 2) == 0 && cmd[0][2] == '\0')
         return (ft_cd(info, cmd));
     else
     {

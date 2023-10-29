@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/27 13:41:36 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/28 11:16:29 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void	grouping(t_info *info)
 			//printf (BLUE"len: %d: "RESET, i);
 			line++;
 		}
-		printf ("\n");
+		printf ("\n	");
 		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
 		ptr = ptr->next;
 	}

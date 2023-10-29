@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:54:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 11:22:42 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:01:14 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,22 @@ int     ft_var_size(char *tuple)
     int idx;
 
     idx = 0;
-    while (tuple[idx] != '=')
+    while (tuple[idx] != '=' && tuple[idx] != '\0')
         idx++;
     return (idx);
 }
 
 //Those 2 are used together
-int     ft_contains(char *tuple, char *envp_tuple)
+int     ft_contains(char *envp_tuple, char *tuple)
 {
     int size;
     
     size = ft_var_size(tuple);
     if (ft_strncmp(envp_tuple, tuple, size) == 0 && (envp_tuple[size] == '='))
+    {
+        printf("Yep i found it\n");
         return (TRUE);
+    }
     else
         return (FALSE);
     
@@ -89,7 +92,7 @@ int    ft_env_exists(char *tuple, char **envp)
     idx = 0;
     while (envp[idx])
     {
-        if (ft_contains(tuple, envp[idx]) == TRUE)
+        if (ft_contains(envp[idx], tuple) == TRUE)
             return (TRUE);
         idx++;
     }

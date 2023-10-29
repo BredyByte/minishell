@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:39:08 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 11:22:09 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:01:34 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void    ft_free_matrix(char **envp)
     idx = 0;
     while (envp[idx])
     {
-        free(envp[idx]);
-        envp[idx] = NULL;
+        if (envp[idx])
+        {
+            free(envp[idx]);
+            envp[idx] = NULL;
+        }
         idx++;
     }
     free(envp);
@@ -60,16 +63,16 @@ char    **ft_copy_matrix(char **envp)
     char    **new_envp;
 
     idx = 0;
-    new_envp = malloc(ft_matrix_size(envp) * sizeof(char *));
+    new_envp = malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
     if (!new_envp)
-        return (envp);
+        return (NULL);
     while (envp[idx])
     {
-        new_envp[idx] = ft_substr(envp[idx], 0, ft_strlen(envp[idx]));
+        new_envp[idx] = ft_strdup(envp[idx]);
         idx++;
     }
     new_envp[idx] = NULL;
-    //ft_free_matrix(envp);
+    ft_free_matrix(envp);
     return (new_envp);
 }
 
@@ -78,16 +81,19 @@ char    **ft_copy_matrix(char **envp)
  * 
  * @param envp Env matrix from main 
  */
-void	ft_init_envp(t_info *info, char **envp)
+int	ft_init_envp(t_info *info, char **envp)
 {
     int     idx;
 
     idx = 0;
-    info->envp = (char **)malloc(ft_matrix_size(envp) * sizeof(char *));
+    info->envp = (char **)malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
+    if (!info)
+        return (EXIT_ERROR);
     while (envp[idx])
     {
-        info->envp[idx] = ft_substr(envp[idx], 0, ft_strlen(envp[idx]));
+        info->envp[idx] = ft_strdup(envp[idx]);
         idx++;
     }
     info->envp[idx] = NULL;
+    return (EXIT_SUCCESS);
 }

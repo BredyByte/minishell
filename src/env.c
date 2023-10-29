@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:01:24 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/25 11:53:55 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:01:52 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int ft_env(t_info *info)
 
 int    env(t_info *info, char **cmd)
 {
-    if (ft_strncmp(cmd[0], "env", 3) == 0)
+    if (ft_strncmp(cmd[0], "env", 3) == 0 && cmd[0][3] == '\0')
         return (ft_env(info));
     else
     {

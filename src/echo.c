@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/23 15:03:07 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:03:11 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int    ft_echo(char **cmd)
 
 int    echo(char **cmd)
 {
-    if (ft_strncmp(cmd[0], "echo", 4) == 0)
+    if (ft_strncmp(cmd[0], "echo", 4) == 0 && cmd[0][4] == '\0')
         return (ft_echo(cmd));
     else
     {
