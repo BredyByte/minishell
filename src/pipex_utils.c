@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 17:55:17 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:43:25 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	ft_is_builtin(char *str)
 	return (FALSE);
 }
 
-/********I still have the frees commented, just in case. Apparently I dont have to free them since "execve" does it*/
 char	*abs_bin_path(char *cmd, char **envp)	
 {
 	int		i;
@@ -52,7 +51,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 	i = 0;
 	slash_cmd = NULL;
 	possible_bin = NULL;
-	if (cmd[0] == '/')
+	if ((cmd[0] == '/') || (cmd[0] == '.' && cmd[1] == '/'))
 	{
 		if (access(cmd, F_OK) == 0)
 		{
@@ -76,16 +75,13 @@ char	*abs_bin_path(char *cmd, char **envp)
 				if (access(possible_bin, X_OK) < 0)
 				{
 					perror("Permission denied\n");
-					//free(possible_bin);
 					return (NULL);
 				}
 				else
 					return (possible_bin);
 			}
-			//free(possible_bin);
 			i++;
 		}
-		//free(slash_cmd);
 	}
 	return (possible_bin);
 }

@@ -13,7 +13,6 @@
 - Davyd: when I change directories I update env vars, but then I call them with "echo" and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env.  
 
 
-- Ruben: I think i still dont check wether a env var exists or not when i call builtin functs, check that
 - Ruben: I have to return status code from the execution of commands properly...I have to check it
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it	
 - Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct
