@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:08:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:02:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:43:02 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ static void ft_free_dirs(char *s1, char *s2, char *s3)
     s3 = NULL;
 }
 
-int     ft_cd_noarg(t_info *info)
+int     ft_cd_home(t_info *info)
 {
     char    *new_dir;
     char    *current_dir;
-    char    *old_dir;
     int     status;
     char    cwd[PATH_SIZE];
+    char    *path;
     
     new_dir = ft_get_env_value(info, "HOME");
     if (!new_dir)
-        return (ft_print_error("Ruben from cd_noarg:"));
+        return (ft_print_error("Ruben from cd_home: Variable HOME not set\n"));
     current_dir = ft_get_env_value(info, "PWD");
     status = chdir(new_dir);
     if (status == -1)
@@ -48,17 +48,19 @@ int     ft_cd_noarg(t_info *info)
         free(new_dir);
         return (EXIT_ERROR);
     }
-    old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    char    *old_path = ft_strjoin("OLDPWD=", old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char    *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Changed to: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, new_dir);
+    path = ft_strjoin("OLDPWD=", current_dir);
+    ft_export(info, path);
+    free(path);
+    
+    free(new_dir);
+    new_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
+    
+    path = ft_strjoin("PWD=", new_dir);
+    ft_export(info, path);
+    free(path);
+    
+    printf("Current: %s\n", new_dir);
+    ft_free_dirs(current_dir, new_dir, NULL);
     return (EXIT_SUCCESS);
 }
 
@@ -66,81 +68,49 @@ int ft_cd_lastdir(t_info *info)
 {
     char    *new_dir;
     char    *current_dir;
-    char    *old_dir;
     int     status;
     char    cwd[PATH_SIZE];
-
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    old_dir = ft_get_env_value(info, "OLDPWD");
-    if (!old_dir)
-        return (ft_print_error("Ruben from cd_lastdir:"));
-    status = chdir(old_dir);
-    if (status == -1)
-    {
-        free(current_dir);
-        free(old_dir);
-        perror("Ruben: Can't change to last dir\n");
-        return (EXIT_ERROR);
-    }
-    new_dir = ft_strdup(old_dir);
-    free(old_dir);
-    old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    char *old_path = ft_strjoin("OLDPWD=", old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    printf("Changed to: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, new_dir);
-    return (EXIT_SUCCESS);
-}
-
-int ft_cd_home(t_info *info)
-{
-    char    *new_dir;
-    char    *current_dir;
-    char    *old_dir;
-    int     status;
-    char    cwd[PATH_SIZE];
+    char    *path;
     
-    current_dir = ft_get_env_value(info, "PWD");
-    new_dir = ft_get_env_value(info, "HOME");
+    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
+    new_dir = ft_get_env_value(info, "OLDPWD");
     if (!new_dir)
-        return (ft_print_error("Ruben from cd_home:"));
+        return (ft_print_error("Ruben from cd_lastdir:"));
     status = chdir(new_dir);
     if (status == -1)
     {
         free(current_dir);
         free(new_dir);
-        perror("Ruben: Can't change to home dir\n");
+        perror("Ruben: Can't change to last dir\n");
         return (EXIT_ERROR);
     }
-    old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    char *old_path = ft_strjoin("OLDPWD=", old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Changed to: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, new_dir);
+    free(new_dir);
+    new_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
+    
+    path = ft_strjoin("PWD=", new_dir);
+    ft_export(info, path);
+    free(path);
+    
+    path = ft_strjoin("OLDPWD=", current_dir);
+    ft_export(info, path);
+    free(path);
+    
+    printf("Current: %s\n", new_dir);
+    ft_free_dirs(current_dir, new_dir, NULL);
     return (EXIT_SUCCESS);
 }
 
-int ft_cd_home_relat(t_info *info, char *string)
+int ft_cd_home_relat(t_info *info, char *string)    //<---Refactor this one
 {
     char    *new_dir;
     char    *current_dir;
-    char    *old_dir;
     char    *tmp;
     int     status;
     char    cwd[PATH_SIZE];
-    char    *home_dir = ft_get_env_value(info, "HOME");
+    char    *home_dir;
+    char    *path;
+    
+    home_dir = ft_get_env_value(info, "HOME");
     if (!home_dir)
         return (ft_print_error("Ruben from cd_home_relat:"));
     current_dir = ft_get_env_value(info, "PWD");
@@ -153,124 +123,30 @@ int ft_cd_home_relat(t_info *info, char *string)
         free(tmp);
         perror("Ruben: Can't change to ~/(path)\n");
         return (EXIT_ERROR);
-    }
-    old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    current_dir = ft_strdup(new_dir);
+    }    
+    path = ft_strjoin("OLDPWD=",current_dir);
+    ft_export(info, path);
+    free(path);
     
-    char *old_path = ft_strjoin("OLDPWD=",old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
+    path = ft_strjoin("PWD=", new_dir);
+    ft_export(info, path);
+    free(path);
     
     printf("Current: %s\n", getcwd(cwd, PATH_SIZE));
+    ft_free_dirs(current_dir, new_dir, NULL);
     free(tmp);
-    ft_free_dirs(old_dir, current_dir, new_dir);
     free(home_dir);
     return (EXIT_SUCCESS); 
 }
 
-int ft_cd_parent_dir(t_info *info, char *string)
+int ft_cd_other(t_info *info, char *string)
 {
     char    *current_dir;
-    char    *old_dir;
-    int     status;
-    char    cwd[PATH_SIZE];
-    
-    current_dir = ft_get_env_value(info, "PWD");
-    if (current_dir)
-        old_dir = ft_strdup(current_dir); 
-    status = chdir(string);
-    if (status == -1)
-    {
-        ft_free_dirs(current_dir, old_dir, NULL);
-        perror("Ruben: Can't change to ../(path)\n");
-        return (EXIT_ERROR);
-    }
-    free(current_dir);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *old_path = ft_strjoin("OLDPWD=", old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Current dir: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, NULL);
-    return (EXIT_SUCCESS);
-}
-
-int ft_cd_current_dir(t_info *info, char *string)
-{
-    char    *current_dir;
-    char    *old_dir;
-    int     status;
-    char    cwd[PATH_SIZE];
-    
-    current_dir = ft_get_env_value(info, "PWD");
-    if (current_dir)
-        old_dir = ft_strdup(current_dir); 
-    status = chdir(string);
-    if (status == -1)
-    {
-        ft_free_dirs(current_dir, old_dir, NULL);
-        perror("Ruben: Can't change to ./(path)\n");
-        return (EXIT_ERROR);
-    }
-    free(current_dir);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *old_path = ft_strjoin("OLDPWD=", old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Current dir: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, NULL);
-    return (EXIT_SUCCESS);
-}
-
-int ft_cd_abs_path(t_info *info, char *string)
-{
-    char    *current_dir;
-    char    *old_dir;
-    int     status;
-    char    cwd[PATH_SIZE];
-    
-    old_dir = NULL;
-    current_dir = ft_get_env_value(info, "PWD");
-    status = chdir(string);
-    if (status == -1)
-    {
-        free(current_dir);
-        perror("Ruben: Can't change to /(path)\n");
-        return (EXIT_ERROR);
-    }
-    old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *old_path = ft_strjoin("OLDPWD=",old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Current: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, NULL);
-    return (EXIT_SUCCESS);
-}
-
-int ft_cd_from_current(t_info *info, char *string)
-{
-    char    *current_dir;
-    char    *old_dir;
+    char    *new_dir;
     char    cwd[PATH_SIZE];
     int     status;
+    char    *path;
     
-    old_dir = NULL;
     current_dir = ft_get_env_value(info, "PWD");
     status = chdir(string);
     if (status == -1)
@@ -279,25 +155,25 @@ int ft_cd_from_current(t_info *info, char *string)
         perror("Ruben: Can't change to (path)\n");
         return (EXIT_ERROR);
     }
-    if (current_dir)
-        old_dir = ft_strdup(current_dir);
-    free(current_dir);
-    current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
-    char *old_path = ft_strjoin("OLDPWD=",old_dir);
-    ft_export(info, old_path);
-    free(old_path);
-    char *new_path = ft_strjoin("PWD=", current_dir);
-    ft_export(info, new_path);
-    free(new_path);
-    printf("Current: %s\n", current_dir);
-    ft_free_dirs(old_dir, current_dir, NULL);
+    new_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
+    
+    path = ft_strjoin("OLDPWD=",current_dir);
+    ft_export(info, path);
+    free(path);
+    
+    path = ft_strjoin("PWD=", new_dir);
+    ft_export(info, path);
+    free(path);
+    
+    printf("Current: %s\n", new_dir);
+    ft_free_dirs(new_dir, current_dir, NULL);
     return (EXIT_SUCCESS);
 }
 
 int    ft_cd(t_info *info, char **cmd)
 {
     if (cmd[1] == NULL)
-        return (ft_cd_noarg(info));
+        return (ft_cd_home(info));
     else if (ft_strncmp(cmd[1], "-", 1) == 0)
         return (ft_cd_lastdir(info));   
     else if (ft_strncmp(cmd[1], "~", 1) == 0)
@@ -308,15 +184,13 @@ int    ft_cd(t_info *info, char **cmd)
             return (ft_cd_home_relat(info, cmd[1]));
     }
     else if (ft_strncmp(cmd[1], "..", 2) == 0)
-        return (ft_cd_parent_dir(info, cmd[1]));
+        return (ft_cd_other(info, cmd[1]));
     else if (ft_strncmp(cmd[1], ".", 1) == 0)
-        return (ft_cd_current_dir(info, cmd[1]));
+        return (ft_cd_other(info, cmd[1]));
     else if (ft_strncmp(cmd[1], "/", 1) == 0)
-        return (ft_cd_abs_path(info, cmd[1]));
+        return (ft_cd_other(info, cmd[1]));
     else
-        return (ft_cd_from_current(info, cmd[1]));
-    //If it gets to here, maybe there is a possibility we dont contemplate
-    ft_putendl_fd("Ruben cd: what is this path!? I dont understand it :D", 2);
+        return (ft_cd_other(info, cmd[1]));
     return (EXIT_ERROR);
 }
 

@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:02:06 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/30 14:36:11 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,125 @@ int ft_empty_line(char *string)
         return (FALSE);
 }
 
+char    **ft_init_matrix_nil(int size)
+{
+    char    **matrix;
+    int     i;
+
+    matrix = malloc ((size + 1) * sizeof(char *));
+    if (!matrix)
+        return (NULL);
+    i = 0;
+    while (i <= size)
+    {
+        matrix[i] = NULL;
+        i++;
+    }
+    return (matrix);
+}
+
+char    *ft_high_string()
+{
+    char    *string;
+    
+    string = malloc (2 * sizeof(char));
+    if (!string)
+        return (NULL);
+    string[0] = 127;
+    string[1] = '\0';
+    return (string);
+}
+
+int     ft_max_len(char *string1, char *string2)
+{
+    int size1;
+    int size2;
+
+    size1 = ft_strlen(string1);
+    size2 = ft_strlen(string2);
+    if (size1 > size2)
+        return (size1);
+    else 
+        return (size2);
+}
+
+int     ft_not_in_matrix(char *string, char **envp)
+{
+    int idx;
+
+    idx = 0;
+    while (envp[idx])
+    {
+        if (ft_strncmp(envp[idx], string, ft_max_len(envp[idx], string)) == 0)
+            return (FALSE);
+        idx++;
+    }
+    return (TRUE);
+}
+
+char    **ft_order_env(char **envp)
+{
+    char    **new_envp;
+    char    *tmp;
+    int     size;
+    int     idx;
+    int     idx2;
+    
+    size = ft_matrix_size(envp);
+    new_envp = ft_init_matrix_nil(size);
+    if (!envp)
+        return (NULL);
+    idx = 0;
+    idx2 = 0;
+    
+    while (idx < size)
+    {
+        tmp = ft_high_string();
+        idx2 = 0;
+        while (envp[idx2])
+        {
+            if (ft_strncmp(tmp, envp[idx2], ft_max_len(tmp, envp[idx2])) > 0 
+                && ft_not_in_matrix(envp[idx2], new_envp) == TRUE)
+            {
+                free (tmp);
+                tmp = ft_strdup(envp[idx2]);
+            }
+            idx2++;
+        }
+        new_envp[idx] = ft_strdup(tmp);
+        free(tmp);
+        idx++;
+    }
+    new_envp[idx] = NULL;
+    return (new_envp);
+}
+
 /**
  * @brief Prints env vars in "declare -x:" format if no params are passed 
  * 
  */
-//**************We have to print IN ORDER***************
 void    ft_print_export(t_info *info)
 {
-    int idx;
-
+    int     idx;
+    char    **ordered_list;
     idx = 0;
     if (info->envp == NULL)
     {
         ft_putendl_fd("Ruben from print_export: Error: Env variable list is empty", 2);
         return ;
     }
-    while (info->envp[idx] != NULL)
+    ordered_list = ft_order_env(info->envp);
+    while (ordered_list[idx] != NULL)
     {
-        if (ft_empty_line(info->envp[idx]) == TRUE)
+        if (ft_empty_line(ordered_list[idx]) == TRUE)
             idx++;
         else
         {
-            printf("declare -x %s\n", info->envp[idx]);
+            printf("declare -x %s\n", ordered_list[idx]);
             idx++;
         }
-
     }
+    ft_free_matrix(ordered_list);
 }
 
 /**

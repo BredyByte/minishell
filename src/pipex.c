@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 17:52:53 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:34:57 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@
 static int	ft_exec_builtin(t_info *info, char **cmd)
 {
 	//printf("%s\n", cmd[0]);
-	if (ft_strncmp("cd", cmd[0], 2) == 0)
+	if (ft_strncmp("cd", cmd[0], 2) == 0 && cmd[0][2] == '\0')
 		return (cd(info, cmd));
-	else if (ft_strncmp("echo", cmd[0], 4) == 0)
+	else if (ft_strncmp("echo", cmd[0], 4) == 0  & cmd[0][4] == '\0')
 		return (echo(cmd));
-	else if (ft_strncmp("env", cmd[0], 3) == 0)
+	else if (ft_strncmp("env", cmd[0], 3) == 0 && cmd[0][3] == '\0')
 		return (env(info, cmd));
-	else if (ft_strncmp("exit", cmd[0], 4) == 0)
+	else if (ft_strncmp("exit", cmd[0], 4) == 0 && cmd[0][4] == '\0')
 		return (exit1(info, cmd));
-	else if (ft_strncmp("export", cmd[0], 6) == 0)
+	else if (ft_strncmp("export", cmd[0], 6) == 0 && cmd[0][6] == '\0')
 		return (export(info, cmd));
-	else if (ft_strncmp("pwd", cmd[0], 3) == 0)
+	else if (ft_strncmp("pwd", cmd[0], 3) == 0 && cmd[0][3] == '\0')
 		return (pwd(cmd));
-	else if (ft_strncmp("unset", cmd[0], 5) == 0)
+	else if (ft_strncmp("unset", cmd[0], 5) == 0 && cmd[0][5] == '\0')
 		return (unset(info, cmd));
 	return (EXIT_ERROR);
 }

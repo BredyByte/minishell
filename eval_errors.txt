@@ -1,9 +1,10 @@
 - TODO: 
 	* Implement SIGNALS
 	* Implement HERE_DOC
+	* Implement ./minishell into ./minishell
 
 - Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!?
-- Davyd: When we try to append to a file, it replaces everything, it just doesnt append. 
+- Davyd: When we try to append to a file, it replaces everything, it just doesnt append...we need to implement the append 
 - Davyd: echo Hola | cat -e is ok, but
 	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together
 - Davyd: same happens with cat infile | more 
@@ -12,10 +13,13 @@
 - Davyd: when I change directories I update env vars, but then I call them with "echo" and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env.  
 
 
-
+- Ruben: I think i still dont check wether a env var exists or not when i call builtin functs, check that
 - Ruben: I have to return status code from the execution of commands properly...I have to check it
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it	
 - Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct
 
+
 - Both: I need to review with you about info->status. I am not sure if it is to store exit value from subprocesses or exit value from minishell itself. 
 	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt.  
+- Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it
+- Both: Exit doesnt always work, for some reason I dont know
