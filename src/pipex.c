@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/30 12:34:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/30 16:46:58 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	printf(GREEN"cmd     fd_in   fd_out\n"RESET);
     printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
 	status = 0;
-	if (ft_is_builtin(node->command[0]) == TRUE)
+	if (ft_is_builtin(info, node->command[0]) == TRUE)
 	{
 		og_stdout = dup(STDOUT);
 		if (node->fd_in != NO_FD && node->fd_in != STDIN)
