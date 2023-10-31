@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/30 16:48:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:35:36 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,12 @@ int	ft_print_error(char *error)
 //We r gonna init a list here, but we will use the one from global var
 int	ft_is_builtin(t_info *info, char *str)
 {
-	char *table[] = {	"cd", 
-						"env",
-						"pwd",
-						"echo",
-						"exit",
-						"unset",
-						"export",
-						NULL,
-					};
 	int	cntr;
-	/***********************************************************/
+	
 	cntr = 0;
 	while (info->reserved_words[cntr])
 	{
-		printf("Reserved word nº %i:	%s\n", cntr + 1, info->reserved_words[cntr]);
-		cntr++;
-	}
-	/***********************************************************/
-	cntr = 0;
-	while (table[cntr])
-	{
-		if (ft_strncmp(str, table[cntr], ft_strlen(table[cntr])) == 0)
+		if (ft_strncmp(str, info->reserved_words[cntr], ft_strlen(info->reserved_words[cntr])) == 0)
 			return (TRUE);
 		cntr++;
 	}

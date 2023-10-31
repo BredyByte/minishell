@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:21:49 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:03:40 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:28:13 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int    pwd(char **cmd)
     else
     {
         ft_putendl_fd("Ruben: from ft_pwd: this is not a pwd!", 2);
-        return (EXIT_ERROR);
+        return (BAD_ARGS);
     }
 }

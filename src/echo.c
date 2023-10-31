@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:03:11 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:38:25 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ int    echo(char **cmd)
     else
     {
         ft_putendl_fd("Ruben: from ft_echo: this is not a echo!", 2);
-        return (EXIT_ERROR);
+        return (BAD_ARGS);
     }
 }

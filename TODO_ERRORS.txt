@@ -21,7 +21,6 @@
 - Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben: build-in exit works bad  - ⛔️
-- Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct - ⛔️
 
 
 - Both: I need to review with you about info->status.
@@ -30,5 +29,3 @@
 - Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it - ⛔️
 - Both: Exit doesnt always work, for some reason I dont know - ⛔️
 
- - QUESTIONS:
-	* expansion_utils, line: 28. WHAT? I need a deeper explanation.
