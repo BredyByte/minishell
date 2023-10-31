@@ -16,16 +16,26 @@
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
 
-
-
-- Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben: build-in exit works bad  - ⛔️
-
-
+- Ruben:
+	* Echo: I just saw that if you do "echo -n-n-n-n-n Hola" it has to print "-n-n-n-n-n" without having in account the flag
+	* Echo: If i put in the prompt echo "-n Hola" it just doesnt get whats inside quotes (either single or double)
+	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd
+	* Exit: 
+		- It looks like the number of errors are directly related with how many commands we execute during the shell
+			-- The more cmds we execute, the more we need to call exit to really exit the shell 
+		- see how to manage ret val between cmd returns and exit return (one overwrites the other)⛔️
+	* Unset: If unset is called with no args, it jsut doesnt do anything; just return with ret_val = 0;
+	* Ret_val from cmds: 
+		- Builtins: I am returning -1 as error, but bash does with 1; is it ok if I leave -1 ? -- 
+		- CMDs:		Somehow, when a normal cmd doesnt execute properly, I doesnt store the good value -- mine returns 0 
+	* unset PATH then executing: I dont know why but I dont yield any error...though in pipex was done but here it just	
+								doesnt do it
+	* Check all the print messages as well as return values when something go wrong 
+	
 - Both: I need to review with you about info->status.
 	I am not sure if it is to store exit value from subprocesses or exit value from minishell itself.
 	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt. - ⛔️
 - Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it - ⛔️
-- Both: Exit doesnt always work, for some reason I dont know - ⛔️
+
 

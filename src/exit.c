@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 15:33:58 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:29:56 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int ft_exit(t_info *info, int option)
     value = option % 256;
     info->status = value;
     info->exit_f = 1;
-    return (EXIT_SUCCESS);
+    return (EXIT_EXIT);
 }
 
 int    exit1(t_info *info, char **cmd)
