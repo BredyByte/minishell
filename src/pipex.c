@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/30 16:46:58 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:59:29 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	int		og_stdout;
 	//int		og_stdin;
 
-	//Remove this 
+	//Remove this
 	printf(GREEN"cmd     fd_in   fd_out\n"RESET);
     printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
+	if (!node->command[0])
+		return (EXIT_SUCCESS);
 	status = 0;
 	if (ft_is_builtin(info, node->command[0]) == TRUE)
 	{
@@ -70,9 +72,9 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 		dup2(og_stdout, STDOUT);
 		close(og_stdout);
 		return (status);
-	}	
+	}
 	else
-	{	
+	{
 		id = fork();
 		if (id < 0)
 			return (ft_print_error("Ruben: "FORK_ERROR));
@@ -110,14 +112,14 @@ int	ft_pipex(t_info *info, t_cmd *list)
 {
 	int i = 0;
 	int status;
-	
+
 	status = 0;
 	while (list)
 	{
 		printf(GREEN"\nRuben:\n\n"RESET);
 		status = ft_exec_cmd(info, list);
 		if (status == EXIT_ERROR)				// I need to check the behaviour of chained failures
-		{										// Aaaaaand to check return status from builtins 
+		{										// Aaaaaand to check return status from builtins
 			info->status = status;
 			return (EXIT_ERROR);
 		}

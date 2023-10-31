@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 13:48:26 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:33:56 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_IN)
 	{
+		if (new_node->fd_in > 2)
+			close(new_node->fd_in);
 		new_node->fd_in = open(token->next->value, O_RDONLY);
 		if (new_node->fd_in == -1)
 			return (1);
@@ -97,6 +99,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_OUT || token->key == TOKEN_REDIR_APPEND)
 	{
+		if (new_node->fd_out > 2)
+			close(new_node->fd_out);
 		if (token->key == TOKEN_REDIR_APPEND)
 		{
 			new_node->fd_out = open(token->next->value, O_WRONLY
@@ -198,7 +202,9 @@ void	grouping(t_info *info)
 	{
 		if (e_index)
 			break ;
-		if (!new || (new && new->command[0]))
+		if (!new || (new && new->command[0]
+				&& !(token->key == TOKEN_REDIR_APPEND
+					|| token->key == TOKEN_REDIR_OUT)))
 		{
 			new = new_cmd();
 			add_back_cmd(&info->cmd_lst, new);
