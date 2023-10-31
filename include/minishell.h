@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/30 16:51:00 by regea-go         ###   ########.fr       */
+/*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/31 12:31:35 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,10 @@ typedef struct s_cmd
 
 typedef struct s_info
 {
-	t_builtin_ptr	builtins[7];
-	char			*reserved_words[7];
+	t_builtin_ptr	builtins[8];
+	char			*reserved_words[8];
 	char			**envp;
 	t_list			*envp_lst;
-	/*
-		A node list with all the environment variables in key:value format.
-		If no operations were performed on the list, there's no need to rebuild envp,
-		thus conserving resources. As soon as a new variable is added,
-		or an old one is modified, we set envp_f to 1 and envp is rebuilt.
-	 */
 	char			exit_f;
 	// A flag for exiting the program.
 	int				status;
@@ -91,15 +85,7 @@ typedef struct s_info
 		}
 	 */
 	t_token			*token_lst;
-	/*
-		A list of tokens.
-		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
-	 */
 	t_cmd			*cmd_lst;
-	/*
-		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
-		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
-	 */
 }					t_info;
 
 // buildins
@@ -125,10 +111,10 @@ void	fill_in_lex(t_info *info, int token, char *content);
 
 // tenizer_handlers
 
-void	handle_redirections(t_info *info, char **str);
-void	handle_words(t_info *info, char **str);
-void	handle_space(t_info *info, char **str);
-void	handle_quotes(t_info *info, char **str);
+void	handle_redirections(t_info* info, char **str);
+void	handle_words(t_info* info, char **str);
+void	handle_space(t_info* info, char **str);
+void	handle_quotes(t_info* info, char **str);
 
 // tokenizer_core
 
@@ -153,8 +139,6 @@ void	delete_token_sep(t_info *info);
 
 void	grouping(t_info *info);
 
-
-
 # define TRUE 1
 # define FALSE 0
 
@@ -169,8 +153,8 @@ void	grouping(t_info *info);
 
 #define PATH_SIZE 4097
 
-# define FORK_ERROR "Unable to fork" 
-# define REDIR_ERROR "Unable to redirect" 
+# define FORK_ERROR "Unable to fork"
+# define REDIR_ERROR "Unable to redirect"
 # define EXEC_ERROR "Unable to execute"
 
 /*Colors*/
@@ -214,7 +198,7 @@ void 	ft_test_unset(t_info *info);
 void 	ft_test_echo();
 
 
-//Functions 
+//Functions
 int		echo();
 int		ft_echo(char **str);
 
