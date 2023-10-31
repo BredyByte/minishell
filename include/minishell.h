@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 09:34:00 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 10:09:03 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ typedef struct s_info
 	char			*reserved_words[7];
 	char			**envp;
 	t_list			*envp_lst;
-	/*
-		A node list with all the environment variables in key:value format.
-		If no operations were performed on the list, there's no need to rebuild envp,
-		thus conserving resources. As soon as a new variable is added,
-		or an old one is modified, we set envp_f to 1 and envp is rebuilt.
-	 */
 	char			exit_f;
 	// A flag for exiting the program.
 	int				status;
@@ -91,15 +85,7 @@ typedef struct s_info
 		}
 	 */
 	t_token			*token_lst;
-	/*
-		A list of tokens.
-		key: TOKEN_INDX, value: "tokent value, ex: <" tokens.h -> there are all tokens
-	 */
 	t_cmd			*cmd_lst;
-	/*
-		In the case of "cat >file | cat <file && pwd" : t_lgroup: t_list *tokens, &&, t_list * tokens.
-		List for logical groups, i.e., groups of commands separated by logical operators &&, ||, ;
-	 */
 }					t_info;
 
 // buildins
@@ -125,10 +111,10 @@ void	fill_in_lex(t_info *info, int token, char *content);
 
 // tenizer_handlers
 
-void	handle_redirections(t_info *info, char **str);
-void	handle_words(t_info *info, char **str);
-void	handle_space(t_info *info, char **str);
-void	handle_quotes(t_info *info, char **str);
+void	handle_redirections(t_info* info, char **str);
+void	handle_words(t_info* info, char **str);
+void	handle_space(t_info* info, char **str);
+void	handle_quotes(t_info* info, char **str);
 
 // tokenizer_core
 
@@ -152,8 +138,6 @@ void	delete_token_sep(t_info *info);
 // grouping
 
 void	grouping(t_info *info);
-
-
 
 # define TRUE 1
 # define FALSE 0
