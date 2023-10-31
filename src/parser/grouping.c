@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 10:02:40 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:32:25 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,18 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_OUT || token->key == TOKEN_REDIR_APPEND)
 	{
-		new_node->fd_out = open(token->next->value, O_WRONLY
-				| O_CREAT | O_TRUNC, 0644);
 		if (token->key == TOKEN_REDIR_APPEND)
+		{
+			new_node->fd_out = open(token->next->value, O_WRONLY
+					| O_CREAT | O_APPEND, 0644);
 			new_node->append_f = 1;
+		}
 		else
+		{
+			new_node->fd_out = open(token->next->value, O_WRONLY
+					| O_CREAT | O_TRUNC, 0644);
 			new_node->append_f = 0;
+		}
 		if (new_node->fd_out == -1)
 			return (1);
 		*token_ptr = token->next;
@@ -115,7 +121,7 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	return (0);
 }
 
-static void cmd_free(t_cmd **cmd)
+static void	cmd_free(t_cmd **cmd)
 {
 	t_cmd *ptr;
 	t_cmd *tmp;
@@ -146,7 +152,7 @@ static	int	check_sintax_unexpected_token(t_token *token)
 	t_token	*ptr;
 
 	ptr = token;
-	if (ptr->key == TOKEN_PIPE)
+	if (ptr && ptr->key == TOKEN_PIPE)
 		return (258);
 	while (ptr)
 	{
@@ -217,19 +223,6 @@ void	grouping(t_info *info)
 			token = token->next;
 	}
 	info->status = e_index_check(e_index);
-	/*
-		ToDo:
-		1 - Error handling:
-			* - syntax error near unexpected token `some token' - code  258; e_index = 258; - ✅
-			* - unexistfile: No such file or directory - 1 e_index = 1; - ✅
-			* - first pipe error check - 258; e_index = 258; - ✅
-		2 - <hello cat - does`t save cat in command; - ✅
-		3 - close fd in case of >a>b>c -
-		4 - change status in case of error - ✅
-		5 - minishell lounch error !prompt - sigment error - ✅
-		6 - free cmd; ✅
-		7 - <hello cat - after free cmd_lst && closing fds, gives a hello fd(past) + 4... - ✅
-	 */
 	t_cmd *ptr = info->cmd_lst;
 	t_cmd *list = ptr;
 	while (ptr)
@@ -244,7 +237,6 @@ void	grouping(t_info *info)
 			while (str[i])
 				i++;
 			printf (BLUE"   %s"RESET, *line);
-			//printf (BLUE"len: %d: "RESET, i);
 			line++;
 		}
 		printf ("\n	");

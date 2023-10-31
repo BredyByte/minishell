@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:11:08 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:46:10 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int  ft_isnum(char *str)
         if (ft_isdigit(str[size]) == FALSE)
             return (FALSE);
         size++;
-    } 
+    }
     return (TRUE);
 }
 
@@ -63,7 +63,7 @@ int    exit1(t_info *info, char **cmd)
             ft_exit(info, 255);
             return (ft_print_error("Ruben: from exit: Not a number "));
         }
-        else 
+        else
             return (ft_exit(info, ft_atoi(cmd[1])));
     }
     else

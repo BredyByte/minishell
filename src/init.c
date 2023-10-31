@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 09:59:52 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:32:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	data_init(t_info *info, char **envp)
 	info->builtins[4] = &buildin_unset;
 	info->builtins[5] = &buildin_env;
 	info->builtins[6] = &buildin_exit;
+	info->builtins[7] = NULL;
 	info->reserved_words[0] = ft_strdup("echo");
 	info->reserved_words[1] = ft_strdup("cd");
 	info->reserved_words[2] = ft_strdup("pwd");
@@ -80,6 +81,7 @@ static void	data_init(t_info *info, char **envp)
 	info->reserved_words[4] = ft_strdup("unset");
 	info->reserved_words[5] = ft_strdup("env");
 	info->reserved_words[6] = ft_strdup("exit");
+	info->reserved_words[7] = NULL;
 	init_envp(info, envp);
 	init_envp_lst(info, info->envp);
 	info->token_lst = NULL;

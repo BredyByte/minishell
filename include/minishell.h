@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 10:09:03 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 12:31:35 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_cmd
 
 typedef struct s_info
 {
-	t_builtin_ptr	builtins[7];
-	char			*reserved_words[7];
+	t_builtin_ptr	builtins[8];
+	char			*reserved_words[8];
 	char			**envp;
 	t_list			*envp_lst;
 	char			exit_f;
