@@ -6,10 +6,8 @@
 	* Doesnt work when manipulating files; infinite loop - ⛔️
 -
 
-- Davyd: IT CRASHES WHEN ONLY INTRODUCE SPACES....FOR REAL!?!? - ✅
-- Davyd: Close fd in case of >a>b>c - ⛔️
-- Davyd: implement here_doc - ⛔️
-- Davyd: When we try to append to a file, it replaces everything, it just doesnt append...we need to implement the append - ✅
+- Davyd: Close fd in case of >a>b>c - ⛔️❗️
+- Davyd: implement here_doc - ⛔️❗️
 - Davyd: echo Hola | cat -e is ok, but
 	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ⛔️
 - Davyd: same happens with cat infile | more
@@ -17,7 +15,6 @@
 - Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ⛔️
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
-- Davyd: When I check reserved_words[], it doesnt stop at the last cmd, it continues to a 9th one; check it please - ✅
 
 
 
