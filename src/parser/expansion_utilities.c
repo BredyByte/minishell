@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:17:25 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 12:30:20 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 09:37:53 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*get_envp_key(char *str)
 	return (ft_strndup(ptr, i));
 }
 
+//<--- Ruben to Davyd: When I do cd and stuff, it changes env vars in the char **, but you expand variables in list; so if I change dirs, then I print pwd, it is not the good one
 char	*get_envp_value(t_list *list, char *str)
 {
 	char	*key;

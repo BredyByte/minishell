@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/07 18:05:28 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:25:12 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/31 09:31:17 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/31 09:36:04 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	*ft_readline(void)
 	char	*str;
 
 	str = readline("minishell-1.0$ ");
-	if (str)
-		add_history(str);
+	if (!str || *str == '\0')
+		return (NULL);
+	add_history(str);
 	return (str);
 }

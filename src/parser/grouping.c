@@ -6,67 +6,11 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:26:21 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 09:37:02 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* static t_group	*ft_newgroup(t_cmd *cmd, int group_type)
-{
-	t_group	*new_group;
-
-	new_group = malloc(sizeof(t_group));
-	if (!new_group)
-		return (NULL);
-	new_group->cmd = cmd;
-	new_group->grout_type = group_type;
-	new_group->next = NULL;
-	return (new_group);
-}
-
-static void	add_to_end(t_info *info, t_group *new_group)
-{
-	t_group	*last_group;
-
-	last_group = info->group_lst;
-	while (last_group->next)
-		last_group = last_group->next;
-	last_group->next = new_group;
-	new_group->next = NULL;
-}
-
-void	group_init(t_info *info, t_token *token)
-{
-	t_token	*ptr;
-	t_token	*tmp;
-	t_group	*group;
-
-	ptr = token;
-	tmp = info->token_lst;
-	group = ft_newgroup(cmd_lst, group_type);
-	if (!info->envp_lst)
-		group->next = info->group_lst;
-		info->group_lst = group;
-	else
-		add_to_end(info, group);
-} */
-
-/* int	sintaxis_error_handler(t_info *info)
-{
-	t_token	*ptr;
-
-	ptr = info->token_lst;
-	while (ptr)
-	{
-		if (ptr->key == TOKEN_PIPE && ptr->next->key != TOKEN_WORD)
-		{
-			ft_printf("minishell: syntax error near unexpected token `|'\n");
-			return (1);
-		}
-		ptr = ptr->next;
-	}
-} */
 
 static t_cmd	*new_cmd(void)
 {
@@ -132,8 +76,6 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	t_token	*token;
 
 	token = *token_ptr;
-	if (pipe(fd) == -1)
-		perror("Error: pipe failure");
 	if (*fd_in)
 	{
 		new_node->fd_in = *fd_in;
@@ -141,6 +83,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	if (token->key == TOKEN_PIPE)
 	{
+		if (pipe(fd) == -1)
+			perror("Error: pipe failure");
 		new_node->fd_out = fd[1];
 		*fd_in = fd[0];
 	}
@@ -279,31 +223,34 @@ void	grouping(t_info *info)
 			* - syntax error near unexpected token `some token' - code  258; e_index = 258; - ✅
 			* - unexistfile: No such file or directory - 1 e_index = 1; - ✅
 			* - first pipe error check - 258; e_index = 258; - ✅
-		2 - <hello cat - does`t save cat
-		3 - close fd in case of >a>b>c
-		4 - change status in case of error
-		5 - minishell lounch error !prompt - sigment error
+		2 - <hello cat - does`t save cat in command; - ✅
+		3 - close fd in case of >a>b>c -
+		4 - change status in case of error - ✅
+		5 - minishell lounch error !prompt - sigment error - ✅
 		6 - free cmd; ✅
+		7 - <hello cat - after free cmd_lst && closing fds, gives a hello fd(past) + 4... - ✅
 	 */
 	t_cmd *ptr = info->cmd_lst;
+	t_cmd *list = ptr;
 	while (ptr)
 	{
+		printf(BLUE"\nDavid:\n\n"RESET);
 		char **line = ptr->command;
-		printf("command: ");
+		printf(BLUE"commands: "RESET);
 		while (*line)
 		{
 			int i = 0;
 			char *str = *line;
 			while (str[i])
 				i++;
-			printf ("%s : ", *line);
-			printf ("len: %d: ", i);
+			printf (BLUE"   %s"RESET, *line);
+			//printf (BLUE"len: %d: "RESET, i);
 			line++;
 		}
-		printf ("\n");
-		printf ("fd_in: %d\n", ptr->fd_in);
-		printf ("fd_out: %d\n", ptr->fd_out);
+		printf ("\n	");
+		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
 		ptr = ptr->next;
 	}
+	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);
 }

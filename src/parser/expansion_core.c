@@ -6,13 +6,13 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/19 11:34:47 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 09:36:01 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*handle_dollar_expansion(char **ptmp, t_info *info)
+static char	*handle_dollar_expansion(t_info *info, char **ptmp)
 {
 	char	*res;
 	char	*key;
@@ -40,7 +40,7 @@ static char	*handle_dollar_expansion(char **ptmp, t_info *info)
 	return (res);
 }
 
-static int	get_new_len(char *str, t_info *info)
+static int	get_new_len(t_info *info, char *str)
 {
 	char	*tmp;
 	int		len;
@@ -53,7 +53,7 @@ static int	get_new_len(char *str, t_info *info)
 	{
 		if (*tmp == '$' && is_valid_dollar_followup(*(tmp + 1)))
 		{
-			res = handle_dollar_expansion(&tmp, info);
+			res = handle_dollar_expansion(info, &tmp);
 			len += ft_strlen(res);
 			free(res);
 		}
@@ -66,8 +66,7 @@ static int	get_new_len(char *str, t_info *info)
 	return (len);
 }
 
-static char	*process_string_value(t_token *token,
-			t_info *info, char *tmp, int *current_len)
+static char	*process_string_value(t_info *info, t_token *token, char *tmp, int *current_len)
 {
 	char	*new_str;
 	char	*res;
@@ -80,7 +79,7 @@ static char	*process_string_value(t_token *token,
 	{
 		if (*tmp == '$' && is_valid_dollar_followup(*(tmp + 1)))
 		{
-			res = handle_dollar_expansion(&tmp, info);
+			res = handle_dollar_expansion(info, &tmp);
 			if (res)
 				append_to_buffer(new_str, res, current_len);
 		}
@@ -94,7 +93,7 @@ static char	*process_string_value(t_token *token,
 	return (new_str);
 }
 
-static char	*get_new_value(t_token *token, t_info *info)
+static char	*get_new_value(t_info *info, t_token *token)
 {
 	char	*new_str;
 	char	*tmp;
@@ -102,7 +101,7 @@ static char	*get_new_value(t_token *token, t_info *info)
 
 	current_len = 0;
 	tmp = token->value;
-	new_str = process_string_value(token, info, tmp, &current_len);
+	new_str = process_string_value(info, token, tmp, &current_len);
 	free(token->value);
 	return (new_str);
 }
@@ -116,8 +115,8 @@ void	expansion(t_info *info)
 	{
 		if (tmp->key == TOKEN_WORD || tmp->key == TOKEN_EXP_FIELD)
 		{
-			tmp->len = get_new_len(tmp->value, info);
-			tmp->value = get_new_value(tmp, info);
+			tmp->len = get_new_len(info, tmp->value);
+			tmp->value = get_new_value(info, tmp);
 		}
 		if (tmp->key == TOKEN_EXP_FIELD || tmp->key == TOKEN_FIELD)
 				tmp->key = TOKEN_WORD;

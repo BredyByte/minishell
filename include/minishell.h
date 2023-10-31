@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/30 15:33:03 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/20 15:03:45 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/10/31 09:34:00 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <sys/wait.h>
 # include "../assets/libft/include/libft.h"
 # include "defines.h"
+# include <fcntl.h>
+# include <errno.h>
 
 typedef struct s_info	t_info;
 typedef int				(*t_builtin_ptr)(t_list *, t_info *);
@@ -120,7 +122,6 @@ char	*ft_readline(void);
 // tokenizer_core
 
 void	fill_in_lex(t_info *info, int token, char *content);
-void	tokenizer(t_info *info, char *str);
 
 // tenizer_handlers
 
@@ -151,5 +152,111 @@ void	delete_token_sep(t_info *info);
 // grouping
 
 void	grouping(t_info *info);
+
+
+
+# define TRUE 1
+# define FALSE 0
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+# define EXIT_SUCCESS 0
+# define EXIT_ERROR -1
+
+# define NO_FD -2
+
+#define PATH_SIZE 4097
+
+# define FORK_ERROR "Unable to fork"
+# define REDIR_ERROR "Unable to redirect"
+# define EXEC_ERROR "Unable to execute"
+
+/*Colors*/
+# define RESET "\033[0;m"
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define BLUE "\033[0;34m"
+
+/****Envp utils*******/
+//For envp manipulation
+int		ft_init_envp(t_info *info, char **envp);
+void    ft_free_matrix(char **str);
+char    **ft_copy_matrix(char **envp);
+int     ft_matrix_size(char **envp);
+char	**ft_malloc_matrix(char **envp);
+//For export
+void	ft_modify_variable(char **envp, char *tuple);
+char	**ft_add_to_matrix(char **envp, char *tuple);
+//For unset
+void    ft_delete_variable(t_info *info, char *tuple);
+
+/****Tuple utils*******/
+int     ft_var_size(char *tuple);
+int     ft_contains(char *tuple, char *envp_tuple);
+int     ft_env_exists(char *tuple, char **envp);
+int     ft_var_exists(char *variable, char *envp_tuple);
+char    *ft_get_env_value(t_info *info, char *tuple);
+char    *ft_store_value(char *tuple);
+int     ft_contains(char *envp_tuple, char *tuple);
+
+/*******BUILTIN FUNCTIONS***********/
+
+//Functions for testing
+void 	ft_test_cd(t_info *info);
+void	ft_test_env(t_info *info);
+void 	ft_test_exit(t_info *info);
+void 	ft_test_export(t_info *info);
+void 	ft_test_pwd(t_info *info);
+void 	ft_test_unset(t_info *info);
+void 	ft_test_echo();
+
+
+//Functions
+int		echo();
+int		ft_echo(char **str);
+
+int    	pwd(char **cmd);
+int     ft_pwd(void);
+
+int		export(t_info *info, char **cmd);
+int		ft_export(t_info *info, char *tuple);
+void    ft_print_export(t_info *info);
+
+int		unset(t_info *info, char **cmd);
+int		ft_unset(t_info *info, char *tuple);
+
+int		env(t_info *info, char **cmd);
+int	    ft_env(t_info *info);
+
+int    	cd(t_info *info, char **cmd);
+int     ft_cd(t_info *info, char **cmd);
+
+// error: conflicting types for 'exit' ---> we will call it "exit1"
+int		exit1(t_info *info, char **cmd);
+int		ft_exit(t_info *info, int option);
+
+int		echo(char **cmd);
+int		ft_echo(char **cmd);
+
+void 	test_builtins();
+
+/****PIPEX*******/
+//Aux functions
+int		ft_print_error(char *error);
+char	*abs_bin_path(char *cmd, char **envp);
+char	**get_paths(char *envp[]);
+t_cmd   *init_cmd_node(int fd_in1, int fd_out1, char **argv);
+t_cmd   *create_list(char *str, int fdin, int fdout);
+int		ft_is_builtin(t_info *info, char *str);
+
+//Atomic functions
+
+int		ft_exec_cmd(t_info *info, t_cmd *node);
+int		ft_pipex(t_info *info, t_cmd *list);
+
+
 
 #endif
