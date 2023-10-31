@@ -1,6 +1,9 @@
 obj/
 
+assets/libft/obj
+
 minishell
 
 .DS_Store
 
+libft.a

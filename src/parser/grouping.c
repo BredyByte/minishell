@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 13:14:26 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:48:26 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,6 @@ void	grouping(t_info *info)
 	}
 	info->status = e_index_check(e_index);
 	t_cmd *ptr = info->cmd_lst;
-	t_cmd *list = ptr;
 	while (ptr)
 	{
 		printf(BLUE"\nDavid:\n\n"RESET);
@@ -243,7 +242,7 @@ void	grouping(t_info *info)
 		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
 		ptr = ptr->next;
 	}
-	printf("hello\n");
+	t_cmd *list = info->cmd_lst;
 	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);
 }

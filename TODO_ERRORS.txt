@@ -14,16 +14,16 @@
 	depending on the command, sometimes it crashes - ⛔️
 - Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ⛔️
 - Davyd: This case "cat outfile.txt | more " Memmory error - ⛔️
-- Davyd: case of <outfile.txt gives segment eror - ⛔️
+- Davyd: case of "<outfile.txt" gives segment eror - ⛔️
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
-- Davyd: new V of master branch doesn`t work Env build-in - ⛔️
 
 
 - Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben: build-in exit works bad  - ⛔️
 - Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct - ⛔️
+- Ruben: (case of "<outfile.txt" gives segment eror). parser/grouping.c: before the lounch of pipex check the num of command nodes (numbers of info->cmd_lst > 1). In case of info->cmd_lst == 1 pipex is unnecessary - and gives sigment.foult ⛔️ 🆕
 
 
 - Both: I need to review with you about info->status.
