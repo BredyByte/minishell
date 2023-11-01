@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 13:12:19 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:57:22 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,55 +16,55 @@
 //Either we convert the string or we operate with the int
 //If no int with exit call, just put a 0
 
-static int  ft_isnum(char *str)
+static int	ft_isnum(char *str)
 {
-    size_t  size;
+	size_t	size;
 
-    size = 0;
-    if (!str)
-        return (FALSE);
-    while (str[size] != '\0')
-    {
-        if (ft_isdigit(str[size]) == FALSE)
-            return (FALSE);
-        size++;
-    }
-    return (TRUE);
+	size = 0;
+	if (!str)
+		return (FALSE);
+	while (str[size] != '\0')
+	{
+		if (ft_isdigit(str[size]) == FALSE)
+			return (FALSE);
+		size++;
+	}
+	return (TRUE);
 }
 
-int ft_exit(t_info *info, int option)
+int	ft_exit(t_info *info, int option)
 {
-    int value;
+	int	value;
 
-    value = option % 256;
-    info->status = value;
-    info->exit_f = 1;
-    return (EXIT_EXIT);
+	value = option % 256;
+	info->status = value;
+	info->exit_f = 1;
+	return (EXIT_EXIT);
 }
 
-int    exit1(t_info *info, char **cmd)
+int	exit1(t_info *info, char **cmd)
 {
-    ft_putendl_fd("exit", STDOUT);
-    if (cmd[1] && cmd[2] != NULL)
-    {
-        ft_putendl_fd("Bash: exit: too many arguments", 2);
-        return (EXIT_ERROR);
-    }
-    if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
-    {
-        if (!cmd[1])
-            return (ft_exit(info, 0));
-        else if (ft_isnum(cmd[1]) == FALSE)
-        {
-            ft_putendl_fd("Bash: exit: numeric argument required", 2);
-            return (ft_exit(info, 255));
-        }
-        else
-            return (ft_exit(info, ft_atoi(cmd[1])));
-    }
-    else
-    {
-        ft_print_error("Bad command");
-        return (BAD_ARGS);
-    }
+	ft_putendl_fd("exit", STDOUT);
+	if (cmd[1] && cmd[2] != NULL)
+	{
+		ft_putendl_fd("Bash: exit: too many arguments", 2);
+		return (EXIT_ERROR);
+	}
+	if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
+	{
+		if (!cmd[1])
+			return (ft_exit(info, 0));
+		else if (ft_isnum(cmd[1]) == FALSE)
+		{
+			ft_putendl_fd("Bash: exit: numeric argument required", 2);
+			return (ft_exit(info, 255));
+		}
+		else
+			return (ft_exit(info, ft_atoi(cmd[1])));
+	}
+	else
+	{
+		ft_print_error("Bad command");
+		return (BAD_ARGS);
+	}
 }

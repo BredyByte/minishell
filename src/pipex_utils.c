@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 12:52:32 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:40:45 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_print_error(char *error)
 int	ft_is_builtin(t_info *info, char *str)
 {
 	int	cntr;
-	
+
 	cntr = 0;
 	while (info->reserved_words[cntr])
 	{
@@ -32,7 +32,22 @@ int	ft_is_builtin(t_info *info, char *str)
 	return (FALSE);
 }
 
-char	*abs_bin_path(char *cmd, char **envp)	
+char	*ft_valid_cmd(char *cmd)
+{
+	if (access(cmd, F_OK) == 0)
+	{
+		if (access(cmd, X_OK) < 0)
+		{
+			perror("Permission denied\n");
+			return (NULL);
+		}
+		else
+			return (cmd);
+	}
+	return (cmd);
+}
+
+char	*abs_bin_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*slash_cmd;
@@ -42,18 +57,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 	slash_cmd = NULL;
 	possible_bin = NULL;
 	if ((cmd[0] == '/') || (cmd[0] == '.' && cmd[1] == '/'))
-	{
-		if (access(cmd, F_OK) == 0)
-		{
-			if (access(cmd, X_OK) < 0)
-			{
-				perror("Permission denied\n");
-				return (NULL);
-			}
-			else
-				return (cmd);
-		}
-	}
+		return (ft_valid_cmd(cmd));
 	else
 	{
 		slash_cmd = ft_strjoin("/", cmd);
@@ -61,15 +65,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 		{
 			possible_bin = ft_strjoin(envp[i], slash_cmd);
 			if (access(possible_bin, F_OK) == 0)
-			{
-				if (access(possible_bin, X_OK) < 0)
-				{
-					perror("Permission denied\n");
-					return (NULL);
-				}
-				else
-					return (possible_bin);
-			}
+				return (ft_valid_cmd(possible_bin));
 			i++;
 		}
 	}

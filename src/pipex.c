@@ -6,12 +6,11 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 13:04:30 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:32:10 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static int	ft_exec_builtin(t_info *info, char **cmd)
 {
@@ -32,49 +31,43 @@ static int	ft_exec_builtin(t_info *info, char **cmd)
 	return (COMMAND_NOT_FOUND);
 }
 
-//Dont forget error check for every dup2 and stuff
-//We have to check if the fds are -2 (which are not initialized) or -1 (it means that the file doesnt exists)
+int	ft_builtin(t_info *info, t_cmd *node)
+{
+	int	og_stdout;
+	int	status;
+
+	og_stdout = dup(STDOUT);
+	status = 0;
+	if (node->fd_in != NO_FD && node->fd_in != STDIN)
+	{
+		if (dup2(node->fd_in, STDIN) < 0)
+			return (ft_print_error(REDIR_ERROR));
+		close(node->fd_in);
+	}
+	if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+	{
+		if (dup2(node->fd_out, STDOUT) < 0)
+			return (ft_print_error(REDIR_ERROR));
+		close(node->fd_out);
+	}
+	status = ft_exec_builtin(info, node->command);
+	dup2(og_stdout, STDOUT);
+	close(og_stdout);
+	return (status);
+}
+
 int	ft_exec_cmd(t_info *info, t_cmd *node)
 {
 	pid_t	id;
 	int		status;
-	int		og_stdout;
 
-	//Remove this 
-	//printf(GREEN"cmd     fd_in   fd_out\n"RESET);
-	//if (node && node->command[0])
-    //	printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
 	status = 0;
 	if (!node->command[0])
 		return (EXIT_SUCCESS);
 	else if (ft_is_builtin(info, node->command[0]) == TRUE)
-	{
-		og_stdout = dup(STDOUT);
-		if (node->fd_in != NO_FD && node->fd_in != STDIN)
-		{
-			if (dup2(node->fd_in, STDIN) < 0)
-				return (ft_print_error(REDIR_ERROR));
-			close(node->fd_in);
-		}
-		if (node->fd_out != NO_FD && node->fd_out != STDOUT)
-		{
-			if (dup2(node->fd_out, STDOUT) < 0)
-				return (ft_print_error(REDIR_ERROR));
-			close(node->fd_out);
-		}
-		status = ft_exec_builtin(info, node->command);
-		/***********I THINK THIS IS REDUNDANT**********************/
-		//if (status == EXIT_ERROR)
-		//{
-		//	dup2(og_stdout, STDOUT);
-		//	return (ft_print_error("Ruben: "EXEC_ERROR));
-		//}
-		dup2(og_stdout, STDOUT);
-		close(og_stdout);
-		return (status);
-	}	
+		return (ft_builtin(info, node));
 	else
-	{	
+	{
 		id = fork();
 		if (id < 0)
 			return (ft_print_error(FORK_ERROR));
@@ -110,17 +103,16 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 
 int	ft_pipex(t_info *info, t_cmd *list)
 {
-	int status;
-	
+	int	status;
+
 	status = 0;
 	while (list)
 	{
-		//printf(GREEN"\nRuben:\n\n"RESET);
 		status = ft_exec_cmd(info, list);
 		if (status == EXIT_EXIT)
 			return (status);
-		else if (status != EXIT_SUCCESS)			// I need to check the behaviour of chained failures
-		{												// See how to implement exit here, RN we have EXIT_EXIT 3 to check exit cmd 
+		else if (status != EXIT_SUCCESS)
+		{
 			info->status = status;
 			return (status);
 		}
