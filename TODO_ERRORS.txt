@@ -6,7 +6,7 @@
 	* Doesnt work when manipulating files; infinite loop - ⛔️
 -
 
-- Davyd: Close fd in case of >a>b>c - ⛔️❗️
+- Davyd: Close fd in case of >a>b>c - ✅❗️
 - Davyd: implement here_doc - ⛔️❗️
 - Davyd: echo Hola | cat -e is ok, but
 	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ⛔️

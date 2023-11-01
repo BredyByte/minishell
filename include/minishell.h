@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 12:31:35 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:17:14 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	minishell_lounch(t_info *info);
 
 // ft_readline
 
-char	*ft_readline(void);
+char	*ft_readline(char *prompt);
 
 // tokenizer_core
 

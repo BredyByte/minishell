@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 13:59:29 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 15:57:27 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	int		status;
 	int		og_stdout;
 	//int		og_stdin;
-
 	//Remove this
 	printf(GREEN"cmd     fd_in   fd_out\n"RESET);
     printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);

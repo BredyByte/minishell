@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 14:33:56 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 15:55:45 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,29 @@ char	**add_to_array(char **arr, char *new_str)
 	return (new_arr);
 }
 
+int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
+{
+    new_node->here_doc = ft_strdup(here_doc_str);
+    if (!new_node->here_doc)
+    	return (-1);
+	char *line = NULL;
+	int fd_temp = open("/var/tmp/.temp.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	new_node->fd_in = fd_temp;
+	if (fd_temp == -1)
+		return (-1);
+    while (1)
+	{
+		line = readline("> ");
+		if (line == NULL || (line != NULL && ft_strncmp(line, new_node->here_doc, ft_strlen(new_node->here_doc)) == 0))
+			break ;
+		write(fd_temp, line, ft_strlen(line));
+		write(fd_temp, "\n", 1);
+		free(line);
+	}
+	free(line);
+    return (fd_temp);
+}
+
 int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 {
 	int		fd[2];
@@ -119,17 +142,18 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_INSOURCE)
 	{
-		new_node->here_doc = ft_strdup(token->next->value);
-		new_node->fd_in = 0;
+		if (here_doc_read_line(new_node, token->next->value) == -1)
+			return (1);
+		*token_ptr = token->next;
 	}
 	return (0);
 }
 
 static void	cmd_free(t_cmd **cmd)
 {
-	t_cmd *ptr;
-	t_cmd *tmp;
-	int i;
+	t_cmd	*ptr;
+	t_cmd	*tmp;
+	int		i;
 
 	ptr = *cmd;
 	i = 0;
@@ -139,15 +163,18 @@ static void	cmd_free(t_cmd **cmd)
 		tmp = ptr->next;
 		while (ptr->command[i])
 			free(ptr->command[i++]);
+		if (ptr->here_doc)
+			free(ptr->here_doc);
 		if (ptr->fd_in != 0 && ptr->fd_in != 1)
 			close(ptr->fd_in);
 		if (ptr->fd_out != 0 && ptr->fd_out != 1)
 			close(ptr->fd_out);
 		free(ptr->command);
-		free(ptr->here_doc);
 		free(ptr);
 		ptr = tmp;
 	}
+	if (unlink("/var/tmp/.temp.txt") != 0)
+		perror("unlink");
 	*cmd = NULL;
 }
 
@@ -246,6 +273,8 @@ void	grouping(t_info *info)
 		}
 		printf ("\n	");
 		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
+		if (ptr->here_doc)
+			printf (BLUE"here_doc: %s\n"RESET, ptr->here_doc);
 		ptr = ptr->next;
 	}
 	t_cmd *list = info->cmd_lst;
