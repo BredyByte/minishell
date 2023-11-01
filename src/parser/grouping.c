@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:59:53 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/01 16:01:38 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:09:06 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
     if (!new_node->here_doc)
     	return (-1);
 	char *line = NULL;
-	int fd_temp = open("/var/tmp/.temp.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	new_node->fd_in = fd_temp;
+	int fd_temp = open("/var/tmp/.temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_temp == -1)
 		return (-1);
     while (1)
@@ -91,6 +90,9 @@ int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
 		free(line);
 	}
 	free(line);
+	close(fd_temp);
+	fd_temp = open("/var/tmp/.temp.txt", O_RDONLY);
+	new_node->fd_in = fd_temp;
     return (fd_temp);
 }
 
@@ -157,15 +159,18 @@ static void	cmd_free(t_cmd **cmd)
 	int		i;
 
 	ptr = *cmd;
-	i = 0;
 	tmp = NULL;
 	while (ptr)
 	{
+		i = 0;
 		tmp = ptr->next;
 		while (ptr->command[i])
 			free(ptr->command[i++]);
 		if (ptr->here_doc)
+		{
 			free(ptr->here_doc);
+			unlink("/var/tmp/.temp.txt");
+		}
 		if (ptr->fd_in != 0 && ptr->fd_in != 1)
 			close(ptr->fd_in);
 		if (ptr->fd_out != 0 && ptr->fd_out != 1)
@@ -174,8 +179,6 @@ static void	cmd_free(t_cmd **cmd)
 		free(ptr);
 		ptr = tmp;
 	}
-	if (unlink("/var/tmp/.temp.txt") != 0)
-		perror("unlink");
 	*cmd = NULL;
 }
 
@@ -257,24 +260,23 @@ void	grouping(t_info *info)
 			token = token->next;
 	}
 	info->status = e_index_check(e_index);
-	t_cmd *ptr = info->cmd_lst;
+	/* t_cmd *ptr = info->cmd_lst;
 	while (ptr)
 	{
 		char **line = ptr->command;
+		printf (BLUE"commands: "RESET);
 		while (*line)
 		{
-			int i = 0;
 			char *str = *line;
-			while (str[i])
-				i++;
+			printf (BLUE"%s helllo ", str);
 			line++;
 		}
 		printf ("\n	");
-		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
+		printf ("fd_in: %d\nfd_out: %d\n", ptr->fd_in, ptr->fd_out);
 		if (ptr->here_doc)
 			printf (BLUE"here_doc: %s\n"RESET, ptr->here_doc);
 		ptr = ptr->next;
-	}
+	} */
 	t_cmd *list = info->cmd_lst;
 	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);

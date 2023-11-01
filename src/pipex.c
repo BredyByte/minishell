@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 16:00:41 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/01 16:00:43 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 19:35:25 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,5 @@ int	ft_pipex(t_info *info, t_cmd *list)
 		}
 		list = list->next;
 	}
-	printf("\n");
 	return (EXIT_SUCCESS);
 }
