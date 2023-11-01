@@ -20,5 +20,7 @@
 
 - Ruben: 
 	* cd -> Refactor it and delete printfs
+			aaand see latest updates; we have to do some changes
+			Do a function to abstract the update of the paths
 	
 
