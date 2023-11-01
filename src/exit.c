@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 12:02:39 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:12:19 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int    exit1(t_info *info, char **cmd)
     ft_putendl_fd("exit", STDOUT);
     if (cmd[1] && cmd[2] != NULL)
     {
-        ft_print_error("Ruben: from exit: too many arguments\n");
+        ft_putendl_fd("Bash: exit: too many arguments", 2);
         return (EXIT_ERROR);
     }
     if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
@@ -56,7 +56,7 @@ int    exit1(t_info *info, char **cmd)
             return (ft_exit(info, 0));
         else if (ft_isnum(cmd[1]) == FALSE)
         {
-            ft_print_error("Ruben: from exit: Not a number ");
+            ft_putendl_fd("Bash: exit: numeric argument required", 2);
             return (ft_exit(info, 255));
         }
         else
@@ -64,7 +64,7 @@ int    exit1(t_info *info, char **cmd)
     }
     else
     {
-        ft_print_error("Ruben: from ft_exit: this is not a exit!");
+        ft_print_error("Bad command");
         return (BAD_ARGS);
     }
 }

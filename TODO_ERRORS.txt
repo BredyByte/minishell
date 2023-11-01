@@ -1,10 +1,7 @@
 - TODO:
 	* Implement SIGNALS - ⛔️
 	* Implement HERE_DOC - ⛔️
-	* Implement ./minishell into ./minishell - ⛔️
-- PIPEX
-	* Doesnt work when manipulating files; infinite loop - ⛔️
--
+	* CHECK LEAKS
 
 - Davyd: Close fd in case of >a>b>c - ⛔️❗️
 - Davyd: implement here_doc - ⛔️❗️
@@ -21,16 +18,7 @@
 
 
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben:	
-	* Ret_val from cmds:
-		- CMDs:		Somehow, when a normal cmd doesnt execute properly, I doesnt store the good value -- mine returns 0 
-	* unset PATH then executing: I dont know why but I dont yield any error...though in pipex was done but here it just	
-								doesnt do it
-	* Check all the print messages as well as return values when something go wrong 
+- Ruben: 
+	* cd -> Refactor it
 	
-- Both: I need to review with you about info->status.
-	I am not sure if it is to store exit value from subprocesses or exit value from minishell itself.
-	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt. - ⛔️
-- Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it - ⛔️
-
 

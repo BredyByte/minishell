@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 13:35:36 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:52:32 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_print_error(char *error)
 	return (EXIT_ERROR);
 }
 
-//We r gonna init a list here, but we will use the one from global var
 int	ft_is_builtin(t_info *info, char *str)
 {
 	int	cntr;
@@ -26,7 +25,7 @@ int	ft_is_builtin(t_info *info, char *str)
 	cntr = 0;
 	while (info->reserved_words[cntr])
 	{
-		if (ft_strncmp(str, info->reserved_words[cntr], ft_strlen(info->reserved_words[cntr])) == 0)
+		if (ft_strncmp(str, info->reserved_words[cntr], ft_strlen(info->reserved_words[cntr]) + 1) == 0)
 			return (TRUE);
 		cntr++;
 	}

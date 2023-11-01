@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 10:30:33 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:04:30 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	ft_exec_builtin(t_info *info, char **cmd)
 {
 	if (ft_strncmp("cd", cmd[0], 2) == 0 && cmd[0][2] == '\0')
 		return (cd(info, cmd));
-	else if (ft_strncmp("echo", cmd[0], 4) == 0  & cmd[0][4] == '\0')
+	else if (ft_strncmp("echo", cmd[0], 4) == 0 && cmd[0][4] == '\0')
 		return (echo(cmd));
 	else if (ft_strncmp("env", cmd[0], 3) == 0 && cmd[0][3] == '\0')
 		return (env(info, cmd));
@@ -41,9 +41,9 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	int		og_stdout;
 
 	//Remove this 
-	printf(GREEN"cmd     fd_in   fd_out\n"RESET);
-	if (node && node->command[0])
-    	printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
+	//printf(GREEN"cmd     fd_in   fd_out\n"RESET);
+	//if (node && node->command[0])
+    //	printf(GREEN"%s      %i      %i     \n\n"RESET, node->command[0], node->fd_in, node->fd_out);
 	status = 0;
 	if (!node->command[0])
 		return (EXIT_SUCCESS);
@@ -53,13 +53,13 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 		if (node->fd_in != NO_FD && node->fd_in != STDIN)
 		{
 			if (dup2(node->fd_in, STDIN) < 0)
-				return (ft_print_error("Ruben: "REDIR_ERROR));
+				return (ft_print_error(REDIR_ERROR));
 			close(node->fd_in);
 		}
 		if (node->fd_out != NO_FD && node->fd_out != STDOUT)
 		{
 			if (dup2(node->fd_out, STDOUT) < 0)
-				return (ft_print_error("Ruben: "REDIR_ERROR));
+				return (ft_print_error(REDIR_ERROR));
 			close(node->fd_out);
 		}
 		status = ft_exec_builtin(info, node->command);
@@ -77,23 +77,23 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	{	
 		id = fork();
 		if (id < 0)
-			return (ft_print_error("Ruben: "FORK_ERROR));
+			return (ft_print_error(FORK_ERROR));
 		if (id == 0)
 		{
 			if (node->fd_in != NO_FD && node->fd_in != STDIN)
 			{
 				if (dup2(node->fd_in, STDIN) < 0)
-					return (ft_print_error("Ruben: "REDIR_ERROR));
+					return (ft_print_error(REDIR_ERROR));
 				close(node->fd_in);
 			}
 			if (node->fd_out != NO_FD && node->fd_out != STDOUT)
 			{
 				if (dup2(node->fd_out, STDOUT) < 0)
-					return (ft_print_error("Ruben: "REDIR_ERROR));
+					return (ft_print_error(REDIR_ERROR));
 				close(node->fd_out);
 			}
 			if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),node->command, info->envp) < 0)
-				return (ft_print_error("Ruben: "EXEC_ERROR));
+				return (ft_print_error(EXEC_ERROR));
 		}
 		else
 		{
@@ -115,7 +115,7 @@ int	ft_pipex(t_info *info, t_cmd *list)
 	status = 0;
 	while (list)
 	{
-		printf(GREEN"\nRuben:\n\n"RESET);
+		//printf(GREEN"\nRuben:\n\n"RESET);
 		status = ft_exec_cmd(info, list);
 		if (status == EXIT_EXIT)
 			return (status);
@@ -125,8 +125,6 @@ int	ft_pipex(t_info *info, t_cmd *list)
 			return (status);
 		}
 		list = list->next;
-		printf("\n");
 	}
-	printf("\n");
 	return (EXIT_SUCCESS);
 }

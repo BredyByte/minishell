@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 10:20:27 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:57:21 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int  ft_is_nl(char **str)
 {
     if (!str[1])
         return (FALSE);
-    if (ft_strncmp(str[1], "-n", 2) == 0)
+    if (ft_strncmp(str[1], "-n", 2) == 0 && str[1][2] == '\0')
             return (TRUE);
     return (FALSE);
 }
