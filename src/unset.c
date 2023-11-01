@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:23:14 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:02:20 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:22:26 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int    unset(t_info *info, char **cmd)
         if (cmd[1])
             return(ft_unset(info, cmd[1]));
         else 
-            return (ft_print_error("No args here"));
+            return (EXIT_SUCCESS);
     }
     else
         return (ft_print_error("This is not an unset!"));

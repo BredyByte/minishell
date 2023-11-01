@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 16:29:56 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:02:39 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ static int  ft_isnum(char *str)
 
 int ft_exit(t_info *info, int option)
 {
-    //See with Davyd who controls the errors here
-    //Theoretically, we have to update a variable of the global struct like
-    //We use the modulo 256 because bash does it like that
-    // minishell->ret = option % 256;
     int value;
 
     value = option % 256;
@@ -49,21 +45,19 @@ int ft_exit(t_info *info, int option)
 int    exit1(t_info *info, char **cmd)
 {
     ft_putendl_fd("exit", STDOUT);
-    if (cmd[2] != NULL)
+    if (cmd[1] && cmd[2] != NULL)
     {
         ft_print_error("Ruben: from exit: too many arguments\n");
-        return (BAD_ARGS);
+        return (EXIT_ERROR);
     }
-
     if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
     {
         if (!cmd[1])
             return (ft_exit(info, 0));
         else if (ft_isnum(cmd[1]) == FALSE)
         {
-            ft_exit(info, 255);
             ft_print_error("Ruben: from exit: Not a number ");
-            return (BAD_ARGS);
+            return (ft_exit(info, 255));
         }
         else
             return (ft_exit(info, ft_atoi(cmd[1])));

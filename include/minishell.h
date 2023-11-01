@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 15:35:40 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:04:08 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	grouping(t_info *info);
 
 # define EXIT_EXIT 3 					//<-----If we store exit status and cmd status in the same var, I need 
 # define EXIT_SUCCESS 0					// 		a flag to not overwrite "status" when I call exit
-# define EXIT_ERROR -1
+# define EXIT_ERROR 1
 # define BAD_ARGS 2
 # define COMMAND_NOT_FOUND 127
 # define CTRL_C 130

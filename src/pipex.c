@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 15:37:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:30:33 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 
 int	ft_pipex(t_info *info, t_cmd *list)
 {
-	int i = 0;
 	int status;
 	
 	status = 0;
@@ -118,13 +117,14 @@ int	ft_pipex(t_info *info, t_cmd *list)
 	{
 		printf(GREEN"\nRuben:\n\n"RESET);
 		status = ft_exec_cmd(info, list);
-		if (status != EXIT_SUCCESS)				// I need to check the behaviour of chained failures
-		{										// See how to implement exit here, RN we have EXIT_EXIT 3 to check exit cmd 
+		if (status == EXIT_EXIT)
+			return (status);
+		else if (status != EXIT_SUCCESS)			// I need to check the behaviour of chained failures
+		{												// See how to implement exit here, RN we have EXIT_EXIT 3 to check exit cmd 
 			info->status = status;
 			return (status);
 		}
 		list = list->next;
-		i++;
 		printf("\n");
 	}
 	printf("\n");

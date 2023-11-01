@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 15:38:25 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 10:20:27 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int    ft_echo(char **cmd)
         ft_putstr_fd("\n", STDOUT);
         return (EXIT_SUCCESS);
     }
-    while (ft_strncmp(cmd[idx], "-n", 2) == 0)
+    while (ft_strncmp(cmd[idx], "-n", 2) == 0 && cmd[idx][3] == '\0')
         idx++;
     while (cmd[idx])
     {
