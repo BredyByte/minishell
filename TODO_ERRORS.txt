@@ -14,11 +14,11 @@
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
 - Davyd:
 	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd
+- Davyd: add "nbsp" (option + space) in parser
 
 
 
-- Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben: 
-	* cd -> Refactor it
+	* cd -> Refactor it and delete printfs
 	
 
