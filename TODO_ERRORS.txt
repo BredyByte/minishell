@@ -1,10 +1,7 @@
 - TODO:
 	* Implement SIGNALS - ⛔️
 	* Implement HERE_DOC - ⛔️
-	* Implement ./minishell into ./minishell - ⛔️
-- PIPEX
-	* Doesnt work when manipulating files; infinite loop - ⛔️
--
+	* CHECK LEAKS
 
 - Davyd: Close fd in case of >a>b>c - ✅❗️
 - Davyd: implement here_doc - ⛔️❗️
@@ -17,8 +14,12 @@
 - Davyd: case of "<outfile.txt" gives segment eror - ⛔️
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
+- Davyd:
+	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd
+- Davyd: add "nbsp" (option + space) in parser
 
 
+<<<<<<< HEAD
 - Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben: build-in exit works bad  - ⛔️
@@ -34,3 +35,10 @@
 
  - QUESTIONS:
 	* expansion_utils, line: 28. WHAT? I need a deeper explanation. - ⛔️ - one func for chage 	- t_list *envp_lst; - depense of char **envp;
+=======
+
+- Ruben: 
+	* cd -> Refactor it and delete printfs
+	
+
+>>>>>>> 2cb4f58a4d68cd19d22906779c4023c8fa8329d0

@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/01 15:55:45 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/11/01 15:59:53 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/11/01 16:01:38 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -259,16 +260,13 @@ void	grouping(t_info *info)
 	t_cmd *ptr = info->cmd_lst;
 	while (ptr)
 	{
-		printf(BLUE"\nDavid:\n\n"RESET);
 		char **line = ptr->command;
-		printf(BLUE"commands: "RESET);
 		while (*line)
 		{
 			int i = 0;
 			char *str = *line;
 			while (str[i])
 				i++;
-			printf (BLUE"   %s"RESET, *line);
 			line++;
 		}
 		printf ("\n	");

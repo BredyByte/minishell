@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/30 16:48:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 14:40:45 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,36 @@ int	ft_print_error(char *error)
 	return (EXIT_ERROR);
 }
 
-//We r gonna init a list here, but we will use the one from global var
 int	ft_is_builtin(t_info *info, char *str)
 {
-	char *table[] = {	"cd", 
-						"env",
-						"pwd",
-						"echo",
-						"exit",
-						"unset",
-						"export",
-						NULL,
-					};
 	int	cntr;
-	/***********************************************************/
+
 	cntr = 0;
 	while (info->reserved_words[cntr])
 	{
-		printf("Reserved word nº %i:	%s\n", cntr + 1, info->reserved_words[cntr]);
-		cntr++;
-	}
-	/***********************************************************/
-	cntr = 0;
-	while (table[cntr])
-	{
-		if (ft_strncmp(str, table[cntr], ft_strlen(table[cntr])) == 0)
+		if (ft_strncmp(str, info->reserved_words[cntr], ft_strlen(info->reserved_words[cntr]) + 1) == 0)
 			return (TRUE);
 		cntr++;
 	}
 	return (FALSE);
 }
 
-char	*abs_bin_path(char *cmd, char **envp)	
+char	*ft_valid_cmd(char *cmd)
+{
+	if (access(cmd, F_OK) == 0)
+	{
+		if (access(cmd, X_OK) < 0)
+		{
+			perror("Permission denied\n");
+			return (NULL);
+		}
+		else
+			return (cmd);
+	}
+	return (cmd);
+}
+
+char	*abs_bin_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*slash_cmd;
@@ -59,18 +57,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 	slash_cmd = NULL;
 	possible_bin = NULL;
 	if ((cmd[0] == '/') || (cmd[0] == '.' && cmd[1] == '/'))
-	{
-		if (access(cmd, F_OK) == 0)
-		{
-			if (access(cmd, X_OK) < 0)
-			{
-				perror("Permission denied\n");
-				return (NULL);
-			}
-			else
-				return (cmd);
-		}
-	}
+		return (ft_valid_cmd(cmd));
 	else
 	{
 		slash_cmd = ft_strjoin("/", cmd);
@@ -78,15 +65,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 		{
 			possible_bin = ft_strjoin(envp[i], slash_cmd);
 			if (access(possible_bin, F_OK) == 0)
-			{
-				if (access(possible_bin, X_OK) < 0)
-				{
-					perror("Permission denied\n");
-					return (NULL);
-				}
-				else
-					return (possible_bin);
-			}
+				return (ft_valid_cmd(possible_bin));
 			i++;
 		}
 	}
