@@ -1,10 +1,7 @@
 - TODO:
 	* Implement SIGNALS - ⛔️
 	* Implement HERE_DOC - ⛔️
-	* Implement ./minishell into ./minishell - ⛔️
-- PIPEX
-	* Doesnt work when manipulating files; infinite loop - ⛔️
--
+	* CHECK LEAKS
 
 - Davyd: Close fd in case of >a>b>c - ⛔️❗️
 - Davyd: implement here_doc - ⛔️❗️
@@ -17,20 +14,13 @@
 - Davyd: case of "<outfile.txt" gives segment eror - ⛔️
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
+- Davyd:
+	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd
 
 
-- Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
+
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben: build-in exit works bad  - ⛔️
-- Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct - ⛔️
-- Ruben: (case of "<outfile.txt" gives segment eror). parser/grouping.c: before the lounch of pipex check the num of command nodes (numbers of info->cmd_lst > 1). In case of info->cmd_lst == 1 pipex is unnecessary - and gives sigment.foult ⛔️ 🆕
+- Ruben: 
+	* cd -> Refactor it
+	
 
-
-- Both: I need to review with you about info->status.
-	I am not sure if it is to store exit value from subprocesses or exit value from minishell itself.
-	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt. - ⛔️
-- Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it - ⛔️
-- Both: Exit doesnt always work, for some reason I dont know - ⛔️
-
- - QUESTIONS:
-	* expansion_utils, line: 28. WHAT? I need a deeper explanation. - ⛔️ - one func for chage 	- t_list *envp_lst; - depense of char **envp;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/31 12:46:10 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:12:19 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,38 +34,37 @@ static int  ft_isnum(char *str)
 
 int ft_exit(t_info *info, int option)
 {
-    //See with Davyd who controls the errors here
-    //Theoretically, we have to update a variable of the global struct like
-    //We use the modulo 256 because bash does it like that
-    // minishell->ret = option % 256;
     int value;
 
     value = option % 256;
     info->status = value;
     info->exit_f = 1;
-    printf("Original value: %i\n", option);
-    printf("Value %i saved in status\n", value);
-    return (EXIT_SUCCESS);
+    return (EXIT_EXIT);
 }
 
 int    exit1(t_info *info, char **cmd)
 {
     ft_putendl_fd("exit", STDOUT);
-    if (cmd[2] != NULL)
-        return (ft_print_error("Ruben: from exit: too many arguments\n"));
-
+    if (cmd[1] && cmd[2] != NULL)
+    {
+        ft_putendl_fd("Bash: exit: too many arguments", 2);
+        return (EXIT_ERROR);
+    }
     if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
     {
         if (!cmd[1])
             return (ft_exit(info, 0));
         else if (ft_isnum(cmd[1]) == FALSE)
         {
-            ft_exit(info, 255);
-            return (ft_print_error("Ruben: from exit: Not a number "));
+            ft_putendl_fd("Bash: exit: numeric argument required", 2);
+            return (ft_exit(info, 255));
         }
         else
             return (ft_exit(info, ft_atoi(cmd[1])));
     }
     else
-        return (ft_print_error("Ruben: from ft_exit: this is not a exit!"));
+    {
+        ft_print_error("Bad command");
+        return (BAD_ARGS);
+    }
 }

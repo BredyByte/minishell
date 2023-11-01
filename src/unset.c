@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:23:14 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:02:20 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:06:49 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,11 @@ int ft_unset(t_info *info, char *tuple)
 {
     if (ft_env_exists(tuple, info->envp) == TRUE)
     {
-        printf("Ruben: From unset: Ah yes it is there\n");
         ft_delete_variable(info, tuple);
         return (EXIT_SUCCESS);
     }
     else
-    {
-        printf("Ruben: From unset: Env variable doesnt exists\n");
-        return (EXIT_FAILURE);
-    }
-    return (EXIT_SUCCESS);
+        return (EXIT_SUCCESS);
 }
 
 int    unset(t_info *info, char **cmd)
@@ -59,8 +54,8 @@ int    unset(t_info *info, char **cmd)
         if (cmd[1])
             return(ft_unset(info, cmd[1]));
         else 
-            return (ft_print_error("No args here"));
+            return (EXIT_SUCCESS);
     }
     else
-        return (ft_print_error("This is not an unset!"));
+        return (ft_print_error("Bad command"));
 }

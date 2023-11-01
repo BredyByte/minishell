@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/30 14:36:11 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 13:08:07 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,7 @@ void    ft_print_export(t_info *info)
     char    **ordered_list;
     idx = 0;
     if (info->envp == NULL)
-    {
-        ft_putendl_fd("Ruben from print_export: Error: Env variable list is empty", 2);
         return ;
-    }
     ordered_list = ft_order_env(info->envp);
     while (ordered_list[idx] != NULL)
     {
@@ -245,5 +242,5 @@ int    export(t_info *info, char **cmd)
         else
             return (ft_export(info, cmd[1]));
     else
-        return (ft_print_error("Ruben: from ft_export: this is not an export!"));
+        return (ft_print_error("Bad command"));
 }

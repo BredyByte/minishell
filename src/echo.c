@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:03:11 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:57:21 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int  ft_is_nl(char **str)
 {
     if (!str[1])
         return (FALSE);
-    if (ft_strncmp(str[1], "-n", 2) == 0)
+    if (ft_strncmp(str[1], "-n", 2) == 0 && str[1][2] == '\0')
             return (TRUE);
     return (FALSE);
 }
@@ -34,7 +34,7 @@ int    ft_echo(char **cmd)
         ft_putstr_fd("\n", STDOUT);
         return (EXIT_SUCCESS);
     }
-    while (ft_strncmp(cmd[idx], "-n", 2) == 0)
+    while (ft_strncmp(cmd[idx], "-n", 2) == 0 && cmd[idx][3] == '\0')
         idx++;
     while (cmd[idx])
     {
@@ -57,6 +57,6 @@ int    echo(char **cmd)
     else
     {
         ft_putendl_fd("Ruben: from ft_echo: this is not a echo!", 2);
-        return (EXIT_ERROR);
+        return (BAD_ARGS);
     }
 }
