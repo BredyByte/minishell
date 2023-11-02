@@ -20,7 +20,15 @@
 
 
 
+<<<<<<< HEAD
 - Ruben:
 	* cd -> Refactor it and delete printfs
 			aaand see latest updates; we have to do some changes
 			Do a function to abstract the update of the paths
+=======
+- Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
+- Ruben: 
+	* cd -> Refactor it
+	
+
+>>>>>>> 3e43b968c7c027e5bf5b338ad04153a4dde24290
