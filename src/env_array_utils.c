@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:39:08 by regea-go          #+#    #+#             */
-/*   Updated: 2023/10/29 16:01:34 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/01 15:00:56 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@
  * 
  * @param str 
  */
-void    ft_free_matrix(char **envp)
+void	ft_free_matrix(char **envp)
 {
-    int idx;
+	int	idx;
 
-    idx = 0;
-    while (envp[idx])
-    {
-        if (envp[idx])
-        {
-            free(envp[idx]);
-            envp[idx] = NULL;
-        }
-        idx++;
-    }
-    free(envp);
-    envp = NULL;
+	idx = 0;
+	while (envp[idx])
+	{
+		if (envp[idx])
+		{
+			free(envp[idx]);
+			envp[idx] = NULL;
+		}
+		idx++;
+	}
+	free(envp);
+	envp = NULL;
 }
 
 /**
@@ -41,14 +41,14 @@ void    ft_free_matrix(char **envp)
  * @param envp 
  * @return int 
  */
-int     ft_matrix_size(char **envp)
+int	ft_matrix_size(char **envp)
 {
-    int size;
+	int	size;
 
-    size = 0;
-    while (envp[size])
-        size++;
-    return (size);
+	size = 0;
+	while (envp[size])
+		size++;
+	return (size);
 }
 
 /**
@@ -57,23 +57,23 @@ int     ft_matrix_size(char **envp)
  * @param envp The matrix to copy
  * @return char** The new copied matrix
  */
-char    **ft_copy_matrix(char **envp)
+char	**ft_copy_matrix(char **envp)
 {
-    int     idx;
-    char    **new_envp;
+	int		idx;
+	char	**new_envp;
 
-    idx = 0;
-    new_envp = malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
-    if (!new_envp)
-        return (NULL);
-    while (envp[idx])
-    {
-        new_envp[idx] = ft_strdup(envp[idx]);
-        idx++;
-    }
-    new_envp[idx] = NULL;
-    ft_free_matrix(envp);
-    return (new_envp);
+	idx = 0;
+	new_envp = malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
+	if (!new_envp)
+		return (NULL);
+	while (envp[idx])
+	{
+		new_envp[idx] = ft_strdup(envp[idx]);
+		idx++;
+	}
+	new_envp[idx] = NULL;
+	ft_free_matrix(envp);
+	return (new_envp);
 }
 
 /**
@@ -83,17 +83,17 @@ char    **ft_copy_matrix(char **envp)
  */
 int	ft_init_envp(t_info *info, char **envp)
 {
-    int     idx;
+	int	idx;
 
-    idx = 0;
-    info->envp = (char **)malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
-    if (!info)
-        return (EXIT_ERROR);
-    while (envp[idx])
-    {
-        info->envp[idx] = ft_strdup(envp[idx]);
-        idx++;
-    }
-    info->envp[idx] = NULL;
-    return (EXIT_SUCCESS);
+	idx = 0;
+	info->envp = (char **)malloc((ft_matrix_size(envp) + 1) * sizeof(char *));
+	if (!info)
+		return (EXIT_ERROR);
+	while (envp[idx])
+	{
+		info->envp[idx] = ft_strdup(envp[idx]);
+		idx++;
+	}
+	info->envp[idx] = NULL;
+	return (EXIT_SUCCESS);
 }

@@ -1,36 +1,26 @@
 - TODO:
 	* Implement SIGNALS - ⛔️
 	* Implement HERE_DOC - ⛔️
-	* Implement ./minishell into ./minishell - ⛔️
-- PIPEX
-	* Doesnt work when manipulating files; infinite loop - ⛔️
--
+	* CHECK LEAKS
 
-- Davyd: Close fd in case of >a>b>c - ⛔️❗️
-- Davyd: implement here_doc - ⛔️❗️
+- Davyd: Close fd in case of >a>b>c - ✅❗️
+- Davyd: implement here_doc -  ✅❗️
 - Davyd: echo Hola | cat -e is ok, but
-	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ⛔️
+	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ✅
 - Davyd: same happens with cat infile | more
-	depending on the command, sometimes it crashes - ⛔️
-- Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ⛔️
+	depending on the command, sometimes it crashes - ✅
+- Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ✅
 - Davyd: This case "cat outfile.txt | more " Memmory error - ⛔️
 - Davyd: case of "<outfile.txt" gives segment eror - ⛔️
 - Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - ⛔️
+- Davyd:
+	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd
+- Davyd: add "nbsp" (option + space) in parser
 
 
-- Ruben: I have to return status code from the execution of commands properly...I have to check it - ⛔️
-- Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben: build-in exit works bad  - ⛔️
-- Ruben: I still check with is_builtin from a local array of commands; I have to update it to work with the array of the struct - ⛔️
-- Ruben: (case of "<outfile.txt" gives segment eror). parser/grouping.c: before the lounch of pipex check the num of command nodes (numbers of info->cmd_lst > 1). In case of info->cmd_lst == 1 pipex is unnecessary - and gives sigment.foult ⛔️ 🆕
 
-
-- Both: I need to review with you about info->status.
-	I am not sure if it is to store exit value from subprocesses or exit value from minishell itself.
-	Btw, when I call "exit" function with no args, for some reason sometimes it works, sometimes it just doesnt. - ⛔️
-- Both: Explain me how did you consider the possibility of here_doc, to see how I can manage it - ⛔️
-- Both: Exit doesnt always work, for some reason I dont know - ⛔️
-
- - QUESTIONS:
-	* expansion_utils, line: 28. WHAT? I need a deeper explanation. - ⛔️ - one func for chage 	- t_list *envp_lst; - depense of char **envp;
+- Ruben:
+	* cd -> Refactor it and delete printfs
+			aaand see latest updates; we have to do some changes
+			Do a function to abstract the update of the paths

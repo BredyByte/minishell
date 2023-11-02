@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 13:48:26 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/11/01 15:59:53 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/11/01 20:09:06 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -70,6 +71,31 @@ char	**add_to_array(char **arr, char *new_str)
 	return (new_arr);
 }
 
+int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
+{
+    new_node->here_doc = ft_strdup(here_doc_str);
+    if (!new_node->here_doc)
+    	return (-1);
+	char *line = NULL;
+	int fd_temp = open("/var/tmp/.temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd_temp == -1)
+		return (-1);
+    while (1)
+	{
+		line = readline("> ");
+		if (line == NULL || (line != NULL && ft_strncmp(line, new_node->here_doc, ft_strlen(new_node->here_doc)) == 0))
+			break ;
+		write(fd_temp, line, ft_strlen(line));
+		write(fd_temp, "\n", 1);
+		free(line);
+	}
+	free(line);
+	close(fd_temp);
+	fd_temp = open("/var/tmp/.temp.txt", O_RDONLY);
+	new_node->fd_in = fd_temp;
+    return (fd_temp);
+}
+
 int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 {
 	int		fd[2];
@@ -90,6 +116,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_IN)
 	{
+		if (new_node->fd_in > 2)
+			close(new_node->fd_in);
 		new_node->fd_in = open(token->next->value, O_RDONLY);
 		if (new_node->fd_in == -1)
 			return (1);
@@ -97,6 +125,8 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_OUT || token->key == TOKEN_REDIR_APPEND)
 	{
+		if (new_node->fd_out > 2)
+			close(new_node->fd_out);
 		if (token->key == TOKEN_REDIR_APPEND)
 		{
 			new_node->fd_out = open(token->next->value, O_WRONLY
@@ -115,32 +145,37 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 	}
 	else if (token->key == TOKEN_REDIR_INSOURCE)
 	{
-		new_node->here_doc = ft_strdup(token->next->value);
-		new_node->fd_in = 0;
+		if (here_doc_read_line(new_node, token->next->value) == -1)
+			return (1);
+		*token_ptr = token->next;
 	}
 	return (0);
 }
 
 static void	cmd_free(t_cmd **cmd)
 {
-	t_cmd *ptr;
-	t_cmd *tmp;
-	int i;
+	t_cmd	*ptr;
+	t_cmd	*tmp;
+	int		i;
 
 	ptr = *cmd;
-	i = 0;
 	tmp = NULL;
 	while (ptr)
 	{
+		i = 0;
 		tmp = ptr->next;
 		while (ptr->command[i])
 			free(ptr->command[i++]);
+		if (ptr->here_doc)
+		{
+			free(ptr->here_doc);
+			unlink("/var/tmp/.temp.txt");
+		}
 		if (ptr->fd_in != 0 && ptr->fd_in != 1)
 			close(ptr->fd_in);
 		if (ptr->fd_out != 0 && ptr->fd_out != 1)
 			close(ptr->fd_out);
 		free(ptr->command);
-		free(ptr->here_doc);
 		free(ptr);
 		ptr = tmp;
 	}
@@ -198,7 +233,9 @@ void	grouping(t_info *info)
 	{
 		if (e_index)
 			break ;
-		if (!new || (new && new->command[0]))
+		if (!new || (new && new->command[0]
+				&& !(token->key == TOKEN_REDIR_APPEND
+					|| token->key == TOKEN_REDIR_OUT)))
 		{
 			new = new_cmd();
 			add_back_cmd(&info->cmd_lst, new);
@@ -223,25 +260,23 @@ void	grouping(t_info *info)
 			token = token->next;
 	}
 	info->status = e_index_check(e_index);
-	t_cmd *ptr = info->cmd_lst;
+	/* t_cmd *ptr = info->cmd_lst;
 	while (ptr)
 	{
-		printf(BLUE"\nDavid:\n\n"RESET);
 		char **line = ptr->command;
-		printf(BLUE"commands: "RESET);
+		printf (BLUE"commands: "RESET);
 		while (*line)
 		{
-			int i = 0;
 			char *str = *line;
-			while (str[i])
-				i++;
-			printf (BLUE"   %s"RESET, *line);
+			printf (BLUE"%s helllo ", str);
 			line++;
 		}
 		printf ("\n	");
-		printf (BLUE"fd_in: %d\nfd_out: %d\n"RESET, ptr->fd_in, ptr->fd_out);
+		printf ("fd_in: %d\nfd_out: %d\n", ptr->fd_in, ptr->fd_out);
+		if (ptr->here_doc)
+			printf (BLUE"here_doc: %s\n"RESET, ptr->here_doc);
 		ptr = ptr->next;
-	}
+	} */
 	t_cmd *list = info->cmd_lst;
 	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);
