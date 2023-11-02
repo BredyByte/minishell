@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 16:05:44 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:05:47 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,6 @@ typedef struct s_info
 	t_cmd			*cmd_lst;
 }					t_info;
 
-// buildins
-int		buildin_echo(t_list *list, t_info *info);
-int		buildin_cd(t_list *list, t_info *info);
-int		buildin_pwd(t_list *list, t_info *info);
-int		buildin_export(t_list *list, t_info *info);
-int		buildin_unset(t_list *list, t_info *info);
-int		buildin_env(t_list *list, t_info *info);
-int		buildin_exit(t_list *list, t_info *info);
-
 // init_utils
 void	init_envp_lst(t_info *info, char **envp);
 void	init_envp(t_info *info, char **environ);
@@ -142,7 +133,7 @@ void	handle_quotes(t_info *info, char **str);
 // tokenizer_core
 void	tokenizer(t_info *info, char *str);
 
-// exapansion
+// exapansion_core
 void	expansion(t_info *info);
 
 // expantion_utils
@@ -154,8 +145,22 @@ char	*get_envp_key(char *str);
 // delete_sep_token
 void	delete_token_sep(t_info *info);
 
-// grouping
+// here_doc
+int		here_doc(t_cmd *new_node, char *here_doc_str);
+
+// grouping_core
 void	grouping(t_info *info);
+
+// grouping_cmd_lst
+t_cmd	*new_cmd(void);
+void	add_back_cmd(t_cmd **cmd_ptr, t_cmd *new_node);
+void	cmd_free(t_cmd **cmd);
+
+// grouping_utils
+int		check_sintax_unexpected_token(t_token *token);
+int		e_index_check(int index);
+char	**add_to_array(char **arr, char *new_str);
+int		redir(t_cmd *new_node, int *fd_in, t_token **token_ptr);
 
 // refill_envp_lst
 void	ft_t_lstclear(t_list **envp_lst);
@@ -235,6 +240,6 @@ int		ft_is_builtin(t_info *info, char *str);
 
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node);
-int		ft_pipex(t_info *info, t_cmd *list);
+int		ft_pipex(t_info *info);
 
 #endif
