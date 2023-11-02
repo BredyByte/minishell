@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:23:14 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 14:21:10 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:50:41 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	ft_unset(t_info *info, char *tuple)
 	if (ft_env_exists(tuple, info->envp) == TRUE)
 	{
 		ft_delete_variable(info, tuple);
+		refill_envp_lst(info, info->envp);						//<---- updated list
 		return (EXIT_SUCCESS);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:08:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 15:12:10 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:55:26 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ int	ft_cd(t_info *info, char **cmd)
 	if (cmd[1] == NULL)
 		return (ft_cd_home(info));
 	else if (ft_strncmp(cmd[1], "-", 1) == 0)
-		return (ft_cd_lastdir(info));
+	{
+		if (cmd[1][1] == '\0')
+			return (ft_cd_lastdir(info));
+		else
+			return (EXIT_SUCCESS);
+	}
 	else if (ft_strncmp(cmd[1], "~", 1) == 0)
 	{
 		if (ft_strlen(cmd[1]) == 1)
@@ -51,8 +56,15 @@ int	ft_cd(t_info *info, char **cmd)
 
 int	cd(t_info *info, char **cmd)
 {
+	int	status;
+
+	status = 0;
 	if (ft_strncmp(cmd[0], "cd", 2) == 0 && cmd[0][2] == '\0')
-		return (ft_cd(info, cmd));
+	{
+		status = ft_cd(info, cmd);
+		refill_envp_lst(info, info->envp);						//<---- updated list
+		return (status);
+	}
 	else
 	{
 		ft_putendl_fd("Bad command", 2);
