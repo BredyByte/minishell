@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 18:05:47 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:07:05 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,11 @@ void	init_envp(t_info *info, char **environ);
 // ft_readline
 char	*ft_readline(char *prompt);
 
-// tokenizer_core
-void	fill_in_lex(t_info *info, int token, char *content);
+// refill_envp_lst
+void	ft_t_lstclear(t_list **envp_lst);
+void	refill_envp_lst(t_info *info, char **new_envp);
 
+/****Tokenizer*******/
 // tenizer_handlers
 void	handle_redirections(t_info *info, char **str);
 void	handle_words(t_info *info, char **str);
@@ -132,7 +134,10 @@ void	handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
 void	tokenizer(t_info *info, char *str);
+void	fill_in_lex(t_info *info, int token, char *content);
+void	delete_token_sep(t_info *info);
 
+/****Expansion*******/
 // exapansion_core
 void	expansion(t_info *info);
 
@@ -142,14 +147,11 @@ void	append_to_buffer(char *buf, const char *append, int *current_len);
 char	*get_envp_value(t_list *list, char *str);
 char	*get_envp_key(char *str);
 
-// delete_sep_token
-void	delete_token_sep(t_info *info);
-
-// here_doc
-int		here_doc(t_cmd *new_node, char *here_doc_str);
-
+/****Grouping*******/
 // grouping_core
 void	grouping(t_info *info);
+int		here_doc(t_cmd *new_node, char *here_doc_str);
+int		redir(t_cmd *new_node, int *fd_in, t_token **token_ptr);
 
 // grouping_cmd_lst
 t_cmd	*new_cmd(void);
@@ -160,11 +162,6 @@ void	cmd_free(t_cmd **cmd);
 int		check_sintax_unexpected_token(t_token *token);
 int		e_index_check(int index);
 char	**add_to_array(char **arr, char *new_str);
-int		redir(t_cmd *new_node, int *fd_in, t_token **token_ptr);
-
-// refill_envp_lst
-void	ft_t_lstclear(t_list **envp_lst);
-void	refill_envp_lst(t_info *info, char **new_envp);
 
 /****Envp utils*******/
 //For envp manipulation
