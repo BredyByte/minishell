@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 14:40:45 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:05:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	ft_is_builtin(t_info *info, char *str)
 	cntr = 0;
 	while (info->reserved_words[cntr])
 	{
-		if (ft_strncmp(str, info->reserved_words[cntr], ft_strlen(info->reserved_words[cntr]) + 1) == 0)
+		if (ft_strncmp(str, info->reserved_words[cntr],
+				ft_strlen(info->reserved_words[cntr]) + 1) == 0)
 			return (TRUE);
 		cntr++;
 	}

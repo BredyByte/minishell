@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   refill_envp_lst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/08 16:21:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/01 14:20:40 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/11/02 14:22:24 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/11/02 14:25:55 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void	minishell_lounch(t_info *info)
+void	ft_t_lstclear(t_list **envp_lst)
 {
-	char	*prompt;
+	t_list	*current;
+	t_list	*next;
 
-	while (!info->exit_f)
+	current = *envp_lst;
+	while (current)
 	{
-		prompt = ft_readline("minishell-1.0$ ");
-		if (!prompt)
-			continue ;
-		tokenizer(info, prompt);
-		expansion(info);
-		grouping(info);
-		info->token_lst = NULL;
-		add_history(prompt);
-		free(prompt);
+		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
 	}
-	clear_history();
+	*envp_lst = NULL;
+}
+
+void	refill_envp_lst(t_info *info, char **new_envp)
+{
+	if (info->envp_lst)
+		ft_t_lstclear(&info->envp_lst);
+	init_envp_lst(info, new_envp);
 }

@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/01 17:00:19 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:05:44 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@
 # define BLUE "\033[0;34m"
 
 typedef struct s_info	t_info;
-typedef int				(*t_builtin_ptr)(t_list *, t_info *);
 
 typedef struct s_cmd
 {
@@ -70,12 +69,10 @@ typedef struct s_cmd
 
 typedef struct s_info
 {
-	t_builtin_ptr	builtins[8];
 	char			*reserved_words[8];
 	char			**envp;
 	t_list			*envp_lst;
 	char			exit_f;
-	// A flag for exiting the program.
 	int				status;
 	/*
 		"For $?. Since all commands will be executed in subprocesses except for built-ins.
@@ -126,47 +123,43 @@ int		buildin_unset(t_list *list, t_info *info);
 int		buildin_env(t_list *list, t_info *info);
 int		buildin_exit(t_list *list, t_info *info);
 
-// minishell_lounch
-
-void	minishell_lounch(t_info *info);
+// init_utils
+void	init_envp_lst(t_info *info, char **envp);
+void	init_envp(t_info *info, char **environ);
 
 // ft_readline
-
 char	*ft_readline(char *prompt);
 
 // tokenizer_core
-
 void	fill_in_lex(t_info *info, int token, char *content);
 
 // tenizer_handlers
-
-void	handle_redirections(t_info* info, char **str);
-void	handle_words(t_info* info, char **str);
-void	handle_space(t_info* info, char **str);
-void	handle_quotes(t_info* info, char **str);
+void	handle_redirections(t_info *info, char **str);
+void	handle_words(t_info *info, char **str);
+void	handle_space(t_info *info, char **str);
+void	handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
-
 void	tokenizer(t_info *info, char *str);
 
 // exapansion
-
 void	expansion(t_info *info);
 
 // expantion_utils
-
 int		is_valid_dollar_followup(char c);
 void	append_to_buffer(char *buf, const char *append, int *current_len);
 char	*get_envp_value(t_list *list, char *str);
 char	*get_envp_key(char *str);
 
 // delete_sep_token
-
 void	delete_token_sep(t_info *info);
 
 // grouping
-
 void	grouping(t_info *info);
+
+// refill_envp_lst
+void	ft_t_lstclear(t_list **envp_lst);
+void	refill_envp_lst(t_info *info, char **new_envp);
 
 /****Envp utils*******/
 //For envp manipulation
@@ -174,7 +167,7 @@ int		ft_init_envp(t_info *info, char **envp);
 void	ft_free_matrix(char **str);
 char	**ft_copy_matrix(char **envp);
 int		ft_matrix_size(char **envp);
-char	**ft_malloc_matrix(char **envp);
+
 //For export
 void	ft_modify_variable(char **envp, char *tuple);
 char	**ft_add_to_matrix(char **envp, char *tuple);

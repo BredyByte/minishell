@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utilities.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:17:25 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 13:31:31 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:05:49 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ char	*get_envp_key(char *str)
 	if (ft_isdigit(*ptr))
 		return (ft_strndup(ptr, 1));
 	while (ptr[i] != ' ' && ptr[i] && ptr[i] != '$')
-			i++;
+		i++;
 	return (ft_strndup(ptr, i));
 }
 
-//<--- Ruben to Davyd: When I do cd and stuff, it changes env vars in the char **, but you expand variables in list; so if I change dirs, then I print pwd, it is not the good one
 char	*get_envp_value(t_list *list, char *str)
 {
 	char	*key;

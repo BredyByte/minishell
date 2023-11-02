@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 10:29:53 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 15:59:54 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,20 @@ char	**add_to_array(char **arr, char *new_str)
 
 int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
 {
-    new_node->here_doc = ft_strdup(here_doc_str);
-    if (!new_node->here_doc)
-    	return (-1);
-	char *line = NULL;
-	int fd_temp = open("/var/tmp/.temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd_temp == -1)
+	char	*line;
+	int		fd_temp;
+
+	line = NULL;
+	fd_temp = open("/var/tmp/.temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	new_node->here_doc = ft_strdup(here_doc_str);
+	if (!new_node->here_doc || fd_temp == -1)
 		return (-1);
-    while (1)
+	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL || (line != NULL && ft_strncmp(line, new_node->here_doc, ft_strlen(new_node->here_doc)) == 0))
+		if (line == NULL
+			|| (line != NULL && ft_strncmp(line, new_node->here_doc,
+					ft_strlen(new_node->here_doc)) == 0))
 			break ;
 		write(fd_temp, line, ft_strlen(line));
 		write(fd_temp, "\n", 1);
@@ -93,7 +96,7 @@ int	here_doc_read_line(t_cmd *new_node, char *here_doc_str)
 	close(fd_temp);
 	fd_temp = open("/var/tmp/.temp.txt", O_RDONLY);
 	new_node->fd_in = fd_temp;
-    return (fd_temp);
+	return (0);
 }
 
 int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
@@ -206,15 +209,11 @@ static	int	check_sintax_unexpected_token(t_token *token)
 static int	e_index_check(int index)
 {
 	if (index == 258)
-	{
-		printf("minishell: syntax error near unexpected token\n");
-		return (index);
-	}
+		return (printf
+			("minishell: syntax error near unexpected token\n"), index);
 	else if (index == 1)
-	{
-		printf("minishell: syntax error no such file or directory\n");
-		return (index);
-	}
+		return (printf
+			("minishell: syntax error no such file or directory\n"), index);
 	return (0);
 }
 
@@ -260,23 +259,6 @@ void	grouping(t_info *info)
 			token = token->next;
 	}
 	info->status = e_index_check(e_index);
-	/* t_cmd *ptr = info->cmd_lst;
-	while (ptr)
-	{
-		char **line = ptr->command;
-		printf (BLUE"commands: "RESET);
-		while (*line)
-		{
-			char *str = *line;
-			printf (BLUE"%s helllo ", str);
-			line++;
-		}
-		printf ("\n	");
-		printf ("fd_in: %d\nfd_out: %d\n", ptr->fd_in, ptr->fd_out);
-		if (ptr->here_doc)
-			printf (BLUE"here_doc: %s\n"RESET, ptr->here_doc);
-		ptr = ptr->next;
-	} */
 	t_cmd *list = info->cmd_lst;
 	ft_pipex(info, list);
 	cmd_free(&info->cmd_lst);

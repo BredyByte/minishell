@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 10:25:59 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:28:33 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,20 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 					return (ft_print_error(REDIR_ERROR));
 				close(node->fd_out);
 			}
-			if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),node->command, info->envp) < 0)
-				return (ft_print_error(EXEC_ERROR));
+			if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
+					node->command, info->envp) < 0)
+			{
+				perror(EXEC_ERROR);
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
 			waitpid(id, &status, 0);
+			if (WIFEXITED(status))
+				if (WEXITSTATUS(status) != 0)
+					printf("Child process exited with status: %d\n",
+						WEXITSTATUS(status));
 			if (node->fd_in != NO_FD && node->fd_in != STDIN)
 				close(node->fd_in);
 			if (node->fd_out != NO_FD && node->fd_out != STDOUT)

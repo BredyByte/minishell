@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 10:01:32 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 15:39:25 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	expansion(t_info *info)
 			tmp->value = get_new_value(info, tmp);
 		}
 		if (tmp->key == TOKEN_EXP_FIELD || tmp->key == TOKEN_FIELD)
-				tmp->key = TOKEN_WORD;
+			tmp->key = TOKEN_WORD;
 		tmp = tmp->next;
 	}
 	delete_token_sep(info);
