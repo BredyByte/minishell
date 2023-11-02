@@ -12,7 +12,7 @@
 - (9)Davyd:
 	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd - We looked and came to the conclusion that this is normal behavior ✅
 - (10)Davyd: add "nbsp" (option + space) in parser - part of Davyd (7) ✅
-- (11)Davyd: groupig.c refactoring - ⛔️
+- (11)Davyd: groupig.c refactoring - ✅
 - (12)Davyd: here_doc testing - ⛔️
 - (12)Davyd: redir ">a>b>c>>a" testing - ⛔️
 - (13)Davyd: leaks all code - ⛔️

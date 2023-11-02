@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 16:06:10 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:15:01 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	data_init(t_info *info, char **envp)
 	info->status = 0;
 }
 
-static void	minishell_lounch(t_info *info)
+void	minishell_lounch(t_info *info)
 {
 	char	*prompt;
 
@@ -42,6 +42,8 @@ static void	minishell_lounch(t_info *info)
 		tokenizer(info, prompt);
 		expansion(info);
 		grouping(info);
+		ft_pipex(info);
+		cmd_free(&info->cmd_lst);
 		info->token_lst = NULL;
 		add_history(prompt);
 		free(prompt);

@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 20:17:14 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:21:31 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,6 @@ typedef struct s_info
 	t_cmd			*cmd_lst;
 }					t_info;
 
-// buildins
-int		buildin_echo(t_list *list, t_info *info);
-int		buildin_cd(t_list *list, t_info *info);
-int		buildin_pwd(t_list *list, t_info *info);
-int		buildin_export(t_list *list, t_info *info);
-int		buildin_unset(t_list *list, t_info *info);
-int		buildin_env(t_list *list, t_info *info);
-int		buildin_exit(t_list *list, t_info *info);
-
 // init_utils
 void	init_envp_lst(t_info *info, char **envp);
 void	init_envp(t_info *info, char **environ);
@@ -130,9 +121,11 @@ void	init_envp(t_info *info, char **environ);
 // ft_readline
 char	*ft_readline(char *prompt);
 
-// tokenizer_core
-void	fill_in_lex(t_info *info, int token, char *content);
+// refill_envp_lst
+void	ft_t_lstclear(t_list **envp_lst);
+void	refill_envp_lst(t_info *info, char **new_envp);
 
+/****Tokenizer*******/
 // tenizer_handlers
 void	handle_redirections(t_info *info, char **str);
 void	handle_words(t_info *info, char **str);
@@ -141,8 +134,11 @@ void	handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
 void	tokenizer(t_info *info, char *str);
+void	fill_in_lex(t_info *info, int token, char *content);
+void	delete_token_sep(t_info *info);
 
-// exapansion
+/****Expansion*******/
+// exapansion_core
 void	expansion(t_info *info);
 
 // expantion_utils
@@ -151,15 +147,21 @@ void	append_to_buffer(char *buf, const char *append, int *current_len);
 char	*get_envp_value(t_list *list, char *str);
 char	*get_envp_key(char *str);
 
-// delete_sep_token
-void	delete_token_sep(t_info *info);
-
-// grouping
+/****Grouping*******/
+// grouping_core
 void	grouping(t_info *info);
+int		here_doc(t_cmd *new_node, char *here_doc_str);
+int		redir(t_cmd *new_node, int *fd_in, t_token **token_ptr);
 
-// refill_envp_lst
-void	ft_t_lstclear(t_list **envp_lst);
-void	refill_envp_lst(t_info *info, char **new_envp);
+// grouping_cmd_lst
+t_cmd	*new_cmd(void);
+void	add_back_cmd(t_cmd **cmd_ptr, t_cmd *new_node);
+void	cmd_free(t_cmd **cmd);
+
+// grouping_utils
+int		check_sintax_unexpected_token(t_token *token);
+int		e_index_check(int index);
+char	**add_to_array(char **arr, char *new_str);
 
 /****Envp utils*******/
 //For envp manipulation
@@ -235,6 +237,6 @@ int		ft_builtin(t_info *info, t_cmd *node);
 
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node);
-int		ft_pipex(t_info *info, t_cmd *list);
+int		ft_pipex(t_info *info);
 
 #endif

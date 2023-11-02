@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 20:16:45 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:23:34 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,12 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	}
 }
 
-int	ft_pipex(t_info *info, t_cmd *list)
+int	ft_pipex(t_info *info)
 {
-	int	status;
+	int		status;
+	t_cmd	*list;
 
+	list = info->cmd_lst;
 	status = 0;
 	while (list)
 	{
