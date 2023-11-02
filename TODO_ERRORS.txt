@@ -22,5 +22,5 @@
 
 - Ruben:
 	* cd -> Refactor it and delete printfs
-- Ruben: "echo -n Hola". prints "-n Holaminishell-1.0$" instead of "Holabash-3.2$"
-
+			aaand see latest updates; we have to do some changes
+			Do a function to abstract the update of the paths
