@@ -3,41 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 13:28:33 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:16:45 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_exec_builtin(t_info *info, char **cmd)
+void	ft_redir_fds(int og_stdin, int og_stdout)
 {
-	if (ft_strncmp("cd", cmd[0], 2) == 0 && cmd[0][2] == '\0')
-		return (cd(info, cmd));
-	else if (ft_strncmp("echo", cmd[0], 4) == 0 && cmd[0][4] == '\0')
-		return (echo(cmd));
-	else if (ft_strncmp("env", cmd[0], 3) == 0 && cmd[0][3] == '\0')
-		return (env(info, cmd));
-	else if (ft_strncmp("exit", cmd[0], 4) == 0 && cmd[0][4] == '\0')
-		return (exit1(info, cmd));
-	else if (ft_strncmp("export", cmd[0], 6) == 0 && cmd[0][6] == '\0')
-		return (export(info, cmd));
-	else if (ft_strncmp("pwd", cmd[0], 3) == 0 && cmd[0][3] == '\0')
-		return (pwd(cmd));
-	else if (ft_strncmp("unset", cmd[0], 5) == 0 && cmd[0][5] == '\0')
-		return (unset(info, cmd));
-	return (COMMAND_NOT_FOUND);
+	dup2(og_stdin, STDIN);
+	dup2(og_stdout, STDOUT);
+	perror(EXEC_ERROR);
 }
 
-int	ft_builtin(t_info *info, t_cmd *node)
+int	ft_child_process(t_info *info, t_cmd *node)
 {
-	int	og_stdout;
-	int	status;
+	int		og_stdin;
+	int		og_stdout;
 
+	og_stdin = dup(STDIN);
 	og_stdout = dup(STDOUT);
-	status = 0;
 	if (node->fd_in != NO_FD && node->fd_in != STDIN)
 	{
 		if (dup2(node->fd_in, STDIN) < 0)
@@ -50,10 +38,21 @@ int	ft_builtin(t_info *info, t_cmd *node)
 			return (ft_print_error(REDIR_ERROR));
 		close(node->fd_out);
 	}
-	status = ft_exec_builtin(info, node->command);
-	dup2(og_stdout, STDOUT);
-	close(og_stdout);
-	return (status);
+	if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
+			node->command, info->envp) < 0)
+	{
+		ft_redir_fds(og_stdin, og_stdout);
+		return (EXIT_ERROR);
+	}
+	return (EXIT_SUCCESS);
+}
+
+void	ft_close_fds(t_cmd *node)
+{
+	if (node->fd_in != NO_FD && node->fd_in != STDIN)
+		close(node->fd_in);
+	if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+		close(node->fd_out);
 }
 
 int	ft_exec_cmd(t_info *info, t_cmd *node)
@@ -73,40 +72,16 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 			return (ft_print_error(FORK_ERROR));
 		if (id == 0)
 		{
-			if (node->fd_in != NO_FD && node->fd_in != STDIN)
-			{
-				if (dup2(node->fd_in, STDIN) < 0)
-					return (ft_print_error(REDIR_ERROR));
-				close(node->fd_in);
-			}
-			if (node->fd_out != NO_FD && node->fd_out != STDOUT)
-			{
-				if (dup2(node->fd_out, STDOUT) < 0)
-					return (ft_print_error(REDIR_ERROR));
-				close(node->fd_out);
-			}
-			if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
-					node->command, info->envp) < 0)
-			{
-				perror(EXEC_ERROR);
-				exit(EXIT_FAILURE);
-			}
+			if (ft_child_process(info, node) == EXIT_ERROR)
+				exit(EXIT_ERROR);
 		}
 		else
 		{
 			waitpid(id, &status, 0);
-			if (WIFEXITED(status))
-				if (WEXITSTATUS(status) != 0)
-					printf("Child process exited with status: %d\n",
-						WEXITSTATUS(status));
-			if (node->fd_in != NO_FD && node->fd_in != STDIN)
-				close(node->fd_in);
-			if (node->fd_out != NO_FD && node->fd_out != STDOUT)
-				close(node->fd_out);
+			ft_close_fds(node);
 		}
 		return (status);
 	}
-	return (EXIT_SUCCESS);
 }
 
 int	ft_pipex(t_info *info, t_cmd *list)

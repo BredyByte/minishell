@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 16:05:44 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:17:14 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,9 +229,9 @@ int		ft_echo(char **cmd);
 int		ft_print_error(char *error);
 char	*abs_bin_path(char *cmd, char **envp);
 char	**get_paths(char *envp[]);
-t_cmd	*init_cmd_node(int fd_in1, int fd_out1, char **argv);
-t_cmd	*create_list(char *str, int fdin, int fdout);
 int		ft_is_builtin(t_info *info, char *str);
+int		ft_exec_builtin(t_info *info, char **cmd);
+int		ft_builtin(t_info *info, t_cmd *node);
 
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node);

@@ -23,5 +23,5 @@
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben:
 	* cd -> Refactor it
-- Ruben: Davyd (7): This Part i have done, you need to look code and improve it (pipex.c line 92,  and line 98) Look minishell.h to know what does macros ⛔️
+
 
