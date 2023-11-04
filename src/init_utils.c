@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:20:06 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 15:36:35 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/04 19:10:45 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,5 @@ void	init_envp(t_info *info, char **environ)
 		info->envp[i] = ft_strdup(environ[i]);
 		i++;
 	}
+	info->envp[i] = NULL;
 }

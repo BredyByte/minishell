@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 17:15:01 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:13:05 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ static void	data_init(t_info *info, char **envp)
 	info->reserved_words[5] = ft_strdup("env");
 	info->reserved_words[6] = ft_strdup("exit");
 	info->reserved_words[7] = NULL;
-	init_envp(info, envp);
-	init_envp_lst(info, info->envp);
+	info->envp_lst = NULL;
+	info->envp = NULL;
 	info->token_lst = NULL;
 	info->cmd_lst = NULL;
+	init_envp(info, envp);
+	init_envp_lst(info, info->envp);
 	info->exit_f = 0;
 	info->status = 0;
 }
@@ -54,6 +56,7 @@ void	minishell_lounch(t_info *info)
 int	main(int arv, char **argv, char **envp)
 {
 	t_info	*info;
+	int		status;
 
 	(void)argv;
 	if (arv == 2)
@@ -61,6 +64,7 @@ int	main(int arv, char **argv, char **envp)
 	info = malloc(sizeof(t_info));
 	data_init(info, envp);
 	minishell_lounch(info);
+	status = info->status;
 	free(info);
-	return (info->status);
+	return (status);
 }

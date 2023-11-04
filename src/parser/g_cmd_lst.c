@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grouping_cmd_lst.c                                 :+:      :+:    :+:   */
+/*   g_cmd_lst.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:42:00 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 17:08:11 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/04 13:51:54 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_cmd	*new_cmd(void)
 	if (!new_node)
 		return (NULL);
 	new_node->command = ft_calloc(1, sizeof(char *));
+	new_node->command[0] = NULL;
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->here_doc = NULL;

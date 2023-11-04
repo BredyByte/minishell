@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_free.c                                         :+:      :+:    :+:   */
+/*   g_cmd_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:48:27 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 16:54:16 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/04 11:32:11 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static void	close_and_remove(t_cmd *cmd)
 	if (cmd->fd_out != 0 && cmd->fd_out != 1)
 		close(cmd->fd_out);
 	if (cmd->here_doc)
-	{
 		free(cmd->here_doc);
-		unlink("/var/tmp/.temp.txt");
-	}
 }
 
 void	cmd_free(t_cmd **cmd)
