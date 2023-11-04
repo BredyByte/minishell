@@ -34,9 +34,11 @@ int	ft_exec_builtin(t_info *info, char **cmd)
 int	ft_builtin(t_info *info, t_cmd *node)
 {
 	int	og_stdout;
+	int     oh_stdin;
 	int	status;
 
-	og_stdout = dup(STDOUT);
+	og_stdout = dup(STDOUT_FILENO);
+	og_stdin = dup(STDIN_FILENO);
 	status = 0;
 	if (node->fd_in != NO_FD && node->fd_in != STDIN)
 	{
@@ -49,9 +51,10 @@ int	ft_builtin(t_info *info, t_cmd *node)
 		if (dup2(node->fd_out, STDOUT) < 0)
 			return (ft_print_error(REDIR_ERROR));
 		close(node->fd_out);
-	}
+	} yo
 	status = ft_exec_builtin(info, node->command);
 	dup2(og_stdout, STDOUT);
+	dup2(og_stdin, STDIN);
 	close(og_stdout);
 	return (status);
 }
