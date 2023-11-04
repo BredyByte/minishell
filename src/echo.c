@@ -26,7 +26,7 @@ int	ft_echo(char **cmd)
 	int		idx;
 	int		is_nl;
 	char	*trim;
-
+	(void) is_nl;
 	is_nl = ft_is_nl(cmd);
 	idx = 1;
 	if (!cmd[1])
