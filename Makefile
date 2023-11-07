@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g0
 LREADLINE = -L/Users/$(USER)/.brew/opt/readline/lib  -lreadline
 REMOVE = rm -rf
 

@@ -6,7 +6,8 @@
 	depending on the command, sometimes it crashes - ✅
 - (5)Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ✅
 - (6)Davyd: case of "<outfile.txt" gives segment eror - ✅
-- (7)Davyd: "cat outfile.txt | more " Two or more commands and second no exist "cat outfile.txt | -ls". I'v done it, pipex.c line 92 instead of return, i do exit, and line 98 case for child exit with error ✅
+- (7)Davyd: "cat outfile.txt | more " Two or more commands and second no exist "cat outfile.txt | -ls".
+	I'v done it, pipex.c line 92 instead of return, i do exit, and line 98 case for child exit with error ✅
 - (8)Davyd: when I change directories I update env vars, but then I call them with "echo"
 	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - (function implementated - refill_envp_lst(t_info *info, char **new_envp)) ✅
 - (9)Davyd:
@@ -16,13 +17,17 @@
 - (12)Davyd: here_doc testing - ⛔️
 - (12)Davyd: redir ">a>b>c>>a" testing - ⛔️
 - (13)Davyd: leaks all code - ⛔️
-- (14)Davyd: SIGNALS ⛔️
-
 
 
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 - Ruben:
 	* cd -> Refactor it
+- Ruben: SIGNALS ⛔️
+- Ruben: infile and build_in func provocate infinite loop with minishell-1.0:  ex: <TODO_ERRORS.txt echo
+	comment: (parece que tu cierras stdin. Echo en este caso functiona adecuadamente,
+		pero a la face de ejecutar readline otra vez se queda a un bucle infinito porque readline no tiene acceso a stdin.
+		Pablo me ha contado algo de "tenia una mierda de bucle infinito, y despues de 3 dias de investigacion de como functionan los fds, creè una copia de stdin y stdout para no perderlas" algo asi.
+		Investiga esa tema, creo que es la llave!) ⛔️
 
 
 - Ruben : Signalsssss  ***************WE DONT NEED GLOBAL VARIABLE SINCE CTRL+D IS NOT A SIGNAL***************************

@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:08:37 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/06 14:00:53 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:59:33 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 int	here_doc(t_cmd *new_node, char *here_doc_str)
 {
 	char	*line;
-	int		fd_temp;
+	int		fd[2];
 
 	line = NULL;
-	fd_temp = open("/var/tmp/.temp.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	new_node->here_doc = ft_strdup(here_doc_str);
-	if (!new_node->here_doc || fd_temp == -1)
+	if (!new_node->here_doc || pipe(fd) < 0)
 		return (-1);
 	while (1)
 	{
@@ -29,13 +28,12 @@ int	here_doc(t_cmd *new_node, char *here_doc_str)
 			|| (line != NULL && ft_strncmp(line, new_node->here_doc,
 					ft_strlen(new_node->here_doc)) == 0))
 			break ;
-		write(fd_temp, line, ft_strlen(line));
-		write(fd_temp, "\n", 1);
+		write(fd[1], line, ft_strlen(line));
+		write(fd[1], "\n", 1);
 		free(line);
 	}
 	free(line);
-	close(fd_temp);
-	fd_temp = open("/var/tmp/.temp.txt", O_RDONLY);
-	new_node->fd_in = fd_temp;
+	close(fd[1]);
+	new_node->fd_in = fd[0];
 	return (0);
 }
