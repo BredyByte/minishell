@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 12:03:33 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:41:24 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,15 @@ void	ft_close_fds(t_cmd *node)
 		close(node->fd_out);
 }
 
-int	ft_exec_cmd(t_info *info, t_cmd *node)
+int	ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number)
 {
 	pid_t	id;
 	int		status;
 
+	if (cmd_number == 0)
+		printf("Es el primer nodo\n");
+	else
+		printf("No es el primer nodo\n");
 	status = 0;
 	if (!node->command[0])
 		return (EXIT_SUCCESS);
@@ -70,8 +74,6 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 	{
 		g_batch_flag = 1;
 		id = fork();
-		if (id < 0)
-			return (ft_print_error(FORK_ERROR));
 		if (id == 0)
 		{
 			if (ft_child_process(info, node) == EXIT_ERROR)
@@ -83,20 +85,24 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 			ft_close_fds(node);
 			g_batch_flag = 0;
 		}
-		return (status);
+		return (WEXITSTATUS(status));
 	}
 }
 
 int	ft_pipex(t_info *info)
 {
-	int		status;
 	t_cmd	*list;
+	int		status;
+	int		cmd_number;
 
 	list = info->cmd_lst;
 	status = 0;
+	cmd_number = 0;
 	while (list)
 	{
-		status = ft_exec_cmd(info, list);
+		//printf("cmd:	fdin:	fdout:\n");
+		//printf("%s	%i	%i\n", list->command[0], list->fd_in, list->fd_out);
+		status = ft_exec_cmd(info, list, cmd_number);
 		g_batch_flag = 0;
 		if (status == EXIT_EXIT)
 			return (status);
@@ -106,6 +112,7 @@ int	ft_pipex(t_info *info)
 			return (status);
 		}
 		list = list->next;
+		cmd_number++;
 	}
 	return (EXIT_SUCCESS);
 }

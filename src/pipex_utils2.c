@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 20:00:19 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 12:02:38 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:53:14 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,15 @@ int	ft_exec_builtin(t_info *info, char **cmd)
 	return (COMMAND_NOT_FOUND);
 }
 
-//int	ft_redir(int fd1, int fd2)
-//{
-//	if (fd1 != NO_FD && fd1 != fd2)
-//	{
-//		if (dup2(fd1, fd2) < 0)
-//			return (ft_print_error(REDIR_ERROR));
-//		close (fd1);
-//	}
-//	return (EXIT_SUCCESS);
-//}
+static void	ft_redir_fd_std(int fd, int std, int fd2)
+{
+	if (fd != NO_FD && fd != std)
+	{
+		if (dup2(fd2, std) < 0)
+			ft_print_error(REDIR_ERROR);
+		close(fd);
+	}
+}
 
 int	ft_builtin(t_info *info, t_cmd *node)
 {
@@ -51,30 +50,34 @@ int	ft_builtin(t_info *info, t_cmd *node)
 	og_stdout = dup(STDOUT);
 	og_stdin = dup(STDIN);
 	status = 0;
-	if (node->fd_in != NO_FD && node->fd_in != STDIN)
-	{
-		if (dup2(node->fd_in, STDIN) < 0)
-			return (ft_print_error(REDIR_ERROR));
-		close(node->fd_in);
-	}
-	if (node->fd_out != NO_FD && node->fd_out != STDOUT)
-	{
-		if (dup2(node->fd_out, STDOUT) < 0)
-			return (ft_print_error(REDIR_ERROR));
-		close(node->fd_out);
-	}
+	//if (node->fd_in != NO_FD && node->fd_in != STDIN)
+	//{
+	//	if (dup2(node->fd_in, STDIN) < 0)
+	//		return (ft_print_error(REDIR_ERROR));
+	//	close(node->fd_in);
+	//}
+	ft_redir_fd_std(node->fd_in, STDIN, node->fd_in);
+	//if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+	//{
+	//	if (dup2(node->fd_out, STDOUT) < 0)
+	//		return (ft_print_error(REDIR_ERROR));
+	//	close(node->fd_out);
+	//}
+	ft_redir_fd_std(node->fd_out, STDOUT, node->fd_out);
 	status = ft_exec_builtin(info, node->command);
-	if (node->fd_in != NO_FD && node->fd_in != STDIN)
-	{
-		if (dup2(og_stdin, STDIN) < 0)
-			return (ft_print_error(REDIR_ERROR));
-		close(og_stdin);
-	}
-	if (node->fd_out != NO_FD && node->fd_out != STDOUT)
-	{
-		if (dup2(og_stdout, STDOUT) < 0)
-			return (ft_print_error(REDIR_ERROR));
-		close(og_stdout);
-	}
+	//if (node->fd_in != NO_FD && node->fd_in != STDIN)
+	//{
+	//	if (dup2(og_stdin, STDIN) < 0)
+	//		return (ft_print_error(REDIR_ERROR));
+	//	close(og_stdin);
+	//}
+	ft_redir_fd_std(node->fd_in, STDIN, og_stdin);
+	//if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+	//{
+	//	if (dup2(og_stdout, STDOUT) < 0)
+	//		return (ft_print_error(REDIR_ERROR));
+	//	close(og_stdout);
+	//}
+	ft_redir_fd_std(node->fd_out, STDOUT, og_stdout);
 	return (status);
 }

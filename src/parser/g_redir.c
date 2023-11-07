@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   g_redir.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 18:04:58 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/04 20:11:47 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:44:56 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ static int	handle_pipe(t_cmd *new_node, int *fd_in)
 {
 	int	fd[2];
 
-	if (new_node->fd_in > 2)
-		close(new_node->fd_in);
 	if (pipe(fd) == -1)
 		return (perror("Error: pipe failure"), 1);
 	new_node->fd_out = fd[1];

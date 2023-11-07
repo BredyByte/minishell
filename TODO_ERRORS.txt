@@ -20,32 +20,6 @@
 
 
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben:
-	* cd -> Refactor it
-- Ruben: SIGNALS ⛔️
-- Ruben: infile and build_in func provocate infinite loop with minishell-1.0:  ex: <TODO_ERRORS.txt echo
-	comment: (parece que tu cierras stdin. Echo en este caso functiona adecuadamente,
-		pero a la face de ejecutar readline otra vez se queda a un bucle infinito porque readline no tiene acceso a stdin.
-		Pablo me ha contado algo de "tenia una mierda de bucle infinito, y despues de 3 dias de investigacion de como functionan los fds, creè una copia de stdin y stdout para no perderlas" algo asi.
-		Investiga esa tema, creo que es la llave!) ⛔️
-
-
-- Ruben : Signalsssss  ***************WE DONT NEED GLOBAL VARIABLE SINCE CTRL+D IS NOT A SIGNAL***************************
-	* Ctrl - c  --> DONE MTHFCKR
-	* Ctrl - d 	--> Would work if we modify or we dont use your function ft_readline, if not, Enter would end the shell too			
-- Ruben : 
-	* oups, I changed everything and added files on master branch; I didnt commit btw. We will see how to undo it :D:D
-
-- Ruben:
-	* NEWS: 
-		- New global var --> g_batch_flag that replaces the other global var
-		- Modification of loop, I dont use anymore ft_readline -- it gave some problems for ctrl-d 
-		- var exit is back to info struct since we can manage it from there 
-		- pipex initializes now global var to 1 when its gonna execute a command, so ctrl-c works properly
-		- Implementation of ctrl-c and signals (ctrl-\ is ignored)
-		- Ive changed flag for compilation, you were using a readline library from a path where a function was not included
-			it has been updated and now works just fine 
-		- Modified function that was giving problems with "cat infile | echo Hello", now it should work just fine :D
 
 -PROBLEMS: 
 	* There are some cases where our shell doesnt work as bash:
@@ -61,4 +35,14 @@
 					- pwd
 					- echo
 					- env
-		- Have to refactor ft_builtin, im trying to do a function to do so
+
+- Ruben: 
+	* I deleted fork check in "ft_exec_cmd" bcs i didnt know how to refactor it
+			if (id < 0)
+				return (ft_print_error(FORK_ERROR));
+	* Refactor ft_order_env, I dont know how to do it yet
+
+	* Exit abc abc doesnt work properly; change order 
+	
+	* Optional: I have to consider to implement builtins in child process
+		
