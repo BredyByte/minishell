@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 20:23:34 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:46:15 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	ft_child_process(t_info *info, t_cmd *node)
 	if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
 			node->command, info->envp) < 0)
 	{
+		g_batch_flag = 0;
 		ft_redir_fds(og_stdin, og_stdout);
 		return (EXIT_ERROR);
 	}
@@ -67,6 +68,7 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 		return (ft_builtin(info, node));
 	else
 	{
+		g_batch_flag = 1;
 		id = fork();
 		if (id < 0)
 			return (ft_print_error(FORK_ERROR));
@@ -79,6 +81,7 @@ int	ft_exec_cmd(t_info *info, t_cmd *node)
 		{
 			waitpid(id, &status, 0);
 			ft_close_fds(node);
+			g_batch_flag = 0;
 		}
 		return (status);
 	}
@@ -94,6 +97,7 @@ int	ft_pipex(t_info *info)
 	while (list)
 	{
 		status = ft_exec_cmd(info, list);
+		g_batch_flag = 0;
 		if (status == EXIT_EXIT)
 			return (status);
 		else if (status != EXIT_SUCCESS)

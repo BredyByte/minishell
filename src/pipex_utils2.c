@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 20:00:19 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 20:01:19 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 18:28:48 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,25 @@ int	ft_exec_builtin(t_info *info, char **cmd)
 	return (COMMAND_NOT_FOUND);
 }
 
+//int	ft_redir(int fd1, int fd2)
+//{
+//	if (fd1 != NO_FD && fd1 != fd2)
+//	{
+//		if (dup2(fd1, fd2) < 0)
+//			return (ft_print_error(REDIR_ERROR));
+//		close (fd1);
+//	}
+//	return (EXIT_SUCCESS);
+//}
+
 int	ft_builtin(t_info *info, t_cmd *node)
 {
-	int	og_stdout;
 	int	status;
+	int	og_stdout;
+	int	og_stdin;
 
 	og_stdout = dup(STDOUT);
+	og_stdin = dup(STDIN);
 	status = 0;
 	if (node->fd_in != NO_FD && node->fd_in != STDIN)
 	{
@@ -51,7 +64,17 @@ int	ft_builtin(t_info *info, t_cmd *node)
 		close(node->fd_out);
 	}
 	status = ft_exec_builtin(info, node->command);
-	dup2(og_stdout, STDOUT);
-	close(og_stdout);
+	if (node->fd_in != NO_FD && node->fd_in != STDIN)
+	{
+		if (dup2(og_stdin, STDIN) < 0)
+			return (ft_print_error(REDIR_ERROR));
+		close(og_stdin);
+	}
+	if (node->fd_out != NO_FD && node->fd_out != STDOUT)
+	{
+		if (dup2(og_stdout, STDOUT) < 0)
+			return (ft_print_error(REDIR_ERROR));
+		close(og_stdout);
+	}
 	return (status);
 }

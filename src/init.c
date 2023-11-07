@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 17:15:01 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:26:14 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_batch_flag;
 
 static void	data_init(t_info *info, char **envp)
 {
@@ -26,26 +28,34 @@ static void	data_init(t_info *info, char **envp)
 	init_envp_lst(info, info->envp);
 	info->token_lst = NULL;
 	info->cmd_lst = NULL;
-	info->exit_f = 0;
 	info->status = 0;
+	info->exit = 0;
 }
 
 void	minishell_lounch(t_info *info)
 {
 	char	*prompt;
 
-	while (!info->exit_f)
+	ft_signals();
+	while (info->exit != 1)
 	{
-		prompt = ft_readline("minishell-1.0$ ");
+		g_batch_flag = 0;
+		ft_signals();
+		prompt = readline("minishell-1.0$ ");
 		if (!prompt)
-			continue ;
+		{
+			printf("exit\n");
+			info->exit = 1;
+			break ;
+		}
 		tokenizer(info, prompt);
 		expansion(info);
 		grouping(info);
 		ft_pipex(info);
 		cmd_free(&info->cmd_lst);
 		info->token_lst = NULL;
-		add_history(prompt);
+		if (*prompt != '\0')
+			add_history(prompt);
 		free(prompt);
 	}
 	clear_history();

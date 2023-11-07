@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:54:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 14:24:57 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:16:23 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_var_exists(char *variable, char *envp_tuple)
 	int	size;
 
 	size = ft_strlen(variable);
-	if (ft_strncmp(envp_tuple, variable, size) == 0 
+	if (ft_strncmp(envp_tuple, variable, size) == 0
 		&& (envp_tuple[size] == '='))
 		return (TRUE);
 	else

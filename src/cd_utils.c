@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:06:36 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 16:56:36 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:15:29 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_cd_home(t_info *info)
 	new_dir = ft_get_env_value(info, "HOME");
 	if (!new_dir)
 	{
-		ft_print_error("cd: HOME not set\n");
+		ft_putendl_fd("cd: HOME not set", 2);
 		return (EXIT_ERROR);
 	}
 	current_dir = ft_get_env_value(info, "PWD");
@@ -57,15 +57,17 @@ int	ft_cd_lastdir(t_info *info)
 {
 	char	*new_dir;
 	char	*current_dir;
-	int		status;
 	char	cwd[PATH_SIZE];
 
 	current_dir = ft_strdup(getcwd(cwd, PATH_SIZE));
 	new_dir = ft_get_env_value(info, "OLDPWD");
 	if (!new_dir)
-		return (ft_print_error("cd_lastdir:"));					//<----If OLDPWD doesnt exist, we have to go to ~(and print it)
-	status = chdir(new_dir);
-	if (status == -1)
+	{
+		free(current_dir);
+		ft_putendl_fd("OLDPWD not set", 2);
+		return (EXIT_ERROR);
+	}
+	if (chdir(new_dir) == -1)
 	{
 		free(current_dir);
 		free(new_dir);
@@ -79,12 +81,11 @@ int	ft_cd_lastdir(t_info *info)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_cd_home_relat(t_info *info, char *string)    //<---Refactor this one
+int	ft_cd_home_relat(t_info *info, char *string)
 {
 	char	*new_dir;
 	char	*current_dir;
 	char	*tmp;
-	int		status;
 	char	cwd[PATH_SIZE];
 	char	*home_dir;
 
@@ -94,8 +95,7 @@ int	ft_cd_home_relat(t_info *info, char *string)    //<---Refactor this one
 	current_dir = ft_get_env_value(info, "PWD");
 	tmp = ft_strtrim(string, "~");
 	new_dir = ft_strjoin(home_dir, tmp);
-	status = chdir(new_dir);
-	if (status == -1)
+	if (chdir(new_dir) == -1)
 	{
 		ft_free_dirs(current_dir, home_dir, new_dir);
 		free(tmp);

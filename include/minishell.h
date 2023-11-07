@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 20:21:31 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:30:30 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 # include <dirent.h>
 # include <stdint.h>
-# include <readline/history.h>
-# include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <sys/stat.h>
@@ -25,6 +23,9 @@
 # include "defines.h"
 # include <fcntl.h>
 # include <errno.h>
+# include <sys/ioctl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -72,8 +73,8 @@ typedef struct s_info
 	char			*reserved_words[8];
 	char			**envp;
 	t_list			*envp_lst;
-	char			exit_f;
 	int				status;
+	int				exit;
 	/*
 		"For $?. Since all commands will be executed in subprocesses except for built-ins.
 		Signals of these commands will be processed in a different way; we will look at the process exit status using
@@ -113,6 +114,8 @@ typedef struct s_info
 	t_token			*token_lst;
 	t_cmd			*cmd_lst;
 }					t_info;
+
+extern int		g_batch_flag;
 
 // init_utils
 void	init_envp_lst(t_info *info, char **envp);
@@ -238,5 +241,8 @@ int		ft_builtin(t_info *info, t_cmd *node);
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node);
 int		ft_pipex(t_info *info);
+
+/******SIGNALS*********/
+void	ft_signals(void);
 
 #endif

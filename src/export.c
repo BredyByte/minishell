@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 16:52:13 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:16:00 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	ft_export(t_info *info, char *tuple)
 	if (ft_env_exists(tuple, info->envp) == TRUE)
 	{
 		ft_modify_variable(info->envp, tuple);
-		refill_envp_lst(info, info->envp);						//<---- updated list
+		refill_envp_lst(info, info->envp);
 	}
 	else
 	{
 		info->envp = ft_add_to_matrix(info->envp, tuple);
-		refill_envp_lst(info, info->envp);						//<---- updated list
+		refill_envp_lst(info, info->envp);
 	}
 	return (EXIT_SUCCESS);
 }

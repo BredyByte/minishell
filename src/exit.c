@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 15:59:17 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:24:34 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_exit(t_info *info, int option)
 
 	value = option % 256;
 	info->status = value;
-	info->exit_f = 1;
+	info->exit = 1;
 	return (EXIT_EXIT);
 }
 

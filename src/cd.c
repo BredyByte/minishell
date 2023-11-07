@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 14:08:44 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 16:55:26 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/06 15:07:06 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	cd(t_info *info, char **cmd)
 	if (ft_strncmp(cmd[0], "cd", 2) == 0 && cmd[0][2] == '\0')
 	{
 		status = ft_cd(info, cmd);
-		refill_envp_lst(info, info->envp);						//<---- updated list
+		refill_envp_lst(info, info->envp);
 		return (status);
 	}
 	else
