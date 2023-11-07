@@ -1,22 +1,7 @@
-- (1)Davyd: Close fd in case of >a>b>c - ✅❗️
-- (2)Davyd: implement here_doc - ✅❗️
-- (3)Davyd: echo Hola | cat -e is ok, but
-	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ✅
-- (4)Davyd: same happens with cat infile | more
-	depending on the command, sometimes it crashes - ✅
-- (5)Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ✅
-- (6)Davyd: case of "<outfile.txt" gives segment eror - ✅
-- (7)Davyd: "cat outfile.txt | more " Two or more commands and second no exist "cat outfile.txt | -ls".
-	I'v done it, pipex.c line 92 instead of return, i do exit, and line 98 case for child exit with error ✅
-- (8)Davyd: when I change directories I update env vars, but then I call them with "echo"
-	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - (function implementated - refill_envp_lst(t_info *info, char **new_envp)) ✅
-- (9)Davyd:
-	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd - We looked and came to the conclusion that this is normal behavior ✅
-- (10)Davyd: add "nbsp" (option + space) in parser - part of Davyd (7) ✅
-- (11)Davyd: groupig.c refactoring - ✅
-- (12)Davyd: here_doc testing - ⛔️
-- (12)Davyd: redir ">a>b>c>>a" testing - ⛔️
-- (13)Davyd: leaks all code - ⛔️
+- (1)Davyd: here_doc testing - ⛔️
+- (2)Davyd: redir ">a>b>c>>a" testing - ⛔️
+- (3)Davyd: leaks all code: is done need test - ⛔️
+
 
 
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
@@ -32,32 +17,32 @@
 
 - Ruben : Signalsssss  ***************WE DONT NEED GLOBAL VARIABLE SINCE CTRL+D IS NOT A SIGNAL***************************
 	* Ctrl - c  --> DONE MTHFCKR
-	* Ctrl - d 	--> Would work if we modify or we dont use your function ft_readline, if not, Enter would end the shell too			
-- Ruben : 
+	* Ctrl - d 	--> Would work if we modify or we dont use your function ft_readline, if not, Enter would end the shell too
+- Ruben :
 	* oups, I changed everything and added files on master branch; I didnt commit btw. We will see how to undo it :D:D
 
 - Ruben:
-	* NEWS: 
+	* NEWS:
 		- New global var --> g_batch_flag that replaces the other global var
-		- Modification of loop, I dont use anymore ft_readline -- it gave some problems for ctrl-d 
-		- var exit is back to info struct since we can manage it from there 
+		- Modification of loop, I dont use anymore ft_readline -- it gave some problems for ctrl-d
+		- var exit is back to info struct since we can manage it from there
 		- pipex initializes now global var to 1 when its gonna execute a command, so ctrl-c works properly
 		- Implementation of ctrl-c and signals (ctrl-\ is ignored)
 		- Ive changed flag for compilation, you were using a readline library from a path where a function was not included
-			it has been updated and now works just fine 
+			it has been updated and now works just fine
 		- Modified function that was giving problems with "cat infile | echo Hello", now it should work just fine :D
 
--PROBLEMS: 
+-PROBLEMS:
 	* There are some cases where our shell doesnt work as bash:
-		- "ec""ho" Hello is executed in bash, whereas in our shell isnt 
+		- "ec""ho" Hello is executed in bash, whereas in our shell isnt
 		- "cat infile | 2cnd command works just fine, BUT in bash there are some cases where second cmd is not executed
-				* For example: "cat infile | exit" or "cat infile | cd" <-------- WTFFFFFFF  
-				* Commands that are not executed after a pipe: 
+				* For example: "cat infile | exit" or "cat infile | cd" <-------- WTFFFFFFF
+				* Commands that are not executed after a pipe:
 					- export
 					- unset
 					- cd
 					- exit
-				* Commands that actually ARE 
+				* Commands that actually ARE
 					- pwd
 					- echo
 					- env

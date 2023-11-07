@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 11:58:24 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:15:53 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,12 @@ typedef struct s_info
 	t_cmd			*cmd_lst;
 }					t_info;
 
-extern int		g_batch_flag;
+extern	int	g_batch_flag;
+
+// free_fn
+void	free_all(t_info *info);
+void	free_token_lst(t_token **token_lst);
+void	free_cmd_lst(t_cmd **cmd);
 
 // init_utils
 void	init_envp_lst(t_info *info, char **envp);
@@ -133,10 +138,10 @@ void	refill_envp_lst(t_info *info, char **new_envp);
 void	handle_redirections(t_info *info, char **str);
 void	handle_words(t_info *info, char **str);
 void	handle_space(t_info *info, char **str);
-void	handle_quotes(t_info *info, char **str);
+int		handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
-void	tokenizer(t_info *info, char *str);
+int		tokenizer(t_info *info, char *str);
 void	fill_in_lex(t_info *info, int token, char *content);
 void	delete_token_sep(t_info *info);
 

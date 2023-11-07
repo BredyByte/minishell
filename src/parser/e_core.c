@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion_core.c                                   :+:      :+:    :+:   */
+/*   e_core.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 15:39:25 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:37:23 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	get_new_len(t_info *info, char *str)
 	return (len);
 }
 
-static char	*process_string_value(t_info *info, t_token *token, char *tmp, int *current_len)
+static char	*process_string_value(t_info *info, t_token *token,
+	char *tmp, int *current_len)
 {
 	char	*new_str;
 	char	*res;
@@ -102,7 +103,7 @@ static char	*get_new_value(t_info *info, t_token *token)
 	current_len = 0;
 	tmp = token->value;
 	new_str = process_string_value(info, token, tmp, &current_len);
-	free(token->value);
+	free(tmp);
 	return (new_str);
 }
 

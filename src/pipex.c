@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 12:03:33 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 10:20:08 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@ int	ft_child_process(t_info *info, t_cmd *node)
 {
 	int		og_stdin;
 	int		og_stdout;
+	char 	*tmp;
+	char	**paths;
 
+	tmp = NULL;
+	paths = NULL;
 	og_stdin = dup(STDIN);
 	og_stdout = dup(STDOUT);
 	if (node->fd_in != NO_FD && node->fd_in != STDIN)
@@ -38,10 +42,13 @@ int	ft_child_process(t_info *info, t_cmd *node)
 			return (ft_print_error(REDIR_ERROR));
 		close(node->fd_out);
 	}
-	if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
-			node->command, info->envp) < 0)
+	paths = get_paths(info->envp);
+	tmp = abs_bin_path(node->command[0], paths);
+	if (execve(tmp, node->command, info->envp) < 0)
 	{
 		g_batch_flag = 0;
+		free(tmp);
+		ft_free_matrix(paths);
 		ft_redir_fds(og_stdin, og_stdout);
 		return (EXIT_ERROR);
 	}

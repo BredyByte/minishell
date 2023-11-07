@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = gcc
+CC = gcc -g -o $(NAME)
 CFLAGS = -Wall -Wextra -Werror -g0
 LREADLINE = -L/Users/$(USER)/.brew/opt/readline/lib  -lreadline
 REMOVE = rm -rf
@@ -9,8 +9,7 @@ OBJ_PATH = obj
 SRC_PATH = src
 INC_PATH = include
 LIBFT_PATH = assets/libft
-#-I Users/$(USER)/.brew/opt/readline/include/
-HEADERS	= -I ./include  -I /System/Volumes/Data/Users/regea-go/.brew/Cellar/readline/8.2.1/include/
+HEADERS	= -I ./include  -I /System/Volumes/Data/Users/$(USER)/.brew/Cellar/readline/8.2.1/include/
 LIBS = $(LIBFT_PATH)/libft.a
 
 SRC = $(shell find $(SRC_PATH) -name '*.c')

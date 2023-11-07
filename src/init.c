@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 12:01:52 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 10:25:39 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_batch_flag;
+int g_batch_flag;
 
 static void	data_init(t_info *info, char **envp)
 {
+	(void) envp;
 	info->reserved_words[0] = ft_strdup("echo");
 	info->reserved_words[1] = ft_strdup("cd");
 	info->reserved_words[2] = ft_strdup("pwd");
@@ -38,7 +39,7 @@ void	minishell_lounch(t_info *info)
 {
 	char	*prompt;
 
-	ft_signals();
+	prompt = NULL;
 	while (info->exit != 1)
 	{
 		g_batch_flag = 0;
@@ -46,16 +47,18 @@ void	minishell_lounch(t_info *info)
 		prompt = readline("minishell-1.0$ ");
 		if (!prompt)
 		{
+			free(prompt);
 			printf("exit\n");
 			info->exit = 1;
-			break ;
+			continue ;
 		}
-		tokenizer(info, prompt);
+		if (tokenizer(info, prompt))
+			continue ;
 		expansion(info);
 		grouping(info);
 		ft_pipex(info);
-		cmd_free(&info->cmd_lst);
-		info->token_lst = NULL;
+		free_cmd_lst(&info->cmd_lst);
+		free_token_lst(&info->token_lst);
 		if (*prompt != '\0')
 			add_history(prompt);
 		free(prompt);
@@ -75,6 +78,6 @@ int	main(int arv, char **argv, char **envp)
 	data_init(info, envp);
 	minishell_lounch(info);
 	status = info->status;
-	free(info);
+	free_all(info);
 	return (status);
 }

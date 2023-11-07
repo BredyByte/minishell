@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   g_cmd_free.c                                       :+:      :+:    :+:   */
+/*   f_cmd_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 16:48:27 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/04 11:32:11 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/11/07 14:47:45 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/11/07 19:20:17 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	free_command(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->command[i])
-		free(cmd->command[i++]);
-	free(cmd->command);
-}
 
 static void	close_and_remove(t_cmd *cmd)
 {
@@ -32,17 +22,19 @@ static void	close_and_remove(t_cmd *cmd)
 		free(cmd->here_doc);
 }
 
-void	cmd_free(t_cmd **cmd)
+void	free_cmd_lst(t_cmd **cmd)
 {
 	t_cmd	*ptr;
 	t_cmd	*tmp;
 
+	if (*cmd == NULL)
+		return ;
 	ptr = *cmd;
 	tmp = NULL;
 	while (ptr)
 	{
 		tmp = ptr->next;
-		free_command(ptr);
+		free(ptr->command);
 		close_and_remove(ptr);
 		free(ptr);
 		ptr = tmp;
