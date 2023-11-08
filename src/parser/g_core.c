@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/04 16:55:05 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:32:06 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ void	grouping(t_info *info)
 		else if (token)
 			token = token->next;
 	}
+	if (!is_redir_out_last(info->token_lst))
+		cmd_lst_change_out(info->cmd_lst);
 	info->status = e_index_check(e_index);
 }

@@ -1,16 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grouping_utils.c                                   :+:      :+:    :+:   */
+/*   g_utils.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 17:07:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/02 17:11:08 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:32:10 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	cmd_lst_change_out(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	while (tmp)
+	{
+		if (!tmp->next)
+		{
+			if (tmp->fd_out > 2)
+			{
+				close(tmp->fd_out);
+				tmp->fd_out = 1;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	is_redir_out_last(t_token *token)
+{
+	t_token	*tmp;
+
+	tmp = token;
+	while (token)
+	{
+		if ((token->key == TOKEN_REDIR_OUT || token->key == TOKEN_REDIR_APPEND)
+			&& (token->next && !token->next->next))
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}
 
 char	**add_to_array(char **arr, char *new_str)
 {

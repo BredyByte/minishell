@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:54:38 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 18:15:14 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:43:44 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ char	**ft_order_env(char **envp)
 }
 
 /**
- * @brief Prints env vars in "declare -x:" format if no params are passed 
- * 
+ * @brief Prints env vars in "declare -x:" format if no params are passed
+ *
  */
 void	ft_print_export(t_info *info)
 {
@@ -77,9 +77,9 @@ void	ft_print_export(t_info *info)
 /**
  * @brief It tells us if a variable as been double assigned (VAR=SMTH=SMTH)
  * so we dont save it
- * 
- * @param str 
- * @return int 
+ *
+ * @param str
+ * @return int
  */
 int	ft_double_assign(char *str)
 {
@@ -119,9 +119,9 @@ void	ft_modify_variable(char **envp, char *tuple)
 }
 
 /**
- * @brief 
- * 
- * @param tuple 
+ * @brief
+ *
+ * @param tuple
  */
 char	**ft_add_to_matrix(char **envp, char *tuple)
 {

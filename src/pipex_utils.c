@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/02 17:59:58 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 10:21:50 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,15 @@ char	*abs_bin_path(char *cmd, char **envp)
 		slash_cmd = ft_strjoin("/", cmd);
 		while (envp[i])
 		{
+			if (possible_bin)
+				free(possible_bin);
 			possible_bin = ft_strjoin(envp[i], slash_cmd);
 			if (access(possible_bin, F_OK) == 0)
 				return (ft_valid_cmd(possible_bin));
 			i++;
 		}
 	}
+	free(slash_cmd);
 	return (possible_bin);
 }
 

@@ -1,51 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   g_cmd_free.c                                       :+:      :+:    :+:   */
+/*   f_all.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 16:48:27 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/04 11:32:11 by dbredykh         ###   ########.fr       */
+/*   Created: 2023/11/07 13:52:53 by dbredykh          #+#    #+#             */
+/*   Updated: 2023/11/08 15:30:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_command(t_cmd *cmd)
+static void	free_envp_lst(t_list **envp_lst)
 {
-	int	i;
+	t_list	*ptr;
+	t_list	*tmp;
 
-	i = 0;
-	while (cmd->command[i])
-		free(cmd->command[i++]);
-	free(cmd->command);
-}
-
-static void	close_and_remove(t_cmd *cmd)
-{
-	if (cmd->fd_in != 0 && cmd->fd_in != 1)
-		close(cmd->fd_in);
-	if (cmd->fd_out != 0 && cmd->fd_out != 1)
-		close(cmd->fd_out);
-	if (cmd->here_doc)
-		free(cmd->here_doc);
-}
-
-void	cmd_free(t_cmd **cmd)
-{
-	t_cmd	*ptr;
-	t_cmd	*tmp;
-
-	ptr = *cmd;
+	ptr = *envp_lst;
 	tmp = NULL;
 	while (ptr)
 	{
 		tmp = ptr->next;
-		free_command(ptr);
-		close_and_remove(ptr);
+		free(ptr->key);
+		free(ptr->value);
 		free(ptr);
 		ptr = tmp;
 	}
-	*cmd = NULL;
+	*envp_lst = NULL;
+}
+
+void	free_all(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (info->reserved_words[i])
+		free(info->reserved_words[i++]);
+	i = 0;
+	while (info->envp[i])
+		free(info->envp[i++]);
+	free(info->envp);
+	free_envp_lst(&info->envp_lst);
+	if (info->token_lst)
+		free_token_lst(&info->token_lst);
+	if (info->cmd_lst)
+		free_cmd_lst(&info->cmd_lst);
+	free(info);
 }
