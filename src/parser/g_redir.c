@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 18:04:58 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/04 20:11:47 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:13:57 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ static int	handle_pipe(t_cmd *new_node, int *fd_in)
 {
 	int	fd[2];
 
-	if (new_node->fd_in > 2)
-		close(new_node->fd_in);
 	if (pipe(fd) == -1)
 		return (perror("Error: pipe failure"), 1);
 	new_node->fd_out = fd[1];
@@ -34,6 +32,11 @@ static	int	handle_redir_in(t_cmd *new_node,
 	if (new_node->fd_in == -1)
 		return (1);
 	*token_ptr = token->next;
+	if ((*token_ptr)->next->key == TOKEN_PIPE)
+	{
+		if (new_node->fd_in > 2)
+			close(new_node->fd_in);
+	}
 	return (0);
 }
 
@@ -70,7 +73,7 @@ int	redir(t_cmd *new_node, int *fd_in, t_token **token_ptr)
 
 	token = *token_ptr;
 	result = 0;
-	if (*fd_in)
+	if (*fd_in != 0)
 	{
 		new_node->fd_in = *fd_in;
 		*fd_in = 0;

@@ -6,17 +6,16 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 10:25:39 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:13:19 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_batch_flag;
+int	g_batch_flag;
 
 static void	data_init(t_info *info, char **envp)
 {
-	(void) envp;
 	info->reserved_words[0] = ft_strdup("echo");
 	info->reserved_words[1] = ft_strdup("cd");
 	info->reserved_words[2] = ft_strdup("pwd");
@@ -33,6 +32,13 @@ static void	data_init(t_info *info, char **envp)
 	init_envp_lst(info, info->envp);
 	info->status = 0;
 	info->exit = 0;
+}
+
+static void	ft_restore(t_cmd **cmd_lst, t_token **token_lst, char *prompt)
+{
+	free_cmd_lst(cmd_lst);
+	free_token_lst(token_lst);
+	free(prompt);
 }
 
 void	minishell_lounch(t_info *info)
@@ -57,11 +63,9 @@ void	minishell_lounch(t_info *info)
 		expansion(info);
 		grouping(info);
 		ft_pipex(info);
-		free_cmd_lst(&info->cmd_lst);
-		free_token_lst(&info->token_lst);
 		if (*prompt != '\0')
 			add_history(prompt);
-		free(prompt);
+		ft_restore(&info->cmd_lst, &info->token_lst, prompt);
 	}
 	clear_history();
 }

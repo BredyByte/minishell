@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/08 10:20:08 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:21:26 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_child_process(t_info *info, t_cmd *node)
 {
 	int		og_stdin;
 	int		og_stdout;
-	char 	*tmp;
+	char	*tmp;
 	char	**paths;
 
 	tmp = NULL;
@@ -47,10 +47,8 @@ int	ft_child_process(t_info *info, t_cmd *node)
 	if (execve(tmp, node->command, info->envp) < 0)
 	{
 		g_batch_flag = 0;
-		free(tmp);
-		ft_free_matrix(paths);
-		ft_redir_fds(og_stdin, og_stdout);
-		return (EXIT_ERROR);
+		return (free(tmp), ft_free_matrix(paths),
+			ft_redir_fds(og_stdin, og_stdout), EXIT_ERROR);
 	}
 	return (EXIT_SUCCESS);
 }

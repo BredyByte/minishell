@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:12:49 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/17 14:20:15 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:15:41 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ t_list		*ft_lstlast(t_list *lst);
 char		*ft_strndup(const char *s, size_t n);
 int			ft_is_special_char(char c);
 void		ft_lstadd_front(t_list **lst, t_list *new);
-
 
 // Token type func
 
