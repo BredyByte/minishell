@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 19:41:24 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:11:12 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ int	ft_child_process(t_info *info, t_cmd *node)
 {
 	int		og_stdin;
 	int		og_stdout;
+	int		status;
 
 	og_stdin = dup(STDIN);
 	og_stdout = dup(STDOUT);
+	status = 0;
 	if (node->fd_in != NO_FD && node->fd_in != STDIN)
 	{
 		if (dup2(node->fd_in, STDIN) < 0)
@@ -38,14 +40,14 @@ int	ft_child_process(t_info *info, t_cmd *node)
 			return (ft_print_error(REDIR_ERROR));
 		close(node->fd_out);
 	}
-	if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
+	else if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
 			node->command, info->envp) < 0)
 	{
 		g_batch_flag = 0;
 		ft_redir_fds(og_stdin, og_stdout);
 		return (EXIT_ERROR);
 	}
-	return (EXIT_SUCCESS);
+	return (status);
 }
 
 void	ft_close_fds(t_cmd *node)
@@ -65,19 +67,29 @@ int	ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number)
 		printf("Es el primer nodo\n");
 	else
 		printf("No es el primer nodo\n");
-	status = 0;
+	status = -50;
 	if (!node->command[0])
 		return (EXIT_SUCCESS);
-	else if (ft_is_builtin(info, node->command[0]) == TRUE)
-		return (ft_builtin(info, node));
+	else if (ft_is_builtin(info, node->command[0]) == TRUE && cmd_number == 0)
+	{
+		status = ft_builtin_parent(info, node);
+		ft_close_fds(node);
+		return (status);
+	}
 	else
 	{
 		g_batch_flag = 1;
 		id = fork();
 		if (id == 0)
 		{
-			if (ft_child_process(info, node) == EXIT_ERROR)
-				exit(EXIT_ERROR);
+			if (ft_is_builtin(info, node->command[0]) == TRUE
+				&& cmd_number != 0)
+			{
+				status = ft_builtin_parent(info, node);
+				exit (status);
+			}
+			else
+				ft_child_process(info, node);
 		}
 		else
 		{
@@ -85,7 +97,10 @@ int	ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number)
 			ft_close_fds(node);
 			g_batch_flag = 0;
 		}
-		return (WEXITSTATUS(status));
+		if (status != -50)
+			return (status);
+		else
+			return (WEXITSTATUS(status));
 	}
 }
 

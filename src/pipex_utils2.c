@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 20:00:19 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 17:53:14 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:54:08 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_redir_fd_std(int fd, int std, int fd2)
 	}
 }
 
-int	ft_builtin(t_info *info, t_cmd *node)
+int	ft_builtin_parent(t_info *info, t_cmd *node)
 {
 	int	status;
 	int	og_stdout;

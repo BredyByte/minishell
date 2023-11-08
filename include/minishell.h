@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 19:33:43 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 11:54:23 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ char	*abs_bin_path(char *cmd, char **envp);
 char	**get_paths(char *envp[]);
 int		ft_is_builtin(t_info *info, char *str);
 int		ft_exec_builtin(t_info *info, char **cmd);
-int		ft_builtin(t_info *info, t_cmd *node);
+int		ft_builtin_parent(t_info *info, t_cmd *node);
 
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number);
