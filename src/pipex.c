@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/08 12:11:12 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:38:50 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ int	ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number)
 	pid_t	id;
 	int		status;
 
-	if (cmd_number == 0)
-		printf("Es el primer nodo\n");
-	else
-		printf("No es el primer nodo\n");
 	status = -50;
 	if (!node->command[0])
 		return (EXIT_SUCCESS);
@@ -115,8 +111,6 @@ int	ft_pipex(t_info *info)
 	cmd_number = 0;
 	while (list)
 	{
-		//printf("cmd:	fdin:	fdout:\n");
-		//printf("%s	%i	%i\n", list->command[0], list->fd_in, list->fd_out);
 		status = ft_exec_cmd(info, list, cmd_number);
 		g_batch_flag = 0;
 		if (status == EXIT_EXIT)

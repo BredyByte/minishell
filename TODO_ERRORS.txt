@@ -24,17 +24,6 @@
 -PROBLEMS: 
 	* There are some cases where our shell doesnt work as bash:
 		- "ec""ho" Hello is executed in bash, whereas in our shell isnt 
-		- "cat infile | 2cnd command works just fine, BUT in bash there are some cases where second cmd is not executed
-				* For example: "cat infile | exit" or "cat infile | cd" <-------- WTFFFFFFF  
-				* Commands that are not executed after a pipe: 
-					- export
-					- unset
-					- cd
-					- exit
-				* Commands that actually ARE 
-					- pwd
-					- echo
-					- env
 
 - Ruben: 
 	* I deleted fork check in "ft_exec_cmd" bcs i didnt know how to refactor it
@@ -44,5 +33,4 @@
 
 	* Exit abc abc doesnt work properly; change order 
 	
-	* Optional: I have to consider to implement builtins in child process
 		
