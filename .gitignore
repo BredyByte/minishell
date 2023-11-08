@@ -9,3 +9,7 @@ minishell
 .DS_Store
 
 libft.a
+
+minishell.dSYM
+
+.vscode

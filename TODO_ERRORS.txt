@@ -1,27 +1,12 @@
-- (1)Davyd: Close fd in case of >a>b>c - ✅❗️
-- (2)Davyd: implement here_doc - ✅❗️
-- (3)Davyd: echo Hola | cat -e is ok, but
-	 echo -n Hola | cat -e yields free error.. I've tested locally and my code works just fine. We have to look for the error together - ✅
-- (4)Davyd: same happens with cat infile | more
-	depending on the command, sometimes it crashes - ✅
-- (5)Davyd: I dont think the parsing of double and single quotes is perfect, we need to test it more deeply - ✅
-- (6)Davyd: case of "<outfile.txt" gives segment eror - ✅
-- (7)Davyd: "cat outfile.txt | more " Two or more commands and second no exist "cat outfile.txt | -ls".
-	I'v done it, pipex.c line 92 instead of return, i do exit, and line 98 case for child exit with error ✅
-- (8)Davyd: when I change directories I update env vars, but then I call them with "echo"
-	and the expansion is not correct...Are you using char ** or list *env?? What is updated everytime is the char **env. - (function implementated - refill_envp_lst(t_info *info, char **new_envp)) ✅
-- (9)Davyd:
-	* Quotes: Sometimes I cannot execute whats inside quotes. 'ls -la' just doesnt work --> I dont receive properly the char **cmd - We looked and came to the conclusion that this is normal behavior ✅
-- (10)Davyd: add "nbsp" (option + space) in parser - part of Davyd (7) ✅
-- (11)Davyd: groupig.c refactoring - ✅
-- (12)Davyd: here_doc testing - ⛔️
-- (12)Davyd: redir ">a>b>c>>a" testing - ⛔️
-- (13)Davyd: leaks all code - ⛔️
+- (1)Davyd: here_doc testing - ⛔️
+- (2)Davyd: redir ">a>b>c>>a" testing - ⛔️
+- (3)Davyd: leaks all code: is done need test - ⛔️
+
 
 
 - Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
 
--PROBLEMS: 
+-PROBLEMS:
 	* There are some cases where our shell doesnt work as bash:
 		- "ec""ho" Hello is executed in bash, whereas in our shell isnt 
 

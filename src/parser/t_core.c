@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_core.c                                   :+:      :+:    :+:   */
+/*   t_core.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:34:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/10/31 10:08:40 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:32:20 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,28 @@ void	fill_in_lex(t_info *info, int token, char *content)
 		ft_tokadd_back(&info->token_lst, current);
 }
 
-void	tokenizer(t_info *info, char *str)
+int	tokenizer(t_info *info, char *str)
 {
-	while (*str)
+	char	*tmp;
+	int		res_quotes;
+
+	tmp = str;
+	res_quotes = 0;
+	while (*tmp)
 	{
-		if (!ft_is_special_char(*str))
-			handle_words(info, &str);
-		else if (ft_isspace(*str))
-			handle_space(info, &str);
-		else if (*str == '\'' || *str == '"')
-			handle_quotes(info, &str);
-		else if (*str == '>' || *str == '<')
-			handle_redirections(info, &str);
-		else if (*str == '|')
+		if (!ft_is_special_char(*tmp))
+			handle_words(info, &tmp);
+		else if (ft_isspace(*tmp))
+			handle_space(info, &tmp);
+		else if (*tmp == '\'' || *tmp == '"')
+			res_quotes = handle_quotes(info, &tmp);
+		else if (*tmp == '>' || *tmp == '<')
+			handle_redirections(info, &tmp);
+		else if (*tmp == '|')
 			fill_in_lex(info, TOKEN_PIPE, "|");
-		str++;
+		tmp++;
 	}
+	if (res_quotes)
+		return (free_token_lst(&info->token_lst), free(str), 1);
+	return (0);
 }

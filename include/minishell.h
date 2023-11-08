@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 11:54:23 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:42:41 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define TRUE 1
-# define FALSE 0
-
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
-
-# define EXIT_EXIT 3
-# define EXIT_SUCCESS 0
-# define EXIT_ERROR 1
-# define BAD_ARGS 2
-# define COMMAND_NOT_FOUND 127
-# define CTRL_C 130
-
-# define NO_FD -2
-
-# define PATH_SIZE 4097
-
-# define FORK_ERROR "Unable to fork"
-# define REDIR_ERROR "Unable to redirect"
-# define EXEC_ERROR "Unable to execute"
-
-/*Colors*/
-# define RESET "\033[0;m"
-# define RED "\033[0;31m"
-# define GREEN "\033[0;32m"
-# define YELLOW "\033[0;33m"
-# define BLUE "\033[0;34m"
-
 typedef struct s_info	t_info;
 
 typedef struct s_cmd
@@ -75,47 +46,16 @@ typedef struct s_info
 	t_list			*envp_lst;
 	int				status;
 	int				exit;
-	/*
-		"For $?. Since all commands will be executed in subprocesses except for built-ins.
-		Signals of these commands will be processed in a different way; we will look at the process exit status using
-		waitpid(pid, &status, 0);
-		WIFSIGNALED(status) - a macro check (true / false) if the process was terminated by a signal, such as SIGSEGV signal;
-		WTERMSIG(status) - allows you to find out the signal that terminated the process;
-		WIFEXITED(status) - a macro check (true / false) if the child process terminated normally (called exit()) - you can call WEXITSTATUS to get the exit code;
-		WEXITSTATUS(status) - the macro returns the process termination code."
-	*/
-	/*
-		int status;
-		waitpid(pid, &status, 0);
-		&status - Exit status of the child process we are waiting for
-		if (WIFEXITED(status)) {
-			int exit_status = WEXITSTATUS(status);
-			printf("Child exited with status %d\n", exit_status);
-		} else if (WIFSIGNALED(status)) {
-			int signal_number = WTERMSIG(status);
-			printf("Child terminated by signal %d\n", signal_number);
-		}
-	 */
-	/*
-		int status;
-		pid_t child_pid = fork();
-
-		if (child_pid == 0) {
-			execve(args...);
-			exit(127);
-		}
-		} else {
-			waitpid(child_pid, &status, 0);
-			if (WIFEXITED(status)) {
-				int exit_status = WEXITSTATUS(status);
-			}
-		}
-	 */
 	t_token			*token_lst;
 	t_cmd			*cmd_lst;
 }					t_info;
 
-extern int		g_batch_flag;
+extern int	g_batch_flag;
+
+// free_fn
+void	free_all(t_info *info);
+void	free_token_lst(t_token **token_lst);
+void	free_cmd_lst(t_cmd **cmd);
 
 // init_utils
 void	init_envp_lst(t_info *info, char **envp);
@@ -133,10 +73,10 @@ void	refill_envp_lst(t_info *info, char **new_envp);
 void	handle_redirections(t_info *info, char **str);
 void	handle_words(t_info *info, char **str);
 void	handle_space(t_info *info, char **str);
-void	handle_quotes(t_info *info, char **str);
+int		handle_quotes(t_info *info, char **str);
 
 // tokenizer_core
-void	tokenizer(t_info *info, char *str);
+int		tokenizer(t_info *info, char *str);
 void	fill_in_lex(t_info *info, int token, char *content);
 void	delete_token_sep(t_info *info);
 
@@ -159,12 +99,13 @@ int		redir(t_cmd *new_node, int *fd_in, t_token **token_ptr);
 // grouping_cmd_lst
 t_cmd	*new_cmd(void);
 void	add_back_cmd(t_cmd **cmd_ptr, t_cmd *new_node);
-void	cmd_free(t_cmd **cmd);
 
 // grouping_utils
 int		check_sintax_unexpected_token(t_token *token);
 int		e_index_check(int index);
 char	**add_to_array(char **arr, char *new_str);
+void	cmd_lst_change_out(t_cmd *cmd);
+int		is_redir_out_last(t_token *token);
 
 /****Envp utils*******/
 //For envp manipulation

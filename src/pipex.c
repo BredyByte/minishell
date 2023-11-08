@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/08 16:38:50 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:49:43 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ int	ft_child_process(t_info *info, t_cmd *node)
 {
 	int		og_stdin;
 	int		og_stdout;
+	char	*tmp;
 	int		status;
+	char	**paths;
 
+	tmp = NULL;
+	paths = NULL;
 	og_stdin = dup(STDIN);
 	og_stdout = dup(STDOUT);
 	status = 0;
@@ -40,12 +44,13 @@ int	ft_child_process(t_info *info, t_cmd *node)
 			return (ft_print_error(REDIR_ERROR));
 		close(node->fd_out);
 	}
-	else if (execve(abs_bin_path(node->command[0], get_paths(info->envp)),
-			node->command, info->envp) < 0)
+	paths = get_paths(info->envp);
+	tmp = abs_bin_path(node->command[0], paths);
+	if (execve(tmp, node->command, info->envp) < 0)
 	{
 		g_batch_flag = 0;
-		ft_redir_fds(og_stdin, og_stdout);
-		return (EXIT_ERROR);
+		return (free(tmp), ft_free_matrix(paths),
+			ft_redir_fds(og_stdin, og_stdout), EXIT_ERROR);
 	}
 	return (status);
 }
