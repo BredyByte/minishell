@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 19:17:23 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:31:51 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ static void	data_init(t_info *info, char **envp)
 	info->exit = 0;
 }
 
+static void	ft_restore(t_cmd **cmd_lst, t_token **token_lst, char *prompt)
+{
+	free_cmd_lst(cmd_lst);
+	free_token_lst(token_lst);
+	free(prompt);
+}
+
 void	minishell_lounch(t_info *info)
 {
 	char	*prompt;
@@ -57,18 +64,11 @@ void	minishell_lounch(t_info *info)
 		expansion(info);
 		grouping(info);
 		ft_pipex(info);
-		free_token_lst(&info->token_lst);
-		free_cmd_lst(&info->cmd_lst);
 		if (*prompt != '\0')
 			add_history(prompt);
-		free(prompt);
+		ft_restore(&info->cmd_lst, &info->token_lst, prompt);
 	}
 	clear_history();
-}
-
-void test(void)
-{
-	system("leaks -q minishell");
 }
 
 int	main(int arv, char **argv, char **envp)
@@ -79,7 +79,6 @@ int	main(int arv, char **argv, char **envp)
 	(void)argv;
 	if (arv == 2)
 		return (printf("Execute without any arguments, please!!!\n"), 1);
-	atexit(test);
 	info = malloc(sizeof(t_info));
 	data_init(info, envp);
 	minishell_lounch(info);

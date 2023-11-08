@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:34:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 19:15:45 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:32:20 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	fill_in_lex(t_info *info, int token, char *content)
 	else
 		ft_tokadd_back(&info->token_lst, current);
 }
-
-
 
 int	tokenizer(t_info *info, char *str)
 {

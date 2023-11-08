@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:52:53 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 19:16:25 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:30:58 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	free_envp_lst(t_list **envp_lst)
 	}
 	*envp_lst = NULL;
 }
-
 
 void	free_all(t_info *info)
 {
