@@ -6,11 +6,37 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:32:26 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/06 15:16:00 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:01:42 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+ * @brief Prints env vars in "declare -x:" format if no params are passed
+ *
+ */
+void	ft_print_export(t_info *info)
+{
+	int		idx;
+	char	**ordered_list;
+
+	idx = 0;
+	if (info->envp == NULL)
+		return ;
+	ordered_list = ft_order_env(info->envp);
+	while (ordered_list[idx] != NULL)
+	{
+		if (ft_empty_line(ordered_list[idx]) == TRUE)
+			idx++;
+		else
+		{
+			printf("declare -x %s\n", ordered_list[idx]);
+			idx++;
+		}
+	}
+	ft_free_matrix(ordered_list);
+}
 
 int	ft_export(t_info *info, char *tuple)
 {

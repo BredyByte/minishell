@@ -6,13 +6,11 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 15:31:51 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:38:51 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int g_batch_flag;
 
 static void	data_init(t_info *info, char **envp)
 {
@@ -37,8 +35,8 @@ static void	data_init(t_info *info, char **envp)
 
 static void	ft_restore(t_cmd **cmd_lst, t_token **token_lst, char *prompt)
 {
-	free_cmd_lst(cmd_lst);
 	free_token_lst(token_lst);
+	free_cmd_lst(cmd_lst);
 	free(prompt);
 }
 
@@ -84,5 +82,5 @@ int	main(int arv, char **argv, char **envp)
 	minishell_lounch(info);
 	status = info->status;
 	free_all(info);
-	return (status);
+	exit(status);
 }

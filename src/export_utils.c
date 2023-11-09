@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:52:16 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 14:52:40 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:01:21 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,31 @@ int	ft_empty_line(char *string)
 		return (FALSE);
 }
 
+/**
+ * @brief It tells us if a variable as been double assigned (VAR=SMTH=SMTH)
+ * so we dont save it
+ *
+ * @param str
+ * @return int
+ */
+int	ft_double_assign(char *str)
+{
+	int	idx;
+	int	cntr;
+
+	idx = 0;
+	cntr = 0;
+	while (str[idx] != '\0')
+	{
+		if (str[idx] == '=')
+			cntr++;
+		idx++;
+	}
+	if (cntr > 1)
+		return (TRUE);
+	return (FALSE);
+}
+
 char	**ft_init_matrix_nil(int size)
 {
 	char	**matrix;
@@ -48,18 +73,6 @@ char	**ft_init_matrix_nil(int size)
 		i++;
 	}
 	return (matrix);
-}
-
-char	*ft_high_string(void)
-{
-	char	*string;
-
-	string = malloc (2 * sizeof(char));
-	if (!string)
-		return (NULL);
-	string[0] = 127;
-	string[1] = '\0';
-	return (string);
 }
 
 int	ft_max_len(char *string1, char *string2)

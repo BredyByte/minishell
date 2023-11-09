@@ -6,7 +6,7 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 16:42:41 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:33:09 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include <sys/ioctl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
-typedef struct s_info	t_info;
 
 typedef struct s_cmd
 {
@@ -50,7 +48,7 @@ typedef struct s_info
 	t_cmd			*cmd_lst;
 }					t_info;
 
-extern int	g_batch_flag;
+int g_batch_flag;
 
 // free_fn
 void	free_all(t_info *info);
@@ -119,7 +117,7 @@ void	ft_modify_variable(char **envp, char *tuple);
 char	**ft_add_to_matrix(char **envp, char *tuple);
 int		ft_empty_line(char *string);
 char	**ft_init_matrix_nil(int size);
-char	*ft_high_string(void);
+char	*ft_str_comparator(void);
 int		ft_max_len(char *string1, char *string2);
 int		ft_not_in_matrix(char *string, char **envp);
 char	**ft_order_env(char **envp);
@@ -177,7 +175,10 @@ char	*abs_bin_path(char *cmd, char **envp);
 char	**get_paths(char *envp[]);
 int		ft_is_builtin(t_info *info, char *str);
 int		ft_exec_builtin(t_info *info, char **cmd);
-int		ft_builtin_parent(t_info *info, t_cmd *node);
+int		ft_builtin(t_info *info, t_cmd *node);
+void	ft_redir_fd_std(int fd, int std, int fd2);
+void	ft_redir_fds(int og_stdin, int og_stdout);
+int		ft_lst_size(t_cmd *lst);
 
 //Atomic functions
 int		ft_exec_cmd(t_info *info, t_cmd *node, int cmd_number);

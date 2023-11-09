@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 14:40:23 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 15:13:39 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:09:59 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define CTRL_C 130
 
 # define NO_FD -2
+# define NO_STAT -100
 
 # define PATH_SIZE 4097
 
