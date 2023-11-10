@@ -1,2 +1,6 @@
-- Davyd: cat << EOF > file.txt | sort < file.txt | grep A - ⛔️
+- Davyd: infiles tests: ✅ NEED TESTS!!
+ * case: <infile cat | grep j
+ * case: cat <infile | grep j
+ * case: <infile | grep j
+ * case: cat infile | grep j
 - Davyd: echo "'$USER'" ✅

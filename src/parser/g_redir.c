@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   g_redir.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 18:04:58 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/09 18:20:00 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/10 22:38:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,24 @@ static int	handle_pipe(t_cmd *new_node, int *fd_in)
 	return (0);
 }
 
-static	int	handle_redir_in(t_cmd *new_node,
-	t_token *token, t_token **token_ptr)
+static  int  handle_redir_in(t_cmd *new_node,
+  t_token *token, t_token **token_ptr)
 {
-	if (new_node->fd_in > 2)
-		close(new_node->fd_in);
-	new_node->fd_in = open(token->next->value, O_RDONLY);
-	if (new_node->fd_in == -1)
-		return (1);
-	*token_ptr = token->next;
-	if ((*token_ptr)->next && (*token_ptr)->next->key == TOKEN_PIPE)
-	{
-		if (new_node->fd_in > 2)
-			close(new_node->fd_in);
-	}
-	return (0);
+  if (new_node->fd_in > 2)
+    close(new_node->fd_in);
+  new_node->fd_in = open(token->next->value, O_RDONLY);
+  if (new_node->fd_in == -1)
+    return (1);
+  *token_ptr = token->next;
+  if ((*token_ptr)->next 
+    && (*token_ptr)->next->key == TOKEN_PIPE 
+      && !new_node->command[0]
+      && new_node->fd_in > 2)
+  {
+    close(new_node->fd_in);
+    new_node->fd_in = 0;
+  }
+  return (0);
 }
 
 static int	handle_redir_out(t_cmd *new_node,

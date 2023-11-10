@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/10 14:06:09 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/11 12:10:49 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	conditional_new_cmd(t_cmd **new, t_cmd **cmd_lst, int key)
 {
-	if (!*new
-		|| (*new && (*new)->command[0]
-			&& !(key == TOKEN_REDIR_APPEND || key == TOKEN_REDIR_OUT)))
+	if (!*new || (*new && (*new)->command[0] && !(key == TOKEN_REDIR_APPEND
+				|| key == TOKEN_REDIR_OUT
+				|| key == TOKEN_PIPE)))
 	{
 		*new = new_cmd();
 		add_back_cmd(cmd_lst, *new);
