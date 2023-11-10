@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/08 18:13:05 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:06:43 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_exit(t_info *info, int option)
 	value = option % 256;
 	info->status = value;
 	info->exit = 1;
-	return (EXIT_SUCCESS);
+	return (value);
 }
 
 int	exit1(t_info *info, char **cmd)

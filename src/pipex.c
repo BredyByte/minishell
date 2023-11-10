@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:37:09 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/09 16:37:17 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:06:53 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_child_process(t_info *info, t_cmd *node)
 	{
 		free(tmp);
 		ft_free_matrix(paths);
-		ft_redir_fds(og_stdin, og_stdout),
+		ft_redir_fds(og_stdin, og_stdout);
 		exit(EXIT_ERROR);
 	}
 	return (status);
@@ -110,11 +110,7 @@ int	ft_pipex(t_info *info)
 	{
 		status = ft_exec_cmd(info, list, cmd_number);
 		g_batch_flag = 0;
-		if (status != EXIT_SUCCESS)
-		{
-			info->status = status;
-			return (status);
-		}
+		info->status = status;
 		list = list->next;
 		cmd_number++;
 	}

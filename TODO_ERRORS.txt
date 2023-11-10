@@ -1,3 +1,2 @@
-- Ruben: I have to check chained commands when the first one yields error, and see what and when I return it - ⛔️
-- Ruben: refactor PATH search for exec.
-- Ruben: cntr+c +  valgrind doesnt work.
+- Davyd: cat << EOF > file.txt | sort < file.txt | grep A - ⛔️
+- Davyd: echo "'$USER'" ⛔️

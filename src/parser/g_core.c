@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 13:02:21 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 15:32:06 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:13:20 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,15 @@ void	grouping(t_info *info)
 	}
 	if (!is_redir_out_last(info->token_lst))
 		cmd_lst_change_out(info->cmd_lst);
+	t_cmd *tmp = info->cmd_lst;
+	while (tmp)
+	{
+		printf("------------------\n");
+		printf("cmd: %s\n", tmp->command[0]);
+		printf("fdin: %d\n", tmp->fd_in);
+		printf("fdout: %d\n", tmp->fd_out);
+		printf("------------------\n");
+		tmp = tmp->next;
+	}
 	info->status = e_index_check(e_index);
 }

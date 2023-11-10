@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   g_redir.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 18:04:58 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/08 16:43:06 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:20:00 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static	int	handle_redir_in(t_cmd *new_node,
 	if (new_node->fd_in == -1)
 		return (1);
 	*token_ptr = token->next;
-	if ((*token_ptr)->next->key == TOKEN_PIPE)
+	if ((*token_ptr)->next && (*token_ptr)->next->key == TOKEN_PIPE)
 	{
 		if (new_node->fd_in > 2)
 			close(new_node->fd_in);

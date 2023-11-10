@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/09 16:40:24 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:05:35 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*abs_bin_path(char *cmd, char **envp)
 		}
 	}
 	perror("shell");
-	return (free(slash_cmd), NULL);
+	return (free(slash_cmd), free(possible_bin), NULL);
 }
 
 char	**get_paths(char *envp[])
