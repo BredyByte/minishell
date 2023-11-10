@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/07 18:37:23 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/10 14:04:34 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	get_new_len(t_info *info, char *str)
 	len = 0;
 	while (*tmp)
 	{
-		if (*tmp == '$' && is_valid_dollar_followup(*(tmp + 1)))
+		if (*tmp == '$' && *(tmp + 1) && is_valid_dollar_followup(*(tmp + 1)))
 		{
 			res = handle_dollar_expansion(info, &tmp);
 			len += ft_strlen(res);

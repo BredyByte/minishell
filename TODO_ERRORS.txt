@@ -1,2 +1,2 @@
 - Davyd: cat << EOF > file.txt | sort < file.txt | grep A - ⛔️
-- Davyd: echo "'$USER'" ⛔️
+- Davyd: echo "'$USER'" ✅
