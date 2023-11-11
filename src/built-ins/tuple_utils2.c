@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tuple_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:24:40 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/01 14:25:04 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/11 15:18:47 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	ft_contains(char *envp_tuple, char *tuple)
 	int	size;
 
 	size = ft_var_size(tuple);
-	if (ft_strncmp(envp_tuple, tuple, size) == 0 && (envp_tuple[size] == '='))
+	if (ft_strncmp(envp_tuple, tuple, size) == 0
+		&& ((envp_tuple[size] == '=') || (envp_tuple[size] == '\0')))
 		return (TRUE);
 	else
 		return (FALSE);

@@ -6,11 +6,35 @@
 /*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 20:00:19 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/08 16:44:23 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/08 18:50:19 by regea-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_lst_size(t_cmd *lst)
+{
+	int		size;
+	t_cmd	*itr;
+
+	size = 0;
+	itr = lst;
+	if (lst == 0)
+		return (0);
+	while (itr != 0)
+	{
+		itr = itr->next;
+		size++;
+	}
+	return (size);
+}
+
+void	ft_redir_fds(int og_stdin, int og_stdout)
+{
+	dup2(og_stdin, STDIN);
+	dup2(og_stdout, STDOUT);
+	perror(EXEC_ERROR);
+}
 
 int	ft_exec_builtin(t_info *info, char **cmd)
 {
@@ -31,7 +55,7 @@ int	ft_exec_builtin(t_info *info, char **cmd)
 	return (COMMAND_NOT_FOUND);
 }
 
-static void	ft_redir_fd_std(int fd, int std, int fd2)
+void	ft_redir_fd_std(int fd, int std, int fd2)
 {
 	if (fd != NO_FD && fd != std)
 	{
@@ -41,7 +65,7 @@ static void	ft_redir_fd_std(int fd, int std, int fd2)
 	}
 }
 
-int	ft_builtin_parent(t_info *info, t_cmd *node)
+int	ft_builtin(t_info *info, t_cmd *node)
 {
 	int	status;
 	int	og_stdout;

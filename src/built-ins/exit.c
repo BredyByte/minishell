@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:18:11 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/06 16:24:34 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/10 13:06:43 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,12 @@ int	ft_exit(t_info *info, int option)
 	value = option % 256;
 	info->status = value;
 	info->exit = 1;
-	return (EXIT_EXIT);
+	return (value);
 }
 
 int	exit1(t_info *info, char **cmd)
 {
 	ft_putendl_fd("exit", STDOUT);
-	if (cmd[1] && cmd[2] != NULL)
-	{
-		ft_putendl_fd("Bash: exit: too many arguments", 2);
-		return (EXIT_ERROR);
-	}
 	if (ft_strncmp(cmd[0], "exit", 4) == 0 && cmd[0][4] == '\0')
 	{
 		if (!cmd[1])
@@ -58,6 +53,11 @@ int	exit1(t_info *info, char **cmd)
 		{
 			ft_putendl_fd("Bash: exit: numeric argument required", 2);
 			return (ft_exit(info, 255));
+		}
+		else if (cmd[1] && cmd[2] != NULL)
+		{
+			ft_putendl_fd("Bash: exit: too many arguments", 2);
+			return (EXIT_ERROR);
 		}
 		else
 			return (ft_exit(info, ft_atoi(cmd[1])));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 17:37:51 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 11:38:59 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:53:53 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 static void	ft_ctrl_c(int signal)
 {
 	(void)signal;
-	if (g_batch_flag == 42)
-	{
-		write(1, "\033[K\n", 5);
-		rl_replace_line("", 0);
-		g_batch_flag = 1;
-	}
 	if (g_batch_flag == 0)
 	{
-		ioctl(STDIN, TIOCSTI, "\n");
-		rl_replace_line("", 1);
 		rl_on_new_line();
+		rl_redisplay();
+		rl_replace_line("", 0);
+		write(1, "\033[K\n", 5);
+		rl_on_new_line();
+		rl_redisplay();
+		rl_replace_line("", 0);
 	}
 	else if (g_batch_flag == 1)
 	{
