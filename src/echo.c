@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: regea-go <regea-go@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/07 12:00:36 by regea-go         ###   ########.fr       */
+/*   Updated: 2023/11/11 15:13:10 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_echo(char **cmd)
 {
 	int		idx;
 	int		is_nl;
-	char	*trim;
 
 	is_nl = ft_is_nl(cmd);
 	idx = 1;
@@ -38,9 +37,7 @@ int	ft_echo(char **cmd)
 		idx++;
 	while (cmd[idx])
 	{
-		trim = ft_strtrim(cmd[idx], "\"");
-		ft_putstr_fd(trim, STDOUT);
-		free(trim);
+		ft_putstr_fd(cmd[idx], STDOUT);
 		idx++;
 		if (cmd[idx] != NULL)
 			ft_putchar_fd(' ', STDOUT);
