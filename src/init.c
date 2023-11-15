@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/15 13:32:09 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:05:27 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ static void	ft_restore(t_cmd **cmd_lst, t_token **token_lst, char *prompt)
 	free(prompt);
 }
 
+
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 void	minishell_lounch(t_info *info)
 {
 	char	*prompt;
@@ -49,7 +58,7 @@ void	minishell_lounch(t_info *info)
 	{
 		g_batch_flag = 0;
 		ft_signals();
-		prompt = readline("minishell-1.0$ ");
+		prompt = readline("\x1b[1;33mminishell-1.0$ \x1b[0m");
 		if (!prompt)
 		{
 			free(prompt);
