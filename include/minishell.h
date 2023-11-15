@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/11 18:12:35 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:35:10 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ typedef struct s_cmd
 	char			**command;
 	int				fd_in;
 	int				fd_out;
-	char			*here_doc;
-	int				append_f;
 	struct s_cmd	*next;
 }				t_cmd;
 

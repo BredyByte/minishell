@@ -17,7 +17,7 @@ LIBFT_PATH = assets/libft
 HEADERS	= -I ./include  -I /System/Volumes/Data/Users/$(USER)/.brew/Cellar/readline/8.2.1/include/
 LIBS = $(LIBFT_PATH)/libft.a
 
-SRC = $(SRC_PATH)/$(FREE_PATH)/free_all.c $(SRC_PATH)/$(FREE_PATH)/free_cmd_lst.c $(SRC_PATH)/$(FREE_PATH)/free_token_lst.c \
+SRC = $(SRC_PATH)/$(FREE_PATH)/free_all.c \
 	\
 	$(SRC_PATH)/$(BUILT-INS_PATH)/cd_utils.c $(SRC_PATH)/$(BUILT-INS_PATH)/cd.c $(SRC_PATH)/$(BUILT-INS_PATH)/echo.c $(SRC_PATH)/$(BUILT-INS_PATH)/env_array_utils.c \
 	$(SRC_PATH)/$(BUILT-INS_PATH)/env.c $(SRC_PATH)/$(BUILT-INS_PATH)/exit.c $(SRC_PATH)/$(BUILT-INS_PATH)/export_utils.c $(SRC_PATH)/$(BUILT-INS_PATH)/export_utils2.c \

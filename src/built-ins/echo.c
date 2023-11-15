@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:00:55 by regea-go          #+#    #+#             */
-/*   Updated: 2023/11/11 15:13:10 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:29:57 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ int	ft_echo(char **cmd)
 	{
 		ft_putstr_fd(cmd[idx], STDOUT);
 		idx++;
-		if (cmd[idx] != NULL)
-			ft_putchar_fd(' ', STDOUT);
 	}
 	if (ft_is_nl(cmd) == FALSE)
 		write(STDOUT, "\n", 1);
