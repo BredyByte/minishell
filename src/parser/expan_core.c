@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   e_core.c                                           :+:      :+:    :+:   */
+/*   expan_core.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 18:19:16 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/10 14:04:34 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:38:02 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,6 @@ void	expansion(t_info *info)
 			tmp->key = TOKEN_WORD;
 		tmp = tmp->next;
 	}
+	concat_token_word(info);
 	delete_token_sep(info);
 }

@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:28:05 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/15 12:35:10 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:37:46 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		handle_quotes(t_info *info, char **str);
 int		tokenizer(t_info *info, char *str);
 void	fill_in_lex(t_info *info, int token, char *content);
 void	delete_token_sep(t_info *info);
+void	concat_token_word(t_info *info);
 
 /****Expansion*******/
 void	expansion(t_info *info);

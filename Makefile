@@ -27,7 +27,7 @@ SRC = $(SRC_PATH)/$(FREE_PATH)/free_all.c \
 	$(SRC_PATH)/$(PARSER_PATH)/expan_core.c $(SRC_PATH)/$(PARSER_PATH)/expan_utils.c $(SRC_PATH)/$(PARSER_PATH)/group_core.c \
 	$(SRC_PATH)/$(PARSER_PATH)/group_cmd_lst.c $(SRC_PATH)/$(PARSER_PATH)/group_here_doc.c $(SRC_PATH)/$(PARSER_PATH)/group_redir.c \
 	$(SRC_PATH)/$(PARSER_PATH)/group_utils.c $(SRC_PATH)/$(PARSER_PATH)/token_core.c $(SRC_PATH)/$(PARSER_PATH)/token_delete_token_sep.c \
-	$(SRC_PATH)/$(PARSER_PATH)/token_handlers.c \
+	$(SRC_PATH)/$(PARSER_PATH)/token_concat_token_word.c $(SRC_PATH)/$(PARSER_PATH)/token_handlers.c \
 	\
 	$(SRC_PATH)/$(PIPEX_PATH)/pipex_utils.c $(SRC_PATH)/$(PIPEX_PATH)/pipex_utils2.c $(SRC_PATH)/$(PIPEX_PATH)/pipex.c \
 	\
