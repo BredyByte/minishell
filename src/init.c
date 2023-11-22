@@ -6,7 +6,7 @@
 /*   By: dbredykh <dbredykh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:31:50 by dbredykh          #+#    #+#             */
-/*   Updated: 2023/11/15 18:05:27 by dbredykh         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:40:37 by dbredykh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ static void	ft_restore(t_cmd **cmd_lst, t_token **token_lst, char *prompt)
 	free_cmd_lst(cmd_lst);
 	free(prompt);
 }
-
-
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
 
 void	minishell_lounch(t_info *info)
 {
