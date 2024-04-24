@@ -1,5 +1,7 @@
 # 🤯 Minishell
 
+> This repository contains a "minishell" project that is part of the École 42 curriculum.
+
 ## 📄 Abstract
 This project involves the creation of a simple shell, called Minishell, which can interpret and execute commands. The goal is to implement various shell functionalities, including prompt display, command execution, history management, and handling of special characters.
 
