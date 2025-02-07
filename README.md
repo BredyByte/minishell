@@ -107,6 +107,3 @@ Minishell is a command-line interpreter that aims to replicate basic shell funct
 
 ## 💖 **Appreciation Corner**
    This fantastic work was completed and brought to perfection with the help of my friend and colleague, the genius [🚀 regea-go](https://github.com/xEgea11).
-
-## 📝 P.S.
-   If you have any questions about the project, feel free to contact me via [Telegram](https://t.me/Davyd_y_punto) or [LinkedIn](https://www.linkedin.com/in/davyd-bredykhin-1u961/).
